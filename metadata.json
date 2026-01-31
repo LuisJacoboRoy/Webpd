@@ -1,0 +1,8 @@
+{
+  "name": "PDWA",
+  "description": "Sitio web con catálogo y funciones ",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
