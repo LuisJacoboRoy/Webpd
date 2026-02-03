@@ -16,7 +16,7 @@ const HeroHeader: React.FC = () => {
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center opacity-40"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1562648508-59b13f07a731?auto=format&fit=crop&q=80&w=2000")',
+          backgroundImage: 'url("../img/logo.png?auto=format&fit=crop&q=80&w=2000")',
           transform: `translateY(${offsetY * 0.2}px)` 
         }}
       />

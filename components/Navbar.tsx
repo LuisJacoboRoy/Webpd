@@ -49,14 +49,14 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0 flex items-center gap-4">
             <Link to="/" className="text-xl font-bold bg-gradient-to-r from-green-700 to-green-500 bg-clip-text text-transparent uppercase tracking-tight">
-              Diamante Pinturas
+              Diamante Pinturas Oaxaca
             </Link>
             <div className="hidden sm:block relative ml-4">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={handleSearchChange}
-                placeholder="Buscar productos..."
+                placeholder="Buscar producto..."
                 className="block w-64 pl-10 pr-3 py-1 border border-slate-200 rounded-full text-xs focus:ring-2 focus:ring-green-500/20 transition-all bg-slate-50/50"
               />
             </div>
