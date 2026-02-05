@@ -1,8 +1,7 @@
 
 import React, { useEffect, Suspense, lazy } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
-import Helmet from 'react-helmet-async';
+
 
 // Eager-loaded components (críticos para LCP)
 import Navbar from './components/Navbar';
