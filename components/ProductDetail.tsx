@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PRODUCTS, CATEGORIES, SUB_CATEGORIES } from '../data/products';
 import { useCart } from '../context/CartContext';
@@ -8,6 +8,31 @@ const ProductDetail: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
   const product = PRODUCTS.find(p => p.id === productId);
   const { addToCart } = useCart();
+
+  // Actualizar Open Graph meta tags
+  useEffect(() => {
+    if (product) {
+      document.title = product.ogTitle || `${product.name} - Pinturas Diamante`;
+      
+      // Actualizar/crear meta tags
+      const updateMeta = (name: string, content: string) => {
+        let meta = document.querySelector(`meta[property="${name}"]`) || 
+                   document.querySelector(`meta[name="${name}"]`);
+        if (!meta) {
+          meta = document.createElement('meta');
+          meta.setAttribute(name.includes('og:') ? 'property' : 'name', name);
+          document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', content);
+      };
+
+      updateMeta('og:title', product.ogTitle || `${product.name} - Pinturas Diamante`);
+      updateMeta('og:description', product.ogDescription || product.description);
+      updateMeta('og:type', 'product');
+      if (product.ogImage) updateMeta('og:image', product.ogImage);
+      updateMeta('description', product.ogDescription || product.description);
+    }
+  }, [product]);
 
   if (!product) return <div className="p-20 text-center">Producto no encontrado.</div>;
 
@@ -27,8 +52,16 @@ const ProductDetail: React.FC = () => {
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-        <div className="aspect-square bg-slate-100 rounded-[3rem] border border-slate-200 flex items-center justify-center relative shadow-inner">
-          <span className="text-slate-400 font-bold uppercase tracking-widest text-sm text-center px-6">Espacio para Fotografía del Producto</span>
+        <div className="aspect-square bg-slate-100 rounded-[3rem] border border-slate-200 flex items-center justify-center relative shadow-inner overflow-hidden">
+          {product.image ? (
+            <img 
+              src={product.image} 
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="text-slate-400 font-bold uppercase tracking-widest text-sm text-center px-6">Espacio para Fotografía del Producto</span>
+          )}
         </div>
 
         <div className="flex flex-col">

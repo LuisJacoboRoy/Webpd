@@ -9,6 +9,9 @@ export interface Product {
   priceLabel?: string;
   tag: string;
   image?: string;
+  ogImage?: string;
+  ogTitle?: string;
+  ogDescription?: string;
 }
 
 export interface Category {
@@ -16,6 +19,7 @@ export interface Category {
   name: string;
   description: string;
   image?: string;
+  ogImage?: string;
 }
 
 export interface SubCategory {

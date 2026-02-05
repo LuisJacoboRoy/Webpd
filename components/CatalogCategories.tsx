@@ -18,6 +18,13 @@ const CatalogCategories: React.FC = () => {
             to={`/catalog/${cat.id}`}
             className="group relative h-[400px] rounded-3xl overflow-hidden bg-slate-100 flex items-center justify-center border border-slate-200 hover:border-blue-300 transition-all hover:shadow-2xl"
           >
+            {cat.image && (
+              <img 
+                src={cat.image}
+                alt={cat.name}
+                className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity"
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-900/20 to-transparent z-10" />
             <div className="relative z-20 text-center p-8">
               <h2 className="text-3xl font-black text-white mb-2 uppercase tracking-tighter transform group-hover:scale-110 transition-transform">{cat.name}</h2>
@@ -26,11 +33,13 @@ const CatalogCategories: React.FC = () => {
                 Explorar Línea
               </div>
             </div>
-            <div className="absolute inset-0 z-0 opacity-20 group-hover:opacity-40 transition-opacity">
-               <div className="w-full h-full bg-blue-600 flex items-center justify-center text-blue-200 font-bold text-8xl opacity-10 uppercase select-none">
-                 {cat.name.charAt(0)}
-               </div>
-            </div>
+            {!cat.image && (
+              <div className="absolute inset-0 z-0 opacity-20 group-hover:opacity-40 transition-opacity">
+                 <div className="w-full h-full bg-blue-600 flex items-center justify-center text-blue-200 font-bold text-8xl opacity-10 uppercase select-none">
+                   {cat.name.charAt(0)}
+                 </div>
+              </div>
+            )}
           </Link>
         ))}
       </div>

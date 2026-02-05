@@ -36,7 +36,15 @@ const ProductList: React.FC = () => {
         {products.map(p => (
           <Link key={p.id} to={`/product/${p.id}`} className="bg-white rounded-[2rem] border border-slate-100 p-2 hover:shadow-2xl transition-all group overflow-hidden flex flex-col h-full">
             <div className="aspect-[4/3] bg-slate-50 rounded-[1.8rem] flex items-center justify-center overflow-hidden relative">
-              <div className="text-slate-200 font-bold uppercase tracking-widest text-xs">Espacio para Fotografía</div>
+              {p.image ? (
+                <img 
+                  src={p.image} 
+                  alt={p.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              ) : (
+                <div className="text-slate-200 font-bold uppercase tracking-widest text-xs">Espacio para Fotografía</div>
+              )}
               <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/5 transition-colors" />
             </div>
             <div className="p-6 flex flex-col flex-grow">
