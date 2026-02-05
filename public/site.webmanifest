@@ -1,0 +1,42 @@
+{
+  "name": "Pinturas Diamante Oaxaca",
+  "short_name": "Diamante",
+  "description": "Soluciones de pintura de alta gama para automotriz, maderas y decorativo",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#3b82f6",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["shopping", "business"],
+  "screenshots": [
+    {
+      "src": "/img/catalog/LOGO-WEB-DIAMANTE-PNG.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ]
+}

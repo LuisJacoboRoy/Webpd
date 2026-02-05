@@ -1,0 +1,123 @@
+# Pinturas Diamante - Configuración de Seguridad HTTPS
+
+# ======================
+# FORCE HTTPS
+# ======================
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ======================
+# SECURITY HEADERS
+# ======================
+
+# Strict Transport Security (HSTS)
+# Fuerza HTTPS durante 1 año
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  
+  # X-Frame-Options - Previene clickjacking
+  Header always set X-Frame-Options "SAMEORIGIN"
+  
+  # X-Content-Type-Options - Previene MIME sniffing
+  Header always set X-Content-Type-Options "nosniff"
+  
+  # X-XSS-Protection - Protección XSS (legacy)
+  Header always set X-XSS-Protection "1; mode=block"
+  
+  # Referrer-Policy
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  
+  # Content-Security-Policy
+  Header always set Content-Security-Policy "default-src 'self' https:; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://esm.sh; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:;"
+  
+  # Permissions-Policy (reemplaza Feature-Policy)
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# ======================
+# CACHE CONTROL
+# ======================
+
+<FilesMatch "\.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "max-age=31536000, public"
+  </IfModule>
+</FilesMatch>
+
+<FilesMatch "\.(html)$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "max-age=3600, public"
+  </IfModule>
+</FilesMatch>
+
+# ======================
+# GZIP COMPRESSION
+# ======================
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# ======================
+# SPA ROUTING
+# ======================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  
+  # No rewrite para archivos y directorios existentes
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+  
+  # Reescribir todas las requests a index.html
+  RewriteRule ^(.*)$ index.html [L]
+</IfModule>
+
+# ======================
+# DENY ACCESS
+# ======================
+
+# Denegar acceso a archivos sensibles
+<FilesMatch "^\.env|\.git|package-lock\.json|\.htaccess">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order Allow,Deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# ======================
+# FILE UPLOAD RESTRICTIONS
+# ======================
+
+# Solo permitir ciertos tipos de archivo
+<FilesMatch "\.(php|phtml|php3|php4|php5|phps|pht|phar|pgif|shtml|htaccess|fcgi|pl|sh|cgi)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order Allow,Deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# ======================
+# MIME TYPES
+# ======================
+
+<IfModule mod_mime.c>
+  AddType application/json json
+  AddType application/wasm wasm
+  AddType application/javascript js
+  AddType text/css css
+  AddType image/svg+xml svg svgz
+  AddEncoding gzip svgz
+</IfModule>

@@ -3,6 +3,9 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { CATEGORIES, SUB_CATEGORIES, PRODUCTS } from '../data/products';
 import { useCart } from '../context/CartContext';
+import { useMetaTags } from '../hooks/useMetaTags';
+import { useJsonLd } from '../hooks/useJsonLd';
+import { BUSINESS_INFO } from '../data/seo';
 
 const ProductList: React.FC = () => {
   const { categoryId, subCategoryId } = useParams<{ categoryId: string, subCategoryId: string }>();
@@ -14,6 +17,67 @@ const ProductList: React.FC = () => {
     p.subCategoryId === subCategoryId && 
     (searchQuery === '' || p.name.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+
+  // Meta tags SEO
+  useMetaTags({
+    title: `${subCat?.name || 'Productos'} | ${category?.name || 'Catálogo'} | Diamante`,
+    description: `Explora nuestra línea de ${subCat?.name?.toLowerCase() || 'productos'} ${category?.name?.toLowerCase() || ''}. ${products.length} productos disponibles.`,
+    ogTitle: `${subCat?.name || 'Productos'} | Diamante Oaxaca`,
+    ogDescription: `${subCat?.name || 'Productos'} de calidad premium. Explora ${products.length} opciones especializadas.`,
+    ogImage: BUSINESS_INFO.logo,
+    ogType: 'website'
+  });
+
+  // Schema BreadcrumbList
+  useJsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Inicio',
+        'item': `${BUSINESS_INFO.url}/#/`
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Catálogo',
+        'item': `${BUSINESS_INFO.url}/#/catalog`
+      },
+      {
+        '@type': 'ListItem',
+        'position': 3,
+        'name': category?.name,
+        'item': `${BUSINESS_INFO.url}/#/catalog/${categoryId}`
+      },
+      {
+        '@type': 'ListItem',
+        'position': 4,
+        'name': subCat?.name,
+        'item': `${BUSINESS_INFO.url}/#/catalog/${categoryId}/${subCategoryId}`
+      }
+    ]
+  });
+
+  // Schema ItemList para el listado de productos
+  useJsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'name': `${subCat?.name} - ${category?.name}`,
+    'description': `Listado de ${products.length} productos de ${subCat?.name?.toLowerCase() || 'productos'}`,
+    'itemListElement': products.map((p, idx) => ({
+      '@type': 'ListItem',
+      'position': idx + 1,
+      'item': {
+        '@type': 'Product',
+        'name': p.name,
+        'url': `${BUSINESS_INFO.url}/#/product/${p.id}`,
+        'image': p.ogImage || p.image,
+        'description': p.description.substring(0, 160)
+      }
+    }))
+  });
 
   if (!category || !subCat) return <div className="p-20 text-center">Contenido no disponible.</div>;
 
@@ -29,12 +93,15 @@ const ProductList: React.FC = () => {
 
       <div className="mb-12 border-l-4 border-blue-600 pl-6">
         <h1 className="text-3xl font-black text-slate-900 uppercase tracking-tighter">{subCat.name}</h1>
-        <p className="text-slate-500 mt-2">Explora nuestra gama de productos especializados de alta calidad.</p>
+        <p className="text-slate-500 mt-2">Explora nuestra gama de {products.length} productos especializados de alta calidad.</p>
+        <div className="mt-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          Categoría: {category.name} | Subcategoría: {subCat.name}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
         {products.map(p => (
-          <Link key={p.id} to={`/product/${p.id}`} className="bg-white rounded-[2rem] border border-slate-100 p-2 hover:shadow-2xl transition-all group overflow-hidden flex flex-col h-full">
+          <Link key={p.id} to={`/product/${p.id}`} className="bg-white rounded-[2rem] border border-slate-100 p-2 hover:shadow-2xl transition-all group overflow-hidden flex flex-col h-full" title={p.description}>
             <div className="aspect-[4/3] bg-slate-50 rounded-[1.8rem] flex items-center justify-center overflow-hidden relative">
               {p.image ? (
                 <img 

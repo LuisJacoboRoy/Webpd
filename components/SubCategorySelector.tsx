@@ -2,11 +2,58 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { CATEGORIES, SUB_CATEGORIES } from '../data/products';
+import { useMetaTags } from '../hooks/useMetaTags';
+import { useJsonLd } from '../hooks/useJsonLd';
+import { BUSINESS_INFO, SEO_KEYWORDS, SEO_DESCRIPTIONS } from '../data/seo';
 
 const SubCategorySelector: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
   const category = CATEGORIES.find(c => c.id === categoryId);
   const subCats = SUB_CATEGORIES.filter(s => s.categoryId === categoryId);
+
+  // Meta tags SEO
+  const keywordsMap = {
+    'automotriz': SEO_KEYWORDS.automotriz,
+    'maderas': SEO_KEYWORDS.maderas,
+    'decorativo': SEO_KEYWORDS.decorativo
+  };
+  const keywords = categoryId ? keywordsMap[categoryId as keyof typeof keywordsMap] || [] : [];
+  const description = categoryId ? SEO_DESCRIPTIONS[categoryId as keyof typeof SEO_DESCRIPTIONS] || category?.description : '';
+
+  useMetaTags({
+    title: `${category?.name} | Pinturas Diamante Oaxaca`,
+    description: description,
+    ogTitle: `${category?.name} | Diamante`,
+    ogDescription: description,
+    ogImage: category?.ogImage || BUSINESS_INFO.logo,
+    ogType: 'website'
+  });
+
+  // Schema BreadcrumbList
+  useJsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Inicio',
+        'item': `${BUSINESS_INFO.url}/#/`
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Catálogo',
+        'item': `${BUSINESS_INFO.url}/#/catalog`
+      },
+      {
+        '@type': 'ListItem',
+        'position': 3,
+        'name': category?.name,
+        'item': `${BUSINESS_INFO.url}/#/catalog/${categoryId}`
+      }
+    ]
+  });
 
   if (!category) return <div className="p-20 text-center text-slate-500">Categoría no encontrada.</div>;
 
@@ -20,7 +67,10 @@ const SubCategorySelector: React.FC = () => {
 
       <div className="mb-12">
         <h1 className="text-4xl font-black text-slate-900 mb-4">{category.name}</h1>
-        <p className="text-slate-500 text-lg">{category.description}</p>
+        <p className="text-slate-500 text-lg mb-4">{category.description}</p>
+        <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          Palabras clave: {keywords.join(', ')}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -29,6 +79,7 @@ const SubCategorySelector: React.FC = () => {
             key={sub.id} 
             to={`/catalog/${categoryId}/${sub.id}`}
             className="p-8 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-xl hover:border-blue-200 transition-all group"
+            title={sub.description}
           >
             <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>

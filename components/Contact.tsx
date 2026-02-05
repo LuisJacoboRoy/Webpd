@@ -1,5 +1,8 @@
 
 import React from 'react';
+import { useMetaTags } from '../hooks/useMetaTags';
+import { useJsonLd } from '../hooks/useJsonLd';
+import { BUSINESS_INFO, BUSINESS_LOCATIONS } from '../data/seo';
 
 const Contact: React.FC = () => {
   const branches = [
@@ -12,7 +15,8 @@ const Contact: React.FC = () => {
       mobileRaw: "9512359585",
       hours: "Lunes a Viernes de 8:30 am a 6:30 pm, Sábados de 8:30 am a 4:30 pm.",
       mapLink: "https://maps.app.goo.gl/o3jfpZWSohha3w2n8?g_st=afm",
-      color: "blue"
+      color: "blue",
+      radius: "8 km de cobertura"
     },
     {
       name: "Sucursal Las culturas xoxo",
@@ -23,9 +27,59 @@ const Contact: React.FC = () => {
       mobileRaw: "9516523593",
       hours: "Lunes a Viernes de 8:30 am a 6:00 pm, Sábados de 8:30 am a 4:30 pm.",
       mapLink: "https://maps.app.goo.gl/kjmbXhMzDKT5hfax9?g_st=afm",
-      color: "indigo"
+      color: "indigo",
+      radius: "10 km de cobertura"
     }
   ];
+
+  // Meta tags SEO (máximo 5 palabras clave)
+  useMetaTags({
+    title: 'Nuestras Sucursales | Contacto | Diamante Oaxaca',
+    description: 'Sucursales en Oaxaca con 8-10 km de cobertura de servicio. Ferrocarril y Las Culturas. Consulta horarios y ubicaciones.',
+    ogTitle: 'Sucursales y Contacto | Diamante Oaxaca',
+    ogDescription: 'Dos ubicaciones estratégicas en Oaxaca para mejor atención al cliente',
+    ogImage: BUSINESS_INFO.logo,
+    ogType: 'website'
+  });
+
+  // Schema BreadcrumbList
+  useJsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Inicio',
+        'item': `${BUSINESS_INFO.url}/#/`
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Contacto',
+        'item': `${BUSINESS_INFO.url}/#/contact`
+      }
+    ]
+  });
+
+  // Schema LocalBusiness para cada sucursal con área de servicio
+  const sucursalesSchema = branches.map(branch => ({
+    '@type': 'LocalBusiness',
+    'name': branch.name,
+    'address': {
+      '@type': 'PostalAddress',
+      'streetAddress': branch.address,
+      'addressCity': 'Oaxaca',
+      'addressCountry': 'MX'
+    },
+    'telephone': branch.phone,
+    'url': BUSINESS_INFO.url,
+    'areaServed': {
+      '@type': 'City',
+      'name': 'Oaxaca',
+      'areaServed': branch.radius
+    }
+  }));
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-20">
@@ -34,6 +88,9 @@ const Contact: React.FC = () => {
         <p className="text-slate-500 text-lg max-w-2xl mx-auto">
           Visítanos en cualquiera de nuestras ubicaciones en Oaxaca. Estamos listos para asesorarte en tu próximo proyecto.
         </p>
+        <div className="mt-6 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          Palabras clave: contacto, ubicación, Oaxaca, ferrocarril, culturas
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -41,7 +98,10 @@ const Contact: React.FC = () => {
           <div key={idx} className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100 flex flex-col">
             <div className={`h-2 bg-${branch.color}-600`} />
             <div className="p-8 md:p-10 flex-grow">
-              <h3 className="text-2xl font-bold text-slate-900 mb-6">{branch.name}</h3>
+              <div className="flex items-start justify-between mb-6">
+                <h3 className="text-2xl font-bold text-slate-900">{branch.name}</h3>
+                <span className="text-xs font-bold bg-blue-50 text-blue-600 px-3 py-1 rounded-full">{branch.radius}</span>
+              </div>
               
               <div className="space-y-8">
                 {/* Address Section */}

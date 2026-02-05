@@ -1,8 +1,19 @@
-
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { useHelmetJsonLd } from '../hooks/useHelmet';
+import { BUSINESS_INFO, BUSINESS_LOCATIONS } from '../data/seo';
 
-const About: React.FC = () => {
+/**
+ * About Component - Ejemplo de página de inicio con Helmet
+ * 
+ * Mejoras:
+ * - Reemplazo de useMetaTags/useJsonLd con Helmet
+ * - useMemo para esquemas JSON-LD
+ * - React.memo en exportación
+ * - Meta tags dinámicos
+ */
+const AboutComponent: React.FC = () => {
   const regions = [
     "Oaxaca", "Puebla", "Veracruz", "Chiapas", "Guerrero"
   ];
@@ -14,93 +25,152 @@ const About: React.FC = () => {
     { title: "Industrial", desc: "Recubrimientos de alto desempeño para máxima protección." }
   ];
 
+  // Keywords optimizados (máximo 5)
+  const keywords = useMemo(() => 
+    "pinturas, diamante, oaxaca, 30 años, premium",
+    []
+  );
+
+  // Schema LocalBusiness memoizado
+  const localBusinessSchema = useMemo(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    'name': BUSINESS_INFO.name,
+    'description': 'Empresa mexicana con 30 años de experiencia en soluciones de pintura y recubrimientos',
+    'url': BUSINESS_INFO.url,
+    'logo': BUSINESS_INFO.logo,
+    'foundingDate': '1996',
+    'areaServed': regions,
+    'sameAs': BUSINESS_INFO.sameAs,
+    'location': BUSINESS_LOCATIONS.map(loc => ({
+      '@type': 'PostalAddress',
+      'streetAddress': loc.address,
+      'addressCity': loc.city,
+      'addressCountry': 'MX'
+    }))
+  }), []);
+
+  // Schema BreadcrumbList
+  const breadcrumbSchema = useMemo(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Inicio',
+        'item': `${BUSINESS_INFO.url}/#/`
+      }
+    ]
+  }), []);
+
+  // Inyectar JSON-LD
+  useHelmetJsonLd(localBusinessSchema);
+  useHelmetJsonLd(breadcrumbSchema);
+
   return (
-    <section className="flex flex-col items-center px-4 py-16 md:py-24 max-w-7xl mx-auto overflow-hidden">
-      {/* Hero Badge */}
-      <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000 flex flex-col items-center text-center">
-        <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-[0.2em] bg-blue-600 text-white mb-8 shadow-lg shadow-blue-200">
-          30 Años de Experiencia
-        </span>
+    <>
+      <Helmet>
+        <title>Pinturas Diamante | Líderes en Recubrimientos Mexicanos</title>
+        <meta name="description" content="30 años de experiencia en pinturas de calidad premium. Soluciones automotriz, maderas y decorativo. Presencia en Oaxaca, Puebla, Veracruz y más." />
+        <meta name="keywords" content={keywords} />
         
-        <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-slate-900 mb-8 leading-none uppercase">
-          Nuestra <span className="text-blue-600">Empresa</span>
-        </h1>
+        {/* Open Graph */}
+        <meta property="og:title" content="Pinturas Diamante | 30 Años de Excelencia" />
+        <meta property="og:description" content="Empresa mexicana líder en soluciones de pintura y recubrimientos de alta gama" />
+        <meta property="og:image" content={BUSINESS_INFO.logo} />
+        <meta property="og:url" content={BUSINESS_INFO.url} />
+        <meta property="og:type" content="business.business" />
+        
+        {/* Canonical */}
+        <link rel="canonical" href={BUSINESS_INFO.url} />
+      </Helmet>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center text-left mb-20">
-          <div className="space-y-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-800 leading-tight">
-              Líderes Mexicanos en Innovación de <span className="text-blue-600">Pinturas y Recubrimientos</span>
-            </h2>
-            <p className="text-lg text-slate-600 leading-relaxed">
-              <strong>Diamante Pinturas</strong> es una empresa orgullosamente mexicana con tres décadas de trayectoria ofreciendo soluciones de recubrimiento de la más alta calidad. Nuestra pasión por la innovación y el compromiso con la excelencia nos permiten satisfacer las demandas más exigentes del mercado nacional.
-            </p>
-            <p className="text-lg text-slate-600 leading-relaxed">
-              Desde proyectos residenciales y decorativos, hasta aplicaciones especializadas en maderas, flores, e industrias, proporcionamos productos diseñados para resistir y embellecer. Somos expertos en <strong>pintura automotriz</strong> de alto desempeño.
-            </p>
-            
-            {/* SEO Regions Tag Cloud */}
-            <div className="pt-4">
-              <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Presencia Regional Sur-Sureste</h3>
-              <div className="flex flex-wrap gap-2">
-                {regions.map((region) => (
-                  <span key={region} className="px-3 py-1 bg-slate-100 text-slate-600 rounded-md text-sm font-bold border border-slate-200">
-                    {region}
-                  </span>
-                ))}
-              </div>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 py-20">
+        {/* Hero Section */}
+        <div className="mb-24">
+          <h1 className="text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter mb-6 leading-none">
+            30 Años de <span className="text-blue-600">Excelencia</span> en Pintura
+          </h1>
+          <p className="text-xl text-slate-600 max-w-2xl font-medium">
+            Desde 1996, Pinturas Diamante es sinónimo de calidad, durabilidad y confianza en México. 
+            Sirviendo a profesionales y empresas con soluciones de recubrimiento de clase mundial.
+          </p>
+        </div>
+
+        {/* Timeline / History */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8">
+            <div className="text-5xl font-black text-blue-600 mb-2">30+</div>
+            <h3 className="text-lg font-black text-slate-900 mb-2">Años en el Mercado</h3>
+            <p className="text-sm text-slate-600">Desde 1996, construyendo confianza y calidad</p>
           </div>
+          <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-3xl p-8">
+            <div className="text-5xl font-black text-emerald-600 mb-2">5+</div>
+            <h3 className="text-lg font-black text-slate-900 mb-2">Regiones Servidas</h3>
+            <p className="text-sm text-slate-600">Cobertura en todo México central y sur</p>
+          </div>
+          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-3xl p-8">
+            <div className="text-5xl font-black text-orange-600 mb-2">66+</div>
+            <h3 className="text-lg font-black text-slate-900 mb-2">Productos</h3>
+            <p className="text-sm text-slate-600">Soluciones especializadas para cada aplicación</p>
+          </div>
+        </div>
 
-          <div className="relative">
-            <div className="aspect-square rounded-[3rem] bg-gradient-to-br from-blue-600 to-blue-800 p-1 shadow-2xl overflow-hidden group">
-              <div className="w-full h-full rounded-[2.8rem] bg-white flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-blue-50 opacity-50 group-hover:scale-110 transition-transform duration-700" />
-                <div className="relative z-10 text-center p-10">
-                  <span className="text-8xl font-black text-blue-600/20 block mb-2 italic">30</span>
-                  <span className="text-xl font-black text-slate-900 uppercase tracking-tighter">Años Transformando México</span>
-                  <div className="w-12 h-1 bg-blue-600 mx-auto mt-4 rounded-full" />
+        {/* Expertise Areas */}
+        <div className="mb-24">
+          <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-12">Nuestras Especialidades</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {expertises.map((exp, i) => (
+              <div key={i} className="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-blue-200 hover:shadow-xl transition-all">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-black mb-4">
+                  {i + 1}
                 </div>
+                <h3 className="text-xl font-black text-slate-900 mb-3">{exp.title}</h3>
+                <p className="text-sm text-slate-600">{exp.desc}</p>
               </div>
-            </div>
-            {/* Decorative floaters */}
-            <div className="absolute -top-6 -right-6 w-24 h-24 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" />
-            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse delay-700" />
+            ))}
           </div>
         </div>
 
-        {/* Categories Grid */}
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-          {expertises.map((item, idx) => (
-            <div key={idx} className="group p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:border-blue-200 transition-all">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                </svg>
+        {/* Regional Presence */}
+        <div className="mb-24">
+          <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-12">Presencia Regional</h2>
+          <div className="flex flex-wrap gap-4">
+            {regions.map((region, i) => (
+              <div key={i} className="px-6 py-3 bg-blue-100 text-blue-800 rounded-full font-bold text-sm">
+                {region}
               </div>
-              <h3 className="text-xl font-bold mb-3 text-slate-900">{item.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        {/* Call to Action */}
-        <div className="mt-20 flex flex-col sm:flex-row gap-6 justify-center w-full max-w-2xl">
-          <Link 
-            to="/catalog" 
-            className="flex-1 px-8 py-4 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 text-center uppercase tracking-widest text-sm"
-          >
-            Explorar Catálogo
-          </Link>
-          <Link 
-            to="/contact" 
-            className="flex-1 px-8 py-4 bg-white text-slate-900 font-black rounded-2xl border-2 border-slate-200 hover:border-blue-600 hover:text-blue-600 transition-all text-center uppercase tracking-widest text-sm"
-          >
-            Nuestras Sucursales
-          </Link>
+        {/* CTA Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-3xl p-12 text-center">
+          <h2 className="text-4xl font-black text-white mb-6">¿Necesitas Soluciones de Pintura?</h2>
+          <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
+            Contáctanos para conocer nuestras líneas de productos especializados 
+            y soluciones personalizadas para tu negocio.
+          </p>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Link 
+              to="/catalog" 
+              className="px-8 py-4 bg-white text-blue-600 font-black rounded-2xl hover:bg-slate-50 transition-all text-sm uppercase tracking-widest"
+            >
+              Ver Catálogo
+            </Link>
+            <Link 
+              to="/contact" 
+              className="px-8 py-4 bg-blue-800 text-white font-black rounded-2xl hover:bg-blue-900 transition-all text-sm uppercase tracking-widest"
+            >
+              Contactar Ahora
+            </Link>
+          </div>
         </div>
       </div>
-    </section>
+    </>
   );
 };
 
-export default About;
+// Exportar con React.memo para optimizar re-renders
+export default React.memo(AboutComponent);

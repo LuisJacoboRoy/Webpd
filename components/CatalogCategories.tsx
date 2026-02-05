@@ -2,13 +2,49 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CATEGORIES } from '../data/products';
+import { useMetaTags } from '../hooks/useMetaTags';
+import { useJsonLd } from '../hooks/useJsonLd';
+import { BUSINESS_INFO, SEO_KEYWORDS } from '../data/seo';
 
 const CatalogCategories: React.FC = () => {
+  // Meta tags SEO
+  useMetaTags({
+    title: 'Catálogo de Pinturas | Diamante Oaxaca',
+    description: 'Explora nuestro catálogo de pinturas especializadas: automotriz, maderas y decorativo. Soluciones de pintura de alta gama.',
+    ogTitle: 'Nuestro Catálogo | Diamante Oaxaca',
+    ogDescription: 'Productos de pintura premium para automotriz, maderas y espacios decorativos',
+    ogImage: BUSINESS_INFO.logo,
+    ogType: 'website'
+  });
+
+  // Schema BreadcrumbList
+  useJsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Inicio',
+        'item': `${BUSINESS_INFO.url}/#/`
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Catálogo',
+        'item': `${BUSINESS_INFO.url}/#/catalog`
+      }
+    ]
+  });
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-16">
       <div className="text-center mb-16">
         <h1 className="text-4xl font-bold text-slate-900 mb-4 uppercase tracking-tight">Nuestro Catálogo</h1>
         <p className="text-slate-500 max-w-2xl mx-auto">Selecciona una de nuestras líneas especializadas para encontrar el producto ideal para tu proyecto.</p>
+        <div className="mt-6 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+          Palabras clave: {SEO_KEYWORDS.home.join(', ')}
+        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -17,6 +53,7 @@ const CatalogCategories: React.FC = () => {
             key={cat.id} 
             to={`/catalog/${cat.id}`}
             className="group relative h-[400px] rounded-3xl overflow-hidden bg-slate-100 flex items-center justify-center border border-slate-200 hover:border-blue-300 transition-all hover:shadow-2xl"
+            title={cat.description}
           >
             {cat.image && (
               <img 

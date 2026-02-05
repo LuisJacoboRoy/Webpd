@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Product, CartItem } from '../types';
 
 interface CartContextType {
@@ -18,8 +18,21 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+// Constante para la clave del localStorage
+const CART_STORAGE_KEY = 'diamante_cart';
+
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  // Inicializar desde localStorage si existe
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    try {
+      const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      console.warn('Error al cargar carrito del localStorage:', error);
+      return [];
+    }
+  });
+  
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -46,6 +59,15 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   // Fix: Handled optional price property with a fallback to 0 to prevent NaN results
   const totalPrice = cart.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
+
+  // Persistir carrito en localStorage cada vez que cambia
+  useEffect(() => {
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    } catch (error) {
+      console.warn('Error al guardar carrito en localStorage:', error);
+    }
+  }, [cart]);
 
   return (
     <CartContext.Provider

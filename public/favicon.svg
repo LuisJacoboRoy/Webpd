@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <!-- Fondo azul -->
+  <rect width="180" height="180" fill="#3b82f6" rx="45"/>
+  
+  <!-- Letra D en blanco para Diamante -->
+  <text x="90" y="115" font-size="120" font-weight="900" fill="white" text-anchor="middle" font-family="Arial, sans-serif">D</text>
+  
+  <!-- Pequeño punto decorativo -->
+  <circle cx="155" cy="35" r="8" fill="white" opacity="0.8"/>
+</svg>
