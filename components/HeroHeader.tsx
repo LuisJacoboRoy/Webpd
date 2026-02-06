@@ -29,11 +29,7 @@ const HeroHeader: React.FC = () => {
         className="relative z-10 flex flex-col items-center transition-transform duration-300 ease-out"
         style={{ transform: `translateY(${offsetY * -0.05}px)` }}
       >
-        <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-xl animate-[pulse_4s_cubic-bezier(0.4,0,0.6,1)_infinite] group">
-          <span className="text-3xl md:text-5xl font-black bg-gradient-to-br from-white to-blue-200 bg-clip-text text-transparent transform group-hover:scale-105 transition-transform">
-            D
-          </span>
-        </div>
+       
         <h1 className="mt-6 text-4xl md:text-5xl font-black text-white tracking-tighter drop-shadow-lg text-center uppercase">
           PINTURAS<span className="text-blue-400"> DIAMANTE</span>
         </h1>
