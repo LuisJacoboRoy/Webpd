@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prerender": "node scripts/prerender.js",
+    "build:ssg": "npm run build && npm run prerender",
+    "seo:verify": "node scripts/seo-verify.js"
   },
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.0.6",
