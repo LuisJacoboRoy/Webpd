@@ -1,7 +1,7 @@
 /**
  * useHelmet - Hook personalizado para Helmet
  * Simplifica el manejo de meta tags y Helmet en componentes
- * Compatible con SSR
+ * Compatible con React 19+ con @dr.pogodin/react-helmet
  */
 
 import { useEffect } from 'react';

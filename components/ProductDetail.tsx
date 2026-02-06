@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from '@dr.pogodin/react-helmet';
 import { PRODUCTS, CATEGORIES, SUB_CATEGORIES } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useHelmetJsonLd } from '../hooks/useHelmet';

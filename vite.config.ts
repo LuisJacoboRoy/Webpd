@@ -44,7 +44,7 @@ export default defineConfig(({ mode }) => {
             manualChunks: {
               'react': ['react', 'react-dom'],
               'router': ['react-router-dom'],
-              'helmet': ['react-helmet-async']
+              'helmet': ['@dr.pogodin/react-helmet']
             }
           }
         }

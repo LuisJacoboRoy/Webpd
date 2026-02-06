@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from '@dr.pogodin/react-helmet';
 import { useHelmetJsonLd } from '../hooks/useHelmet';
 import { BUSINESS_INFO, BUSINESS_LOCATIONS } from '../data/seo';
 
