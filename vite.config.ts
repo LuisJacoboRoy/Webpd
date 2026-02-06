@@ -5,7 +5,10 @@ import fs from 'fs';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
-    
+    plugins: [
+    react(),
+    basicSsl() // <--- Agrega esto
+  ],
     // Detectar si hay certificados SSL locales (para desarrollo)
     const getHttpsConfig = () => {
       const certPath = path.resolve(__dirname, './certs/cert.pem');
