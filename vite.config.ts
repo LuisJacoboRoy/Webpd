@@ -24,8 +24,8 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
-        // HTTPS solo en desarrollo si existen certificados
-        https: process.env.HTTPS === 'true' ? getHttpsConfig() : false,
+        // HTTPS activado en desarrollo
+        https: getHttpsConfig() || true,
         // Proxy para API calls en desarrollo (si aplica)
         proxy: {
           '/api': {
