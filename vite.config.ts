@@ -6,19 +6,6 @@ import fs from 'fs';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
 
-  // Mueve la función aquí, fuera de cualquier objeto
-  const getHttpsConfig = () => {
-    const certPath = path.resolve(__dirname, './certs/cert.pem');
-    const keyPath = path.resolve(__dirname, './certs/key.pem');
-    if (fs.existsSync(certPath) && fs.existsSync(keyPath)) {
-      return {
-        cert: fs.readFileSync(certPath),
-        key: fs.readFileSync(keyPath),
-      };
-    }
-    return false;
-  };
-
   return {
     server: {
       port: 3000,
@@ -47,8 +34,6 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [react()],
     define: {
-      'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
     },
     resolve: {
       alias: {
