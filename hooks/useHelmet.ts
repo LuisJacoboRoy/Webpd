@@ -5,7 +5,6 @@
  */
 
 import { useEffect } from 'react';
-import { useHelmet } from 'react-helmet-async';
 
 interface HelmetMetaProps {
   title?: string;
@@ -34,14 +33,7 @@ interface HelmetMetaProps {
  * })
  */
 export const useHelmetMeta = (props: HelmetMetaProps) => {
-  const helmet = useHelmet();
-
   useEffect(() => {
-    // Actualizar título
-    if (props.title) {
-      helmet.helmet.title.toComponent();
-    }
-
     // Actualizar meta tags dinámicamente
     const updateMeta = (name: string, value: string, property = false) => {
       const attr = property ? 'property' : 'name';
@@ -84,7 +76,7 @@ export const useHelmetMeta = (props: HelmetMetaProps) => {
       }
       canonical.href = props.canonical;
     }
-  }, [props, helmet]);
+  }, [props]);
 };
 
 /**
@@ -125,13 +117,3 @@ export const useHelmetJsonLd = (schema: any) => {
     };
   }, [schema]);
 };
-
-/**
- * Hook para usar Helmet nativo de react-helmet-async
- * Para casos más complejos donde necesites control total
- * 
- * @example
- * const helmet = useHelmet();
- * // Usar helmet.helmet directamente
- */
-export { useHelmet };

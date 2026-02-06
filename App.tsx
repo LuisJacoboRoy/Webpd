@@ -1,6 +1,7 @@
 
 import React, { useEffect, Suspense, lazy } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 
 
 // Eager-loaded components (críticos para LCP)
