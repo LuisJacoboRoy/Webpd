@@ -1,23 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <!-- Páginas principales -->
   <url>
     <loc>https://pinturasdiamante.com/#/</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png</image:loc>
+    </image:image>
+    <description>Pinturas Diamante, la mejor calidad en pinturas y recubrimientos para Oaxaca y el sureste de México.</description>
+    <keywords>pinturas, recubrimientos, oaxaca, automotriz, maderas, decorativo</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/contact</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <description>Contacta con Pinturas Diamante para cotizaciones, asesoría técnica y más. Visita nuestras sucursales en Oaxaca.</description>
+    <keywords>contacto, sucursales, oaxaca, pinturas, cotizaciones</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <description>Explora nuestro catálogo completo de pinturas y recubrimientos para las líneas automotriz, maderas y decorativa.</description>
+    <keywords>catálogo, productos, pinturas, automotriz, maderas, decorativo</keywords>
   </url>
 
   <!-- Categorías principales -->
@@ -26,18 +35,33 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
+    </image:image>
+    <description>Soluciones de alta gama para el repintado y protección vehicular.</description>
+    <keywords>automotriz, repintado, vehicular, esmaltes, primarios</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/maderas</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2.png</image:loc>
+    </image:image>
+    <description>Protección y embellecimiento para todo tipo de superficies de madera.</description>
+    <keywords>maderas, barnices, lacas, selladores, poliuretanos</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/decorativo</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2-300x300.png</image:loc>
+    </image:image>
+    <description>Pinturas y acabados para transformar hogares y espacios comerciales.</description>
+    <keywords>decorativo, vinílicas, esmaltes, impermeabilizantes, aerosoles</keywords>
   </url>
 
   <!-- Subcategorías - AUTOMOTRIZ -->
@@ -46,48 +70,64 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Complementos para el repintado automotriz, desde desengrasantes hasta masillas.</description>
+    <keywords>complementos, automotriz, masillas, desengrasantes, promotores</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/automotriz/poliuretano-auto</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Esmaltes de poliuretano de alta resistencia y brillo para el sector automotriz.</description>
+    <keywords>poliuretano, automotriz, esmalte, 2k, ureprix</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/automotriz/secado-rapido-auto</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Esmaltes de secado rápido para reparaciones automotrices eficientes y económicas.</description>
+    <keywords>secado rápido, automotriz, esmalte, turboprix, reparaciones</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/automotriz/acrilicos-auto</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Esmaltes acrílicos de alta calidad con excelente retención de color y brillo.</description>
+    <keywords>acrílicos, automotriz, esmalte, ultraprix, brillo</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/automotriz/primarios-auto</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Primarios y fondos de superficie para una preparación perfecta antes del repintado.</description>
+    <keywords>primarios, automotriz, fondo, aparejo, anticorrosivo</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/automotriz/resanadores-auto</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Masillas y resanadores de poliéster para corregir imperfecciones y abolladuras.</description>
+    <keywords>resanadores, automotriz, masilla, poliéster, light fill</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/automotriz/transparentes-auto</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Barnices y transparentes de poliuretano para un acabado brillante y duradero.</description>
+    <keywords>transparentes, automotriz, barniz, poliuretano, hs</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/automotriz/base-color-auto</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Sistema de pintura bicapa para igualación precisa de colores en el repintado automotriz.</description>
+    <keywords>base color, automotriz, bicapa, innovaplus, igualación</keywords>
   </url>
 
   <!-- Subcategorías - MADERAS -->
@@ -96,24 +136,32 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Barnices y fondos de poliuretano para la protección y embellecimiento de la madera.</description>
+    <keywords>poliuretanos, maderas, barniz, fondo, 2k</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/maderas/nitrocelulosa-madera</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Lacas y selladores de nitrocelulosa para acabados de secado rápido en carpintería.</description>
+    <keywords>nitrocelulosa, maderas, laca, sellador, industrial</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/maderas/entintados-madera</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Barnices y tintas para dar color y proteger la madera en un solo paso.</description>
+    <keywords>entintados, maderas, barniz, tinta, alcohol</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/maderas/complementos-madera</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Productos complementarios para el cuidado y la preparación de la madera.</description>
+    <keywords>complementos, maderas, removedor, mata polilla, preservador</keywords>
   </url>
 
   <!-- Subcategorías - DECORATIVO -->
@@ -122,36 +170,48 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Pinturas vinílicas para interiores y exteriores, desde económicas hasta premium.</description>
+    <keywords>vinílicas, decorativo, pintura, lavable, diamaluxe</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/decorativo/esmaltes-deco</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Esmaltes alquidálicos y base agua para la protección de superficies metálicas y de mampostería.</description>
+    <keywords>esmaltes, decorativo, anticorrosivo, d500, base agua</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/decorativo/imper-deco</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Impermeabilizantes acrílicos y ecológicos para la protección de techos y azoteas.</description>
+    <keywords>impermeabilizantes, decorativo, acrílico, fibratado, ecológico</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/decorativo/aerosoles-deco</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Esmaltes en aerosol para aplicaciones rápidas y decorativas en múltiples superficies.</description>
+    <keywords>aerosoles, decorativo, esmalte, acrílico, secado rápido</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/decorativo/selladores-deco</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Selladores vinílicos para preparar y mejorar el rendimiento de la pintura en muros.</description>
+    <keywords>selladores, decorativo, vinílico, concentrado, muros</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/decorativo/especiales-deco</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
+    <description>Pinturas especiales para tráfico, albercas y otras aplicaciones específicas.</description>
+    <keywords>especiales, decorativo, tráfico, albercas, hule clorado</keywords>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Complementos -->
@@ -160,48 +220,88 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/acondicionador-de-metales-web-300x300.png</image:loc>
+    </image:image>
+    <description>Producto diseñado para eliminar óxido de superficies ferrosas y acondicionar el metal creando una capa fosfatizada que mejora la adherencia.</description>
+    <keywords>acondicionador, metales, óxido, ferroso, adherencia</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-2</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/blender-web-300x300.png</image:loc>
+    </image:image>
+    <description>Solución para difuminar recubrimientos transparentes y de poliuretano, garantizando un acabado suave, brillante y sin bordes visibles.</description>
+    <keywords>blender, esfumador, poliuretano, transparente, acabado</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-3</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/body-web-300x300.png</image:loc>
+    </image:image>
+    <description>Anticorrosivo base agua que protege contra abrasión, amortigua ruidos y vibraciones, y resiste altas temperaturas.</description>
+    <keywords>body, recubrimiento, anticorrosivo, base agua, abrasión</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-4</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+    </image:image>
+    <description>Limpiador eficaz que elimina grasas, siliconas y contaminantes de superficies metálicas, previniendo defectos como el "ojo de pescado".</description>
+    <keywords>desengrasante, automotriz, limpiador, grasas, siliconas</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-5</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/perlas-universales-web-300x300.png</image:loc>
+    </image:image>
+    <description>Aditivo en polvo o pasta que proporciona efectos perlados de profundidad y cambio de tono según el ángulo de luz.</description>
+    <keywords>perla, universal, automotriz, aditivo, perlado</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-6</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/plaste-web-300x300.png</image:loc>
+    </image:image>
+    <description>Masilla de corrección para pequeñas imperfecciones y rayones; ofrece una superficie tersa, fácil de lijar y con buen poder de relleno.</description>
+    <keywords>plaste, automotriz, masilla, corrección, rayones</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-7</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/promotor-adherente-aerosl-300x300.png</image:loc>
+    </image:image>
+    <description>Agente de enlace químico diseñado para asegurar la adhesión de pinturas sobre plásticos automotrices difíciles y parachoques.</description>
+    <keywords>promotor, adherencia, plásticos, automotriz, parachoques</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-8</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/removedor-amarillo-web-300x300.png</image:loc>
+    </image:image>
+    <description>Removedor químico potente para levantar pintura vieja, barnices y esmaltes sin dañar el sustrato metálico, ideal para repintado.</description>
+    <keywords>removedor, amarillo, químico, pintura, barnices</keywords>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Poliuretano -->
@@ -210,6 +310,11 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
+    </image:image>
+    <description>Esmalte de poliuretano de dos componentes (2K) que ofrece máxima resistencia química, durabilidad a la intemperie y un acabado de alto brillo.</description>
+    <keywords>esmalte, ureprix, poliuretano, 2k, automotriz</keywords>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Secado Rápido -->
@@ -218,6 +323,11 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/turboprix-300x300.png</image:loc>
+    </image:image>
+    <description>Esmalte alquidálico modificado de secado rápido, diseñado para reparaciones económicas que requieren buen brillo y velocidad de entrega.</description>
+    <keywords>esmalte, turboprix, secado rápido, alquidálico, automotriz</keywords>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Acrílicos -->
@@ -226,6 +336,11 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/ultraprix-web-300x300.png</image:loc>
+    </image:image>
+    <description>Acabado acrílico de alta calidad con excelente retención de color y brillo, resistente a agentes atmosféricos y no requiere pulido inmediato.</description>
+    <keywords>esmalte, ultraprix, acrílico, automotriz, brillo</keywords>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Primarios -->
@@ -234,18 +349,33 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/maxiprimer-web-300x300.png</image:loc>
+    </image:image>
+    <description>Primario de alto desempeño con pigmentos inhibidores de corrosión; promueve adherencia extrema en metal desnudo donde otros fallan.</description>
+    <keywords>maxiprimer, anticorrosivo, primario, automotriz, metal</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-13</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/primario-universal-300x300.png</image:loc>
+    </image:image>
+    <description>Fondo de superficie versátil disponible en varios tonos (gris, rojo, etc.), con buena capacidad de relleno y facilidad de lijado.</description>
+    <keywords>primario, universal, fondo, automotriz, relleno</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-14</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/primario-de-aparejo-2k-web-300x300.png</image:loc>
+    </image:image>
+    <description>Aparejo de dos componentes de alto espesor (High Build), ideal para nivelar superficies irregulares y proporcionar una base perfecta.</description>
+    <keywords>primer, filler, 2k, aparejo, automotriz</keywords>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Resanadores -->
@@ -254,6 +384,11 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/light-fill-pro-web-300x300.png</image:loc>
+    </image:image>
+    <description>Masilla de poliéster ultra ligera de última generación, formulada para rellenar abolladuras grandes con un lijado excepcionalmente suave.</description>
+    <keywords>resanador, light fill, masilla, poliéster, automotriz</keywords>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Transparentes -->
@@ -262,24 +397,44 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/dprix-web-300x300.png</image:loc>
+    </image:image>
+    <description>Barniz transparente de poliuretano de uso general, ofrece un buen balance entre brillo, secado y distinción de imagen (DOI).</description>
+    <keywords>transparente, d-prix, barniz, poliuretano, automotriz</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-17</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/clara-gloss-300x300.png</image:loc>
+    </image:image>
+    <description>Transparente de altos sólidos (HS) de tres componentes; reproduce la apariencia original con brillo profundo ("wet look") y máxima protección UV.</description>
+    <keywords>transparente, clara gloss, hs, 3k, automotriz</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-18</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/PRIMER-WEB-300x300.png</image:loc>
+    </image:image>
+    <description>Barniz de altos sólidos diseñado para alta productividad, ofrece un acabado espejo duradero y excelente resistencia a rayones.</description>
+    <keywords>transparente, elite plus, hs, barniz, automotriz</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-19</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/lca-300x300.png</image:loc>
+    </image:image>
+    <description>Transparente de dos componentes con excelente nivelación y brillo, ideal para reparaciones de paneles completos.</description>
+    <keywords>transparente, lca, 2k, barniz, automotriz</keywords>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Base Color -->
@@ -288,6 +443,11 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/base-color-innovaprix-300x300.png</image:loc>
+    </image:image>
+    <description>Sistema de pintura bicapa de color intenso y alto poder cubriente, diseñado para igualación precisa en sistemas de repintado.</description>
+    <keywords>base color, innovaplus, bicapa, automotriz, repintado</keywords>
   </url>
 
   <!-- Productos MADERAS - Poliuretanos -->
@@ -296,24 +456,44 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
+    </image:image>
+    <description>Barniz de poliuretano de dos componentes disponible en acabados Mate, Semi-Mate y Brillante; ofrece alta dureza y resistencia a químicos domésticos.</description>
+    <keywords>barniz, pu, transparente, maderas, poliuretano</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-2</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMACRIL-WEB.png</image:loc>
+    </image:image>
+    <description>Fondo de poliuretano de altos sólidos que sella perfectamente el poro de la madera, facilitando el lijado y preparando la superficie para el acabado final.</description>
+    <keywords>fondo, pu, maderas, poliuretano, sellador</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-3</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMALUXE-WEB.png</image:loc>
+    </image:image>
+    <description>Acabado de poliuretano pigmentado de alta cobertura y resistencia, ideal para muebles de cocina y baño que requieren protección contra humedad.</description>
+    <keywords>barniz, pu, pigmentado, maderas, poliuretano</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-4</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2.png</image:loc>
+    </image:image>
+    <description>Barniz de poliuretano de altos sólidos y baja viscosidad, diseñado para acabados de insuperable calidad y poro cerrado.</description>
+    <keywords>brillo directo, pu, as-100, maderas, poliuretano</keywords>
   </url>
 
   <!-- Productos MADERAS - Nitrocelulosa -->
@@ -322,24 +502,44 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/acril-d-web-300x300.png</image:loc>
+    </image:image>
+    <description>Laca de nitrocelulosa modificada con resinas acrílicas, proporciona un acabado transparente, terso y de secado rápido, no amarillea.</description>
+    <keywords>laca, acrílica, acril-d, maderas, nitrocelulosa</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-6</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/d1000-web-300x300.png</image:loc>
+    </image:image>
+    <description>Sellador de nitrocelulosa de alta concentración (48% sólidos), fácil de lijar y con gran capacidad de relleno para madera virgen.</description>
+    <keywords>sellador, nitro, 1000, maderas, nitrocelulosa</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-7</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D50-WEB-300x300.png</image:loc>
+    </image:image>
+    <description>Sellador económico diseñado para una alta dilución sin perder propiedades de sellado y lijado.</description>
+    <keywords>sellador, alta dilución, maderas, nitrocelulosa, económico</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-8</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/nitrocelulosa-300x300.png</image:loc>
+    </image:image>
+    <description>Acabado de nitrocelulosa de secado rápido, ideal para procesos de producción en serie y carpintería general.</description>
+    <keywords>laca, industrial, maderas, nitrocelulosa, secado rápido</keywords>
   </url>
 
   <!-- Productos MADERAS - Entintados -->
@@ -348,12 +548,22 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/barniz-entintado-300x300.png</image:loc>
+    </image:image>
+    <description>Producto "todo en uno" que da color y brillo a la madera en un solo paso, manteniendo visible la veta natural.</description>
+    <keywords>barniz, entintado, hogar, maderas, color</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-10</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/entintado-sr-300x300.png</image:loc>
+    </image:image>
+    <description>Tinta penetrante de secado rápido para teñir madera cruda, disponible en tonos clásicos como nogal, caoba y cedro.</description>
+    <keywords>tinta, alcohol, maderas, nogal, caoba</keywords>
   </url>
 
   <!-- Productos MADERAS - Complementos -->
@@ -362,12 +572,22 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/mata-polilla-300x300.png</image:loc>
+    </image:image>
+    <description>Preservador preventivo y curativo que penetra en la madera para protegerla contra termitas, polillas y hongos.</description>
+    <keywords>mata polilla, maderas, preservador, termitas, hongos</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-12</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+    </image:image>
+    <description>Gel formulado para remover barnices y lacas viejas de muebles de madera sin manchar ni dañar la fibra natural.</description>
+    <keywords>removedor, maderas, gel, barnices, lacas</keywords>
   </url>
 
   <!-- Productos DECORATIVO - Vinílicas -->
@@ -376,24 +596,44 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2-300x300.png</image:loc>
+    </image:image>
+    <description>Pintura Vinil-Acrílica Premium lavable, con garantía de hasta 12 años. Ofrece acabado satinado/mate terso y máximo poder cubriente.</description>
+    <keywords>diamaluxe, vinílica, premium, lavable, decorativo</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-2</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMAFLEX-300x300.png</image:loc>
+    </image:image>
+    <description>Pintura vinílica de alta calidad y acabado semi-satinado, ideal para disimular imperfecciones. Resistente y lavable para interiores y exteriores.</description>
+    <keywords>diamaflex, vinílica, semi-satinado, decorativo, lavable</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-3</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMACRIL_1.png</image:loc>
+    </image:image>
+    <description>Pintura vinílica convencional para mantenimiento de muros, buen rendimiento y variedad de colores para uso general.</description>
+    <keywords>diamacril, vinílica, convencional, decorativo, mantenimiento</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-4</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMACOLOR-1-300x300.png</image:loc>
+    </image:image>
+    <description>Pintura económica para interiores, diseñada para proyectos de gran volumen con buena adherencia y facilidad de aplicación.</description>
+    <keywords>diamacolor, vinílica, económica, decorativo, interiores</keywords>
   </url>
 
   <!-- Productos DECORATIVO - Esmaltes -->
@@ -402,24 +642,44 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D500-WEB-300x300.png</image:loc>
+    </image:image>
+    <description>Esmalte alquidálico anticorrosivo premium para cualquier clima (incluyendo costa). Ideal para metales, madera y mampostería.</description>
+    <keywords>esmalte, d500, anticorrosivo, premium, decorativo</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-6</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D50-WEB-300x300.png</image:loc>
+    </image:image>
+    <description>Esmalte alquídico de secado normal, formulado para regiones tropicales y mantenimiento general de herrería.</description>
+    <keywords>esmalte, d50, alquídico, decorativo, tropical</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-7</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DG-WEB-300x300.png</image:loc>
+    </image:image>
+    <description>Esmalte industrial de secado rápido que proporciona protección anticorrosiva y eficiencia en líneas de producción.</description>
+    <keywords>esmalte, dg, secado rápido, industrial, decorativo</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-8</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/d1000-web-300x300.png</image:loc>
+    </image:image>
+    <description>Esmalte ecológico de bajo olor y secado rápido, ideal para interiores y superficies donde se requiere baja toxicidad.</description>
+    <keywords>esmalte, base agua, d1000, ecológico, decorativo</keywords>
   </url>
 
   <!-- Productos DECORATIVO - Impermeabilizantes -->
@@ -428,12 +688,22 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/fibratado-300x300.png</image:loc>
+    </image:image>
+    <description>Impermeabilizante acrílico reforzado con fibras para puentear grietas sin necesidad de malla. Durabilidad de 3 o 5 años.</description>
+    <keywords>imperdiamante, fibratado, impermeabilizante, acrílico, decorativo</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-10</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/imperecologico-300x300.png</image:loc>
+    </image:image>
+    <description>Impermeabilizante formulado con materiales sustentables y resinas de alto desempeño para protección térmica y contra lluvias.</description>
+    <keywords>imperdiamante, ecológico, impermeabilizante, sustentable, decorativo</keywords>
   </url>
 
   <!-- Productos DECORATIVO - Aerosoles -->
@@ -442,6 +712,11 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+    </image:image>
+    <description>Esmalte en aerosol de secado rápido y válvula de fácil aplicación, disponible en colores sólidos, metálicos y alta temperatura.</description>
+    <keywords>aerosol, esmalte, acrílico, secado rápido, decorativo</keywords>
   </url>
 
   <!-- Productos DECORATIVO - Selladores -->
@@ -450,6 +725,11 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sellador-vinilico-web-300x300.png</image:loc>
+    </image:image>
+    <description>Sellador concentrado para muros de concreto y yeso; mejora el rendimiento de la pintura final y uniformiza la absorción.</description>
+    <keywords>sellador, vinílico, 5x1, concentrado, decorativo</keywords>
   </url>
 
   <!-- Productos DECORATIVO - Especiales -->
@@ -458,11 +738,21 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+    </image:image>
+    <description>Pintura base solvente de alta resistencia a la abrasión y secado rápido para señalización vial y guarniciones.</description>
+    <keywords>pintura, tráfico, solvente, abrasión, decorativo</keywords>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-14</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/diamaluz-esmaltes-300x300.png</image:loc>
+    </image:image>
+    <description>Recubrimiento de hule clorado resistente a químicos de alberca y humedad constante, color azul duradero.</description>
+    <keywords>pintura, albercas, hule clorado, químicos, decorativo</keywords>
   </url>
 </urlset>
