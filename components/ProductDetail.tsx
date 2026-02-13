@@ -46,7 +46,7 @@ const ProductDetailComponent: React.FC = () => {
 
   // Construir URLs con useMemo
   const canonicalUrl = useMemo(() => `${BUSINESS_INFO.url}/#/product/${product.id}`, [product.id]);
-  const imageUrl = useMemo(() => product.ogImage || product.image || `${BUSINESS_INFO.url}${product.image}`, [product]);
+  const imageUrl = useMemo(() => `${BUSINESS_INFO.url}${product.ogImage || product.image}`, [product]);
 
   // Schema Product en formato JSON-LD
   const productSchema = useMemo(() => ({
