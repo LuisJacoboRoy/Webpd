@@ -26,7 +26,7 @@ const AboutComponent: React.FC = () => {
   ];
 
   // Keywords optimizados (máximo 5)
-  const keywords = useMemo(() => 
+  const keywords = useMemo(() =>
     "pinturas, diamante, oaxaca, 30 años, premium",
     []
   );
@@ -64,24 +64,26 @@ const AboutComponent: React.FC = () => {
     ]
   }), []);
 
-  // Inyectar JSON-LD
-  useHelmetJsonLd(localBusinessSchema);
-  useHelmetJsonLd(breadcrumbSchema);
+  // JSON-LD retornado como JSX — se incluye en el return del componente
+  const localBusinessJsonLd = useHelmetJsonLd(localBusinessSchema);
+  const breadcrumbJsonLd = useHelmetJsonLd(breadcrumbSchema);
 
   return (
     <>
+      {localBusinessJsonLd}
+      {breadcrumbJsonLd}
       <Helmet>
         <title>Pinturas Diamante | Líderes en Recubrimientos Mexicanos</title>
         <meta name="description" content="30 años de experiencia en pinturas de calidad premium. Soluciones automotriz, maderas y decorativo. Presencia en Oaxaca, Puebla, Veracruz y más." />
         <meta name="keywords" content={keywords} />
-        
+
         {/* Open Graph */}
         <meta property="og:title" content="Pinturas Diamante | 30 Años de Excelencia" />
         <meta property="og:description" content="Empresa mexicana líder en soluciones de pintura y recubrimientos de alta gama" />
         <meta property="og:image" content={BUSINESS_INFO.logo} />
         <meta property="og:url" content={BUSINESS_INFO.url} />
         <meta property="og:type" content="business.business" />
-        
+
         {/* Canonical */}
         <link rel="canonical" href={BUSINESS_INFO.url} />
       </Helmet>
@@ -93,7 +95,7 @@ const AboutComponent: React.FC = () => {
             30 Años de <span className="text-blue-600">Excelencia</span> en Pintura
           </h1>
           <p className="text-xl text-slate-600 max-w-2xl font-medium">
-            Desde 1996, Pinturas Diamante es sinónimo de calidad, durabilidad y confianza en México. 
+            Desde 1996, Pinturas Diamante es sinónimo de calidad, durabilidad y confianza en México.
             Sirviendo a profesionales y empresas con soluciones de recubrimiento de clase mundial.
           </p>
         </div>
@@ -149,18 +151,18 @@ const AboutComponent: React.FC = () => {
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-3xl p-12 text-center">
           <h2 className="text-4xl font-black text-white mb-6">¿Necesitas Soluciones de Pintura?</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-            Contáctanos para conocer nuestras líneas de productos especializados 
+            Contáctanos para conocer nuestras líneas de productos especializados
             y soluciones personalizadas para tu negocio.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <Link 
-              to="/catalog" 
+            <Link
+              to="/catalog"
               className="px-8 py-4 bg-white text-blue-600 font-black rounded-2xl hover:bg-slate-50 transition-all text-sm uppercase tracking-widest"
             >
               Ver Catálogo
             </Link>
-            <Link 
-              to="/contact" 
+            <Link
+              to="/contact"
               className="px-8 py-4 bg-blue-800 text-white font-black rounded-2xl hover:bg-blue-900 transition-all text-sm uppercase tracking-widest"
             >
               Contactar Ahora

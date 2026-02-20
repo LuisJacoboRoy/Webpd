@@ -1,6 +1,6 @@
 
 import React, { useEffect, Suspense, lazy } from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider, Helmet } from '@dr.pogodin/react-helmet';
 
 
@@ -79,7 +79,7 @@ const AppContent: React.FC = () => {
   });
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <div className="flex flex-col min-h-screen">
         <HeroHeader />
         <Navbar />
@@ -100,7 +100,7 @@ const AppContent: React.FC = () => {
         <Footer />
         <CartDrawer />
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
@@ -119,31 +119,31 @@ const App: React.FC = () => {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta httpEquiv="x-ua-compatible" content="IE=edge" />
           <meta name="theme-color" content="#3b82f6" />
-          
+
           {/* Open Graph básico */}
           <meta property="og:site_name" content={BUSINESS_INFO.name} />
           <meta property="og:locale" content="es_MX" />
           <meta property="og:type" content="website" />
-          
+
           {/* Twitter Card */}
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:creator" content="@DiamantePinturas" />
-          
+
           {/* SEO básico */}
           <meta name="description" content={BUSINESS_INFO.description} />
           <meta name="keywords" content="pinturas, diamante, oaxaca, automotriz, maderas, decorativo" />
           <meta name="author" content={BUSINESS_INFO.name} />
-          
+
           {/* Preconnect para mejorar performance */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://cdn.tailwindcss.com" />
-          
+
           {/* Canonical por defecto */}
           <link rel="canonical" href={BUSINESS_INFO.url} />
-          
+
           {/* Apple touch icon */}
           <link rel="apple-touch-icon" href={BUSINESS_INFO.logo} />
-          
+
           {/* Favicon */}
           <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
           <link rel="manifest" href="/site.webmanifest" />

@@ -126,33 +126,35 @@ const ProductDetailComponent: React.FC = () => {
     ]
   }), [product, category, subCat, canonicalUrl]);
 
-  // Inyectar JSON-LD schemas con Hook
-  useHelmetJsonLd(productSchema);
-  useHelmetJsonLd(breadcrumbSchema);
+  // JSON-LD retornado como JSX — se incluye en el return del componente
+  const productJsonLd = useHelmetJsonLd(productSchema);
+  const breadcrumbJsonLd = useHelmetJsonLd(breadcrumbSchema);
 
   return (
     <>
+      {productJsonLd}
+      {breadcrumbJsonLd}
       <Helmet>
         <title>{product.ogTitle || `${product.name} - Diamante Oaxaca`}</title>
         <meta name="description" content={product.ogDescription || product.description.substring(0, 160)} />
         <meta name="keywords" content={keywords} />
-        
+
         {/* Open Graph */}
         <meta property="og:title" content={product.ogTitle || `${product.name} - Pinturas Diamante`} />
         <meta property="og:description" content={product.ogDescription || product.description} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:type" content="product" />
-        
+
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={product.ogTitle || product.name} />
         <meta name="twitter:description" content={product.ogDescription || product.description.substring(0, 160)} />
         <meta name="twitter:image" content={imageUrl} />
-        
+
         {/* Canonical URL */}
         <link rel="canonical" href={canonicalUrl} />
-        
+
         {/* Esquema de precios - Sin publicar precio */}
         <meta name="price" content="Consultar" />
         <meta name="priceCurrency" content="MXN" />
@@ -172,8 +174,8 @@ const ProductDetailComponent: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           <div className="aspect-square bg-slate-100 rounded-[3rem] border border-slate-200 flex items-center justify-center relative shadow-inner overflow-hidden">
             {product.image ? (
-              <img 
-                src={product.image} 
+              <img
+                src={product.image}
                 alt={product.name}
                 className="w-full h-full object-cover"
                 title={`${product.name} - Pinturas Diamante Oaxaca`}
@@ -219,14 +221,14 @@ const ProductDetailComponent: React.FC = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <button 
+              <button
                 onClick={() => addToCart({ ...product, price: 0, priceLabel: 'Precio a Cotizar' })}
                 className="flex-1 px-8 py-5 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 text-sm uppercase tracking-widest"
               >
                 Añadir al Carrito
               </button>
-              <Link 
-                to="/contact" 
+              <Link
+                to="/contact"
                 className="px-8 py-5 bg-white text-slate-900 font-black rounded-2xl border border-slate-200 hover:bg-slate-50 transition-all text-sm uppercase tracking-widest text-center"
               >
                 ¿Cómo comprar?
@@ -235,7 +237,7 @@ const ProductDetailComponent: React.FC = () => {
 
             <div className="mt-12 flex items-center gap-6">
               <div className="flex -space-x-3">
-                {[1,2,3].map(i => <div key={i} className="w-10 h-10 rounded-full bg-blue-100 border-2 border-white flex items-center justify-center text-[10px] font-black text-blue-600">D</div>)}
+                {[1, 2, 3].map(i => <div key={i} className="w-10 h-10 rounded-full bg-blue-100 border-2 border-white flex items-center justify-center text-[10px] font-black text-blue-600">D</div>)}
               </div>
               <p className="text-xs text-slate-400 font-bold uppercase tracking-wider">
                 Producto verificado por Pinturas Diamante Oaxaca

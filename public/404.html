@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script>
+        // GitHub Pages no sirve SPAs — redirige cualquier ruta a index.html
+        // pasando el path como query param para que BrowserRouter lo restaure.
+        var path = window.location.pathname;
+        window.location.replace(
+            '/?path=' + encodeURIComponent(path)
+        );
+    </script>
+</head>
+
+</html>

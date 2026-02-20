@@ -1,30 +1,32 @@
-
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Upgrade-Insecure-Requests" content="1">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; default-src 'self' https:; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://esm.sh; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:;">
-  
+  <meta http-equiv="Content-Security-Policy"
+    content="upgrade-insecure-requests; default-src 'self' https:; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://esm.sh; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:;">
+
   <title>Pinturas Diamante Oaxaca</title>
-  <meta name="description" content="Pinturas Diamante: Soluciones de pintura de alta gama para automotriz, maderas y decorativo. Calidad premium y durabilidad garantizada.">
+  <meta name="description"
+    content="Pinturas Diamante: Soluciones de pintura de alta gama para automotriz, maderas y decorativo. Calidad premium y durabilidad garantizada.">
   <meta name="keywords" content="pinturas, diamante, oaxaca, automotriz, maderas, decorativo, pintura premium">
   <meta name="author" content="Pinturas Diamante">
   <meta name="theme-color" content="#3b82f6">
-  
+
   <!-- Sitemap -->
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
-  
+
   <!-- Favicons -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
-  
+
   <!-- Open Graph Meta Tags -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://pinturasdiamante.com">
@@ -33,17 +35,145 @@
   <meta property="og:image" content="/img/catalog/LOGO-WEB-DIAMANTE-PNG.png">
   <meta property="og:site_name" content="Pinturas Diamante">
   <meta property="og:locale" content="es_MX">
-  
+
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Pinturas Diamante Oaxaca">
   <meta name="twitter:description" content="Soluciones de pintura de alta gama para automotriz, maderas y decorativo.">
   <meta name="twitter:image" content="/img/catalog/LOGO-WEB-DIAMANTE-PNG.png">
   <meta name="twitter:creator" content="@DiamantePinturas">
-  
+
   <!-- Security Headers -->
   <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
-  
+
+  <!-- BrowserRouter: restaurar ruta desde redirect de 404.html -->
+  <script>
+    (function () {
+      var path = new URLSearchParams(window.location.search).get('path');
+      if (path) {
+        window.history.replaceState(null, '', path);
+      }
+    })();
+  </script>
+
+  <!-- JSON-LD: Organization, LocalBusiness (2 sucursales) y WebSite -->
+  <!-- Inyectado en build time como HTML estático — Google lo ve sin JS -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://pinturasdiamante.com/#organization",
+        "name": "Pinturas Diamante",
+        "url": "https://pinturasdiamante.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png"
+        },
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+52-951-143-34-67",
+            "contactType": "customer service",
+            "areaServed": "MX",
+            "availableLanguage": "Spanish"
+          }
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Avenida ferrocarril #805-D",
+          "addressLocality": "Oaxaca de Juárez",
+          "addressRegion": "Oaxaca",
+          "postalCode": "68000",
+          "addressCountry": "MX"
+        }
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://pinturasdiamante.com/#sucursal-ferrocarril",
+        "name": "Pinturas Diamante — Sucursal Ferrocarril",
+        "url": "https://pinturasdiamante.com",
+        "image": "https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png",
+        "telephone": "+52-951-143-34-67",
+        "priceRange": "$$",
+        "currenciesAccepted": "MXN",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Avenida ferrocarril #805-D",
+          "addressLocality": "Oaxaca de Juárez",
+          "addressRegion": "Oaxaca",
+          "postalCode": "68000",
+          "addressCountry": "MX"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+            "opens": "08:30",
+            "closes": "18:30"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Saturday"],
+            "opens": "08:30",
+            "closes": "16:30"
+          }
+        ]
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://pinturasdiamante.com/#sucursal-xoxo",
+        "name": "Pinturas Diamante — Sucursal Las Culturas Xoxo",
+        "url": "https://pinturasdiamante.com",
+        "image": "https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png",
+        "telephone": "+52-951-768-30-49",
+        "priceRange": "$$",
+        "currenciesAccepted": "MXN",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Carr. A. Arrazola 118, 21 de marzo, col. Las Culturas",
+          "addressLocality": "Oaxaca de Juárez",
+          "addressRegion": "Oaxaca",
+          "postalCode": "68000",
+          "addressCountry": "MX"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+            "opens": "08:30",
+            "closes": "18:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Saturday"],
+            "opens": "08:30",
+            "closes": "16:30"
+          }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://pinturasdiamante.com/#website",
+        "name": "Pinturas Diamante",
+        "url": "https://pinturasdiamante.com",
+        "publisher": {
+          "@id": "https://pinturasdiamante.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://pinturasdiamante.com/?busqueda={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,94 +183,32 @@
     body {
       font-family: 'Inter', sans-serif;
     }
+
     @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
     }
+
     .animate-scroll {
       display: flex;
       width: max-content;
-      animation: scroll 80s linear infinite; /* Slowed down from 40s to 80s */
+      animation: scroll 80s linear infinite;
     }
+
     .animate-scroll:hover {
       animation-play-state: paused;
     }
   </style>
-  <helmet>
-<script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0"
-  }
-}
-</script>
-</helmet>
-<helmet>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org/",
-  "@type": "WebSite",
-  "name": "Pinturas Diamante",
-  "url": "https://pinturasdiamante.com",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "{search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
-</helmet>
-<helmet>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Pinturas Diamante",
-  "url": "https://pinturasdiamante.com/",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "https://pinturasdiamante.com/busqueda?q={search_term_string}"
-    },
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
-</helmet>
-<helmet>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [{
-    "@type": "ListItem",
-    "position": 1,
-    "name": "Inicio",
-    "item": "https://pinturasdiamante.com/"
-  },{
-    "@type": "ListItem",
-    "position": 2,
-    "name": "Decorativo",
-    "item": "https://pinturasdiamante.com/categoria/decorativo"
-  },{
-    "@type": "ListItem",
-    "position": 3,
-    "name": "Vinílicas",
-    "item": "https://pinturasdiamante.com/categoria/decorativo/vinilicas"
-  }]
-}
-</script></helmet>
+</head>
 
-<link rel="stylesheet" href="/index.css">
-</head>
-</head>
 <body class="bg-slate-50 text-slate-900">
   <div id="root"></div>
-<script type="module" src="/index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>

@@ -4,7 +4,6 @@
 # Reglas generales para todos los bots
 User-agent: *
 Allow: /
-Allow: /#/
 Allow: /sitemap.xml
 Allow: /robots.txt
 
@@ -27,19 +26,13 @@ Disallow: /tsconfig.json
 Disallow: /vite.config.ts
 Disallow: /package*.json
 
-# Parámetros de rastreo
-Crawl-delay: 1
-Request-rate: 30/60
-
 # Configuración específica para Googlebot
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 0
 
 # Configuración para Bingbot
 User-agent: Bingbot
 Allow: /
-Crawl-delay: 1
 
 # Google AdsBot
 User-agent: AdsBot-Google
@@ -54,15 +47,10 @@ User-agent: MJ12bot
 Disallow: /
 
 User-agent: AhrefsBot
-Crawl-delay: 10
+Allow: /
 
 User-agent: SemrushBot
-Crawl-delay: 5
+Allow: /
 
 # Sitemaps
 Sitemap: https://pinturasdiamante.com/sitemap.xml
-Sitemap: https://pinturasdiamante.com/public/sitemap-products.xml
-
-# Información adicional
-# Base de datos URL: https://pinturasdiamante.com/
-# Administrador de la web: https://search.google.com/search-console
