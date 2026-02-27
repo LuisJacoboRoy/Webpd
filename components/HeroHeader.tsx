@@ -29,12 +29,12 @@ const HeroHeader: React.FC = () => {
         className="relative z-10 flex flex-col items-center transition-transform duration-300 ease-out"
         style={{ transform: `translateY(${offsetY * -0.05}px)` }}
       >
-       
+    <img src="/img/logo.png" alt="Pinturas Diamante Logo" className="w-24 h-24 object-contain mb-4" />   
         <h1 className="mt-6 text-4xl md:text-5xl font-black text-white tracking-tighter drop-shadow-lg text-center uppercase">
           PINTURAS<span className="text-blue-400"> DIAMANTE</span>
         </h1>
         <p className="mt-2 text-blue-100 font-medium tracking-widest uppercase text-[10px] opacity-60">
-          Oaxaca: Calidad que Transforma
+          Oaxaca: Bienvenido
         </p>
       </div>
     </div>

@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className={`w-full z-[60] transition-all duration-300 border-b ${isSticky ? 'fixed top-0 bg-white/95 backdrop-blur-md shadow-sm' : 'relative bg-white'}`}>
+    <nav className={`w-full z-[90] transition-all duration-300 border-b ${isSticky ? 'fixed top-0 bg-white/95 backdrop-blur-md shadow-sm' : 'relative bg-green-600/10 border-slate-200'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0 flex items-center gap-4">
@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
           </div>
           
           <div className="hidden md:flex items-center space-x-6">
-            <Link to="/" className={`text-xs font-medium ${isActive('/') ? 'text-green-600' : 'text-slate-500'}`}>Sobre Nosotros</Link>
+            <Link to="/" className={`text-xs font-bold ${isActive('/') ? 'text-green-600' : 'text-slate-500'}`}>Sobre Nosotros</Link>
 
             <div className="relative" ref={dropdownRef}>
               <button
@@ -104,12 +104,12 @@ const Navbar: React.FC = () => {
       {isOpen && (
         <div className="md:hidden bg-white border-b border-slate-200">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link to="/" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-medium text-slate-500">Sobre Nosotros</Link>
+            <Link to="/" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-medium text-slate-500">Principal</Link>
             <Link to="/catalog" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-bold text-green-600">Catálogo</Link>
             {CATEGORIES.map(cat => (
               <Link key={cat.id} to={`/catalog/${cat.id}`} onClick={() => setIsOpen(false)} className="block px-6 py-1.5 text-xs text-slate-400 uppercase">{cat.name}</Link>
             ))}
-            <Link to="/contact" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-medium text-slate-500">Contacto</Link>
+            <Link to="/contact" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-medium text-slate-500">Contactanos</Link>
           </div>
         </div>
       )}
