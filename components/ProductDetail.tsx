@@ -46,7 +46,16 @@ const ProductDetailComponent: React.FC = () => {
 
   // Construir URLs con useMemo
   const canonicalUrl = useMemo(() => `${BUSINESS_INFO.url}/#/product/${product.id}`, [product.id]);
-  const imageUrl = useMemo(() => product.ogImage || product.image || `${BUSINESS_INFO.url}${product.image}`, [product]);
+
+  // og:image: usa la imagen real del producto con URL absoluta
+  const imageUrl = useMemo(() => {
+    const src = product.ogImage || product.image;
+    if (!src) return BUSINESS_INFO.logo;
+    // Si ya es una URL absoluta (http/https) la devuelve tal cual
+    if (src.startsWith('http')) return src;
+    // Si es ruta relativa, construye URL absoluta
+    return `${BUSINESS_INFO.url}${src.startsWith('/') ? '' : '/'}${src}`;
+  }, [product]);
 
   // Schema Product en formato JSON-LD
   const productSchema = useMemo(() => ({
