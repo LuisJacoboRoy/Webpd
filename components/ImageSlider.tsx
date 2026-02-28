@@ -8,61 +8,61 @@ const ImageSlider: React.FC = () => {
   const items = [
     { 
       id: 'auto-innova', 
-      img: 'img/automotriz.png', 
+      img: 'img/car.jpg', 
       label: 'Base Color Innova Plus',
       link: '/catalog/automotriz' 
     },
     { 
       id: 'rodillo-cubriente', 
-      img: './img/cubriente.png', 
+      img: './img/rodillo.jpg, 
       label: 'Poder Cubriente',
       link: '/catalog/decorativo' 
     },
     { 
       id: 'brocha-intenso', 
-      img: 'img/intenso.png', 
+      img: 'img/wood.jpg', 
       label: 'Color Intenso',
       link: '/catalog/decorativo' 
     },
     { 
       id: 'diamacril-8', 
-      img: 'img/diamacril.png', 
+      img: 'img/vinil.jpg', 
       label: 'Diamacril 8 Años',
       link: '/catalog/decorativo' 
     },
     { 
       id: 'poliuretano-madera', 
-      img: 'img/maderas.png', 
+      img: 'img/wood.jpg', 
       label: 'Sistema de Poliuretano',
       link: '/catalog/maderas' 
     },
     { 
       id: 'cromato-zinc-ind', 
-      img: 'img/cromato.png', 
+      img: 'img/product/cromato.jpg', 
       label: 'Cromato de Zinc',
       link: '/catalog/automotriz' 
     },
     { 
       id: 'ureprix-esmalte', 
-      img: 'img/ureprix.png', 
+      img: 'img/product/urepix.jpg', 
       label: 'Esmalte Ureprix',
       link: '/catalog/automotriz' 
     },
     { 
       id: 'innova-red-base', 
-      img: 'img/innovared.png', 
+      img: 'img/product/red.jpg', 
       label: 'Innova Plus Red',
       link: '/catalog/automotriz' 
     },
     { 
       id: 'd500-premium-anti', 
-      img: 'img/d500.png', 
+      img: 'img/product/d500.jpg', 
       label: 'D500 Anticorrosivo',
       link: '/catalog/decorativo' 
     },
     { 
       id: 'dg-rapido', 
-      img: 'img/dg.png', 
+      img: 'img/product/industrial.jpg', 
       label: 'DG Secado Rápido',
       link: '/catalog/decorativo' 
     },
