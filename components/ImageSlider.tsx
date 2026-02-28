@@ -14,7 +14,7 @@ const ImageSlider: React.FC = () => {
     },
     { 
       id: 'rodillo-cubriente', 
-      img: './img/rodillo.jpg, 
+      img: './img/rodillo.jpg', 
       label: 'Poder Cubriente',
       link: '/catalog/decorativo' 
     },
