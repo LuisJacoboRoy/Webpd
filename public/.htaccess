@@ -38,21 +38,7 @@
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 </IfModule>
 
-# ======================
-# CACHE CONTROL
-# ======================
 
-<FilesMatch "\.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$">
-  <IfModule mod_headers.c>
-    Header set Cache-Control "max-age=31536000, public"
-  </IfModule>
-</FilesMatch>
-
-<FilesMatch "\.(html)$">
-  <IfModule mod_headers.c>
-    Header set Cache-Control "max-age=3600, public"
-  </IfModule>
-</FilesMatch>
 
 # ======================
 # GZIP COMPRESSION

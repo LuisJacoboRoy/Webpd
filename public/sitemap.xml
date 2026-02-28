@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <!-- Páginas principales -->
   <url>
     <loc>https://pinturasdiamante.com/#/</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/contact</loc>
@@ -26,18 +29,27 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/maderas</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/catalog/decorativo</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Subcategorías - AUTOMOTRIZ -->
@@ -160,48 +172,72 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/acondicionador-de-metales-web-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-2</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/blender-web-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-3</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/body-web-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-4</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-5</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/perlas-universales-web-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-6</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/plaste-web-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-7</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/promotor-adherente-aerosl-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-8</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/removedor-amarillo-web-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Poliuretano -->
@@ -210,6 +246,9 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Secado Rápido -->
@@ -218,6 +257,9 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/turboprix-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Acrílicos -->
@@ -226,6 +268,9 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/ultraprix-web-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Primarios -->
@@ -234,18 +279,27 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/maxiprimer-web-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-13</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/primario-universal-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-14</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/primario-de-aparejo-2k-web-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Resanadores -->
@@ -254,6 +308,9 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/light-fill-pro-web-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Transparentes -->
@@ -262,24 +319,36 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/dprix-web-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-17</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/clara-gloss-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-18</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/PRIMER-WEB-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/auto-19</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/lca-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos AUTOMOTRIZ - Base Color -->
@@ -288,6 +357,9 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/base-color-innovaprix-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos MADERAS - Poliuretanos -->
@@ -296,24 +368,36 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-2</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMACRIL-WEB.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-3</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMALUXE-WEB.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-4</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos MADERAS - Nitrocelulosa -->
@@ -322,24 +406,36 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/acril-d-web-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-6</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/d1000-web-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-7</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D50-WEB-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-8</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/nitrocelulosa-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos MADERAS - Entintados -->
@@ -348,12 +444,18 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/barniz-entintado-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-10</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/entintado-sr-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos MADERAS - Complementos -->
@@ -362,12 +464,18 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/mata-polilla-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/mad-12</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos DECORATIVO - Vinílicas -->
@@ -376,24 +484,36 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-2</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMAFLEX-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-3</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMACRIL_1.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-4</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMACOLOR-1-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos DECORATIVO - Esmaltes -->
@@ -402,24 +522,36 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D500-WEB-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-6</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D50-WEB-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-7</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DG-WEB-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-8</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/d1000-web-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos DECORATIVO - Impermeabilizantes -->
@@ -428,12 +560,18 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/fibratado-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-10</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/imperecologico-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos DECORATIVO - Aerosoles -->
@@ -442,6 +580,9 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos DECORATIVO - Selladores -->
@@ -450,6 +591,9 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sellador-vinilico-web-300x300.png</image:loc>
+    </image:image>
   </url>
 
   <!-- Productos DECORATIVO - Especiales -->
@@ -458,11 +602,17 @@
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+    </image:image>
   </url>
   <url>
     <loc>https://pinturasdiamante.com/#/product/dec-14</loc>
     <lastmod>2026-02-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/diamaluz-esmaltes-300x300.png</image:loc>
+    </image:image>
   </url>
 </urlset>
