@@ -1,0 +1,74 @@
+{
+  "organization": {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://pinturasdiamante.com/#organization",
+    "name": "Pinturas Diamante",
+    "url": "https://pinturasdiamante.com",
+    "logo": "https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png",
+    "image": "https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png",
+    "description": "Pinturas Diamante: Soluciones de pintura de alta gama para automotriz, maderas y decorativo en Oaxaca.",
+    "sameAs": [
+      "https://www.facebook.com/pinturasdiamantemx",
+      "https://www.instagram.com/pinturasdiamantemx",
+      "https://www.linkedin.com/company/pinturas-diamante"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+52-951-143-3467",
+      "contactType": "Customer Service",
+      "areaServed": "MX",
+      "availableLanguage": [
+        "es",
+        "en"
+      ]
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Avenida ferrocarril 805-D",
+      "addressLocality": "Oaxaca",
+      "addressRegion": "Oaxaca",
+      "postalCode": "68000",
+      "addressCountry": "MX"
+    }
+  },
+  "localBusiness": {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://pinturasdiamante.com/#local-business",
+    "name": "Pinturas Diamante",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Avenida ferrocarril 805-D",
+      "addressLocality": "Oaxaca",
+      "addressRegion": "Oaxaca",
+      "postalCode": "68000",
+      "addressCountry": "MX"
+    },
+    "telephone": "+52-951-143-3467",
+    "image": "https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png",
+    "priceRange": "$",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "opens": "08:30",
+      "closes": "18:30"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 17.0627,
+      "longitude": -96.7236
+    }
+  },
+  "generatedAt": "2026-03-06T21:56:38.544Z",
+  "productCount": 46,
+  "categoryCount": 3,
+  "subCategoryCount": 18
+}

@@ -79,31 +79,31 @@ export const generateBreadcrumbSchema = (
       '@type': 'ListItem',
       position: 1,
       name: 'Inicio',
-      item: `${DOMAIN}/#/`
+      item: `${DOMAIN}/`
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Catálogo',
-      item: `${DOMAIN}/#/catalog`
+      item: `${DOMAIN}/catalog`
     },
     {
       '@type': 'ListItem',
       position: 3,
       name: category.name,
-      item: `${DOMAIN}/#/catalog/${category.id}`
+      item: `${DOMAIN}/catalog/${category.id}`
     },
     {
       '@type': 'ListItem',
       position: 4,
       name: subCategory.name,
-      item: `${DOMAIN}/#/catalog/${category.id}/${subCategory.id}`
+      item: `${DOMAIN}/catalog/${category.id}/${subCategory.id}`
     },
     {
       '@type': 'ListItem',
       position: 5,
       name: product.name,
-      item: `${DOMAIN}/#/product/${product.id}`
+      item: `${DOMAIN}/product/${product.id}`
     }
   ]
 });
@@ -125,7 +125,7 @@ export const generateProductSchema = (product: Product) => {
   const baseSchema = {
     '@context': 'https://schema.org/',
     '@type': 'Product',
-    '@id': `${DOMAIN}/#/product/${product.id}`,
+    '@id': `${DOMAIN}/product/${product.id}`,
     name: product.name,
     description: product.description,
     // REQUERIDO: Al menos una imagen
@@ -136,7 +136,7 @@ export const generateProductSchema = (product: Product) => {
     // SKU para identificación única
     sku: product.id,
     // URL canónica del producto
-    url: `${DOMAIN}/#/product/${product.id}`,
+    url: `${DOMAIN}/product/${product.id}`,
     // Brand y manufacturer (importante para Rich Results)
     brand: {
       '@type': 'Brand',
@@ -158,7 +158,7 @@ export const generateProductSchema = (product: Product) => {
     // Información de oferta (REQUERIDA para mostrar en Rich Results con precio)
     offers: {
       '@type': 'Offer',
-      url: `${DOMAIN}/#/product/${product.id}`,
+      url: `${DOMAIN}/product/${product.id}`,
       // Disponibilidad (InStock es ideal para Rich Results)
       availability: 'https://schema.org/InStock',
       // Divisa (MXN por defecto en México)
@@ -201,14 +201,14 @@ export const generateWebPageSchema = (
   subCategory: SubCategory
 ) => {
   const productSchema = generateProductSchema(product);
-  
+
   return {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    '@id': `${DOMAIN}/#/product/${product.id}`,
+    '@id': `${DOMAIN}/product/${product.id}`,
     name: product.name,
     description: product.description,
-    url: `${DOMAIN}/#/product/${product.id}`,
+    url: `${DOMAIN}/product/${product.id}`,
     image: product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`,
     datePublished: new Date().toISOString().split('T')[0],
     inLanguage: 'es-MX',
@@ -220,7 +220,7 @@ export const generateWebPageSchema = (
     // mainEntity apunta al Product schema (Google utiliza esto para Rich Results)
     mainEntity: productSchema,
     breadcrumb: {
-      '@id': `${DOMAIN}/#/product/${product.id}/breadcrumb`
+      '@id': `${DOMAIN}/product/${product.id}/breadcrumb`
     }
   };
 };
@@ -231,7 +231,7 @@ export const generateWebPageSchema = (
  */
 export const generateOpenGraphTags = (product: Product): Record<string, string> => ({
   'og:type': 'product',
-  'og:url': `${DOMAIN}/#/product/${product.id}`,
+  'og:url': `${DOMAIN}/product/${product.id}`,
   'og:title': product.ogTitle || `${product.name} - Pinturas Diamante`,
   'og:description': product.ogDescription || product.description,
   'og:image': product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`,
@@ -259,7 +259,7 @@ export const generateTwitterCardTags = (product: Product): Record<string, string
  * Genera meta tags canónicos y de robots
  */
 export const generateCanonicalAndRobotsMetaTags = (productId: string): Record<string, string> => ({
-  canonical: `${DOMAIN}/#/product/${productId}`,
+  canonical: `${DOMAIN}/product/${productId}`,
   robots: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
   googlebot: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
 });
@@ -277,7 +277,7 @@ export const generateProductSEOData = (productId: string): ProductSEOData | null
   if (!category || !subCategory) return null;
 
   return {
-    canonical: `${DOMAIN}/#/product/${productId}`,
+    canonical: `${DOMAIN}/product/${productId}`,
     title: product.ogTitle || `${product.name} - Pinturas Diamante`,
     description: product.ogDescription || product.description,
     ogImage: product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`,
@@ -288,16 +288,16 @@ export const generateProductSEOData = (productId: string): ProductSEOData | null
       '@graph': [
         // 1. Organization Schema (identidad del negocio)
         generateOrganizationSchema(),
-        
+
         // 2. Product Schema (item principal - REQUERIDO para Rich Results)
         generateProductSchema(product),
-        
+
         // 3. WebPage Schema (contexto de la página)
         generateWebPageSchema(product, category, subCategory),
-        
+
         // 4. BreadcrumbList (navegación - mejora UX y SEO)
         generateBreadcrumbSchema(product, category, subCategory),
-        
+
         // 5. LocalBusiness (presencia local en Google)
         generateLocalBusinessSchema()
       ]
@@ -316,7 +316,7 @@ export const generateCategorySEOData = (categoryId: string) => {
   if (!category) return null;
 
   return {
-    canonical: `${DOMAIN}/#/catalog/${categoryId}`,
+    canonical: `${DOMAIN}/catalog/${categoryId}`,
     title: `${category.name} | Pinturas Diamante Oaxaca`,
     description: category.description,
     ogImage: category.ogImage ? `${DOMAIN}${category.ogImage}` : `${DOMAIN}${category.image}`,
@@ -326,10 +326,10 @@ export const generateCategorySEOData = (categoryId: string) => {
         generateOrganizationSchema(),
         {
           '@type': 'CollectionPage',
-          '@id': `${DOMAIN}/#/catalog/${categoryId}`,
+          '@id': `${DOMAIN}/catalog/${categoryId}`,
           name: category.name,
           description: category.description,
-          url: `${DOMAIN}/#/catalog/${categoryId}`,
+          url: `${DOMAIN}/catalog/${categoryId}`,
           image: category.ogImage ? `${DOMAIN}${category.ogImage}` : `${DOMAIN}${category.image}`
         }
       ]
@@ -433,7 +433,7 @@ export const validateSEOData = (seoData: ProductSEOData): string[] => {
     const productSchema = seoData.structuredData['@graph']?.find(
       (schema: any) => schema['@type'] === 'Product'
     );
-    
+
     if (productSchema) {
       if (!productSchema.name) {
         errors.push('❌ Product schema: falta "name"');
@@ -497,9 +497,9 @@ export const generateDynamicSitemap = (): string => {
 
   // URLs estáticas principales
   const staticUrls = [
-    { url: '#/', priority: '1.0', changefreq: 'weekly' },
-    { url: '#/contact', priority: '0.8', changefreq: 'monthly' },
-    { url: '#/catalog', priority: '0.9', changefreq: 'weekly' }
+    { url: '', priority: '1.0', changefreq: 'weekly' },
+    { url: 'contact', priority: '0.8', changefreq: 'monthly' },
+    { url: 'catalog', priority: '0.9', changefreq: 'weekly' }
   ];
 
   staticUrls.forEach(({ url, priority, changefreq }) => {
@@ -514,7 +514,7 @@ export const generateDynamicSitemap = (): string => {
   // Categorías
   CATEGORIES.forEach(category => {
     xml += `  <url>\n`;
-    xml += `    <loc>${baseUrl}/#/catalog/${category.id}</loc>\n`;
+    xml += `    <loc>${baseUrl}/catalog/${category.id}</loc>\n`;
     xml += `    <lastmod>${lastmod}</lastmod>\n`;
     xml += `    <changefreq>weekly</changefreq>\n`;
     xml += `    <priority>0.85</priority>\n`;
@@ -524,7 +524,7 @@ export const generateDynamicSitemap = (): string => {
   // Subcategorías
   SUB_CATEGORIES.forEach(subCat => {
     xml += `  <url>\n`;
-    xml += `    <loc>${baseUrl}/#/catalog/${subCat.categoryId}/${subCat.id}</loc>\n`;
+    xml += `    <loc>${baseUrl}/catalog/${subCat.categoryId}/${subCat.id}</loc>\n`;
     xml += `    <lastmod>${lastmod}</lastmod>\n`;
     xml += `    <changefreq>weekly</changefreq>\n`;
     xml += `    <priority>0.80</priority>\n`;
@@ -534,7 +534,7 @@ export const generateDynamicSitemap = (): string => {
   // Productos
   PRODUCTS.forEach(product => {
     xml += `  <url>\n`;
-    xml += `    <loc>${baseUrl}/#/product/${product.id}</loc>\n`;
+    xml += `    <loc>${baseUrl}/product/${product.id}</loc>\n`;
     xml += `    <lastmod>${lastmod}</lastmod>\n`;
     xml += `    <changefreq>monthly</changefreq>\n`;
     xml += `    <priority>0.70</priority>\n`;
@@ -554,7 +554,6 @@ export const generateRobotsTxt = (): string => {
 
 User-agent: *
 Allow: /
-Allow: /#/
 Disallow: /certs/
 Disallow: /.git/
 Disallow: /node_modules/

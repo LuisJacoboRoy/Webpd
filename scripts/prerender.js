@@ -126,9 +126,9 @@ ${JSON.stringify(seoData.structuredData, null, 2)}
   
   <!-- Script de redirección a SPA -->
   <script>
-    // Redirigir a la aplicación React con hash routing
+    // Redirigir a la aplicación React con BrowserRouter
     const productId = '${productId}';
-    window.location.replace('/#/product/' + productId);
+    window.location.replace('/product/' + productId);
   </script>
   
   <!-- Script principal de la aplicación -->
@@ -163,7 +163,7 @@ ${JSON.stringify(seoData.structuredData, null, 2)}
 <body>
   <div id="app" data-v-app></div>
   <script>
-    window.location.replace('/#/catalog/${categoryId}');
+    window.location.replace('/catalog/${categoryId}');
   </script>
   <script type="module" src="/index.tsx"></script>
 </body>
@@ -175,7 +175,7 @@ ${JSON.stringify(seoData.structuredData, null, 2)}
  */
 function prerenderProducts() {
   console.log('🔨 Iniciando prerendering de productos...\n');
-  
+
   const seoDataList = exportAllProductsSEO();
   let successCount = 0;
   let errorCount = 0;
@@ -204,7 +204,7 @@ function prerenderProducts() {
  */
 function prerenderCategories() {
   console.log('\n🔨 Iniciando prerendering de categorías...\n');
-  
+
   let successCount = 0;
 
   CATEGORIES.forEach(category => {
@@ -230,7 +230,7 @@ function prerenderCategories() {
  */
 function generateSitemap() {
   console.log('\n🗺️  Generando sitemap dinámico...');
-  
+
   try {
     const sitemap = generateDynamicSitemap();
     const outputPath = path.join(__dirname, '../public/sitemap.xml');
@@ -246,7 +246,7 @@ function generateSitemap() {
  */
 function generateRobots() {
   console.log('\n🤖 Generando robots.txt...');
-  
+
   try {
     const robots = generateRobotsTxt();
     const outputPath = path.join(__dirname, '../public/robots.txt');
@@ -262,7 +262,7 @@ function generateRobots() {
  */
 function generateSchemaIndex() {
   console.log('\n📋 Generando índice de schemas...');
-  
+
   try {
     const index = {
       organization: generateOrganizationSchema(),
