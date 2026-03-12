@@ -5,6 +5,7 @@ import { PRODUCTS, CATEGORIES, SUB_CATEGORIES, PRODUCT_COLORS } from '../data/pr
 import { useCart } from '../context/CartContext';
 import { useHelmetJsonLd } from '../hooks/useHelmet';
 import { BUSINESS_INFO } from '../data/seo';
+import { TwitterPicker, SliderPicker } from 'react-color';
 
 /**
  * ProductDetail Component - Ejemplo de mejor práctica con Helmet + Optimizaciones SSR
@@ -175,23 +176,40 @@ const ProductDetailComponent: React.FC = () => {
           <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setIsColorModalOpen(false)} />
           <div className="relative bg-white rounded-[2.5rem] w-full max-w-md p-8 shadow-2xl animate-in fade-in zoom-in duration-200">
             <h3 className="text-2xl font-black text-slate-900 mb-6 uppercase tracking-tighter">Selecciona un Color</h3>
-            <div className="grid grid-cols-4 gap-4 mb-8">
-              {PRODUCT_COLORS.map((c) => (
-                <button
-                  key={c.name}
-                  onClick={() => {
-                    setSelectedColor(c);
-                    setIsColorModalOpen(false);
+            <div className="flex flex-col gap-8 mb-8">
+              <div className="flex justify-center">
+                <TwitterPicker 
+                  width="100%"
+                  colors={PRODUCT_COLORS.map(c => c.hex)}
+                  color={selectedColor?.hex || '#FFFFFF'}
+                  onChange={(color) => {
+                    const matchedColor = PRODUCT_COLORS.find(c => c.hex.toLowerCase() === color.hex.toLowerCase());
+                    setSelectedColor(matchedColor || { name: 'Personalizado', hex: color.hex });
                   }}
-                  className={`flex flex-col items-center gap-2 group transition-all ${selectedColor?.name === c.name ? 'scale-110' : ''}`}
-                >
-                  <div 
-                    className={`w-12 h-12 rounded-full border-2 transition-all shadow-sm group-hover:shadow-md ${selectedColor?.name === c.name ? 'border-blue-600 scale-110' : 'border-slate-100'}`}
-                    style={{ backgroundColor: c.hex }}
-                  />
-                  <span className={`text-[10px] font-bold uppercase tracking-widest ${selectedColor?.name === c.name ? 'text-blue-600' : 'text-slate-500'}`}>{c.name}</span>
-                </button>
-              ))}
+                  styles={{
+                    default: {
+                      card: {
+                        boxShadow: 'none',
+                        border: '1px solid #f1f5f9',
+                        borderRadius: '1rem',
+                      },
+                      body: {
+                        padding: '1.5rem',
+                      }
+                    }
+                  }}
+                />
+              </div>
+              <div className="px-2">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Ajuste fino / Color personalizado</p>
+                <SliderPicker 
+                  color={selectedColor?.hex || '#FFFFFF'}
+                  onChange={(color) => {
+                    const matchedColor = PRODUCT_COLORS.find(c => c.hex.toLowerCase() === color.hex.toLowerCase());
+                    setSelectedColor(matchedColor || { name: 'Personalizado', hex: color.hex });
+                  }}
+                />
+              </div>
             </div>
             <button 
               onClick={() => setIsColorModalOpen(false)}
