@@ -41,7 +41,6 @@ const CartDrawer: React.FC = () => {
                         <div>
                           <div className="flex justify-between text-base font-medium text-slate-900">
                             <h3>{item.name}</h3>
-                            <p className="ml-4">${(item.price * item.quantity).toFixed(2)}</p>
                           </div>
                           <p className="mt-1 text-sm text-slate-500">{item.tag}</p>
                           {item.color && (
@@ -71,11 +70,7 @@ const CartDrawer: React.FC = () => {
 
           {cart.length > 0 && (
             <div className="border-t border-slate-200 py-6 px-4 sm:px-6 bg-slate-50">
-              <div className="flex justify-between text-base font-medium text-slate-900 mb-4">
-                <p>Subtotal</p>
-                <p>${totalPrice.toFixed(2)}</p>
-              </div>
-              <p className="mt-0.5 text-sm text-slate-500 mb-6 italic">Precios con IVA incluido.</p>
+              <p className="mb-6 text-sm text-slate-500 italic">Podrás confirmar los detalles de tu pedido con nuestro equipo tras enviarlo.</p>
               <button
                 disabled={isOrdering}
                 onClick={placeOrder}
