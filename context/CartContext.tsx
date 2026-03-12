@@ -36,15 +36,15 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, quantity: number = 1, color?: string) => {
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+      const existing = prev.find((item) => item.id === product.id && item.color === color);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          (item.id === product.id && item.color === color) ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
-      return [...prev, { ...product, quantity: 1 }];
+      return [...prev, { ...product, quantity, color }];
     });
     setIsCartOpen(true);
   };

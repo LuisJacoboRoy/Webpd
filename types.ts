@@ -31,4 +31,5 @@ export interface SubCategory {
 
 export interface CartItem extends Product {
   quantity: number;
+  color?: string;
 }

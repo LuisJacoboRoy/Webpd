@@ -1,11 +1,143 @@
 
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { CATEGORIES, SUB_CATEGORIES, PRODUCTS } from '../data/products';
+import { CATEGORIES, SUB_CATEGORIES, PRODUCTS, PRODUCT_COLORS } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useMetaTags } from '../hooks/useMetaTags';
 import { useJsonLd } from '../hooks/useJsonLd';
 import { BUSINESS_INFO } from '../data/seo';
+import { Product } from '../types';
+
+const ProductCard: React.FC<{ product: Product, subCategoryId: string | undefined }> = ({ product: p, subCategoryId }) => {
+  const { addToCart } = useCart();
+  const [quantity, setQuantity] = React.useState(1);
+  const [selectedColor, setSelectedColor] = React.useState<{ name: string, hex: string } | null>(null);
+  const [isColorModalOpen, setIsColorModalOpen] = React.useState(false);
+
+  return (
+    <div className="bg-white rounded-[2rem] border border-slate-100 p-2 hover:shadow-2xl transition-all group overflow-hidden flex flex-col h-full relative">
+      {isColorModalOpen && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setIsColorModalOpen(false)} />
+          <div className="relative bg-white rounded-[2.5rem] w-full max-w-md p-8 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <h3 className="text-2xl font-black text-slate-900 mb-6 uppercase tracking-tighter text-left">Color - {p.name}</h3>
+            <div className="grid grid-cols-4 gap-4 mb-8">
+              {PRODUCT_COLORS.map((c) => (
+                <button
+                  key={c.name}
+                  onClick={() => {
+                    setSelectedColor(c);
+                    setIsColorModalOpen(false);
+                  }}
+                  className={`flex flex-col items-center gap-2 group transition-all ${selectedColor?.name === c.name ? 'scale-110' : ''}`}
+                >
+                  <div 
+                    className={`w-10 h-10 rounded-full border-2 transition-all shadow-sm group-hover:shadow-md ${selectedColor?.name === c.name ? 'border-blue-600 scale-110' : 'border-slate-100'}`}
+                    style={{ backgroundColor: c.hex }}
+                  />
+                  <span className={`text-[10px] font-bold uppercase tracking-widest ${selectedColor?.name === c.name ? 'text-blue-600' : 'text-slate-500'}`}>{c.name}</span>
+                </button>
+              ))}
+            </div>
+            <button 
+              onClick={() => setIsColorModalOpen(false)}
+              className="w-full py-4 bg-slate-100 text-slate-900 font-black rounded-2xl hover:bg-slate-200 transition-all text-xs uppercase tracking-widest"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
+      <Link key={p.id} to={`/product/${p.id}`} className="block">
+        <div className="aspect-[4/3] bg-slate-50 rounded-[1.8rem] flex items-center justify-center overflow-hidden relative">
+          {p.image ? (
+            <img 
+              src={p.image} 
+              alt={p.name}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          ) : (
+            <div className="text-slate-200 font-bold uppercase tracking-widest text-xs">Espacio para Fotografía</div>
+          )}
+          <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/5 transition-colors" />
+        </div>
+      </Link>
+      
+      <div className="p-6 flex flex-col flex-grow">
+        <div className="flex justify-between items-start mb-2">
+          <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded">{p.tag}</span>
+        </div>
+        
+        <Link to={`/product/${p.id}`}>
+          <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{p.name}</h3>
+        </Link>
+        <p className="text-slate-500 text-sm mt-3 line-clamp-2 leading-relaxed flex-grow">{p.description}</p>
+        
+        {subCategoryId === 'vinilicas-deco' && (
+          <div className="mt-4 pt-4 border-t border-slate-50 space-y-4">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center border border-slate-100 rounded-lg bg-slate-50/50 overflow-hidden">
+                <button 
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="px-2 py-1 hover:bg-white text-slate-500 transition-colors text-xs font-bold"
+                >
+                  -
+                </button>
+                <input 
+                  type="number" 
+                  min="1" 
+                  value={quantity} 
+                  onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="w-8 text-center text-xs font-black text-slate-900 bg-transparent focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
+                <button 
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="px-2 py-1 hover:bg-white text-slate-500 transition-colors text-xs font-bold"
+                >
+                  +
+                </button>
+              </div>
+              
+              <button
+                onClick={() => setIsColorModalOpen(true)}
+                className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg hover:border-blue-600 transition-all group shadow-sm flex-1 justify-center"
+              >
+                <div 
+                  className="w-3 h-3 rounded-full border border-slate-100 shadow-inner"
+                  style={{ backgroundColor: selectedColor ? selectedColor.hex : '#f1f5f9' }}
+                />
+                <span className="text-[9px] font-black text-slate-600 uppercase tracking-tighter whitespace-nowrap">
+                  {selectedColor ? selectedColor.name : 'Color'}
+                </span>
+              </button>
+            </div>
+
+            <button
+              onClick={() => {
+                if (!selectedColor) {
+                  setIsColorModalOpen(true);
+                  return;
+                }
+                addToCart({ ...p, price: 0, priceLabel: 'Cotizar' }, quantity, selectedColor.name);
+              }}
+              className="w-full py-2.5 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 transition-all shadow-md shadow-blue-100 text-[10px] uppercase tracking-widest"
+            >
+              Añadir +
+            </button>
+          </div>
+        )}
+
+        {!p.subCategoryId?.includes('vinilicas-deco') && (
+          <div className="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between">
+            <span className="text-xs font-bold text-slate-400">Pinturas Diamante®</span>
+            <Link to={`/product/${p.id}`} className="text-blue-600 font-black text-xs uppercase group-hover:translate-x-1 transition-transform">Ver Detalles →</Link>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const ProductList: React.FC = () => {
   const { categoryId, subCategoryId } = useParams<{ categoryId: string, subCategoryId: string }>();
@@ -101,29 +233,7 @@ const ProductList: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
         {products.map(p => (
-          <Link key={p.id} to={`/product/${p.id}`} className="bg-white rounded-[2rem] border border-slate-100 p-2 hover:shadow-2xl transition-all group overflow-hidden flex flex-col h-full" title={p.description}>
-            <div className="aspect-[4/3] bg-slate-50 rounded-[1.8rem] flex items-center justify-center overflow-hidden relative">
-              {p.image ? (
-                <img 
-                  src={p.image} 
-                  alt={p.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              ) : (
-                <div className="text-slate-200 font-bold uppercase tracking-widest text-xs">Espacio para Fotografía</div>
-              )}
-              <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/5 transition-colors" />
-            </div>
-            <div className="p-6 flex flex-col flex-grow">
-              <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2 bg-blue-50 self-start px-2 py-0.5 rounded">{p.tag}</span>
-              <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{p.name}</h3>
-              <p className="text-slate-500 text-sm mt-3 line-clamp-2 leading-relaxed flex-grow">{p.description}</p>
-              <div className="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-400">Pinturas Diamante®</span>
-                <span className="text-blue-600 font-black text-xs uppercase group-hover:translate-x-1 transition-transform">Ver Detalles →</span>
-              </div>
-            </div>
-          </Link>
+          <ProductCard key={p.id} product={p} subCategoryId={subCategoryId} />
         ))}
       </div>
     </div>

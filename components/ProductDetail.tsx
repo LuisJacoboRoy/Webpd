@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from '@dr.pogodin/react-helmet';
-import { PRODUCTS, CATEGORIES, SUB_CATEGORIES } from '../data/products';
+import { PRODUCTS, CATEGORIES, SUB_CATEGORIES, PRODUCT_COLORS } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useHelmetJsonLd } from '../hooks/useHelmet';
 import { BUSINESS_INFO } from '../data/seo';
@@ -20,6 +20,9 @@ const ProductDetailComponent: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
   const product = PRODUCTS.find(p => p.id === productId);
   const { addToCart } = useCart();
+  const [quantity, setQuantity] = React.useState(1);
+  const [selectedColor, setSelectedColor] = React.useState<{ name: string, hex: string } | null>(null);
+  const [isColorModalOpen, setIsColorModalOpen] = React.useState(false);
 
   if (!product) {
     return (
@@ -167,6 +170,39 @@ const ProductDetailComponent: React.FC = () => {
         <meta name="priceCurrency" content="MXN" />
       </Helmet>
 
+      {isColorModalOpen && (
+        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setIsColorModalOpen(false)} />
+          <div className="relative bg-white rounded-[2.5rem] w-full max-w-md p-8 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <h3 className="text-2xl font-black text-slate-900 mb-6 uppercase tracking-tighter">Selecciona un Color</h3>
+            <div className="grid grid-cols-4 gap-4 mb-8">
+              {PRODUCT_COLORS.map((c) => (
+                <button
+                  key={c.name}
+                  onClick={() => {
+                    setSelectedColor(c);
+                    setIsColorModalOpen(false);
+                  }}
+                  className={`flex flex-col items-center gap-2 group transition-all ${selectedColor?.name === c.name ? 'scale-110' : ''}`}
+                >
+                  <div 
+                    className={`w-12 h-12 rounded-full border-2 transition-all shadow-sm group-hover:shadow-md ${selectedColor?.name === c.name ? 'border-blue-600 scale-110' : 'border-slate-100'}`}
+                    style={{ backgroundColor: c.hex }}
+                  />
+                  <span className={`text-[10px] font-bold uppercase tracking-widest ${selectedColor?.name === c.name ? 'text-blue-600' : 'text-slate-500'}`}>{c.name}</span>
+                </button>
+              ))}
+            </div>
+            <button 
+              onClick={() => setIsColorModalOpen(false)}
+              className="w-full py-4 bg-slate-100 text-slate-900 font-black rounded-2xl hover:bg-slate-200 transition-all text-xs uppercase tracking-widest"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-4 py-16">
         <nav className="flex mb-12 text-[10px] font-bold uppercase tracking-widest gap-3">
           <Link to="/catalog" className="text-slate-400">Catálogo</Link>
@@ -209,27 +245,68 @@ const ProductDetailComponent: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-slate-50 rounded-3xl p-8 mb-8 border border-slate-100">
-              <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Ficha Técnica Destacada</h4>
-              <ul className="space-y-4">
-                <li className="flex items-center gap-3 text-sm text-slate-600 font-medium">
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
-                  Máxima durabilidad y resistencia Diamante®
-                </li>
-                <li className="flex items-center gap-3 text-sm text-slate-600 font-medium">
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
-                  Alto poder cubriente y acabado profesional
-                </li>
-                <li className="flex items-center gap-3 text-sm text-slate-600 font-medium">
-                  <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
-                  Formulación optimizada para el clima de Oaxaca
-                </li>
-              </ul>
+            <div className="bg-slate-50 rounded-3xl p-8 mb-8 border border-slate-100 flex flex-col gap-6">
+              <div>
+                <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Cantidad</h4>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center border border-slate-200 rounded-xl bg-white overflow-hidden shadow-sm">
+                    <button 
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="px-4 py-2 hover:bg-slate-50 text-slate-600 transition-colors"
+                    >
+                      -
+                    </button>
+                    <input 
+                      type="number" 
+                      min="1" 
+                      value={quantity} 
+                      onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                      className="w-12 text-center font-black text-slate-900 border-x border-slate-100 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    />
+                    <button 
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="px-4 py-2 hover:bg-slate-50 text-slate-600 transition-colors"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Unidades</span>
+                </div>
+              </div>
+
+              {product.subCategoryId === 'vinilicas-deco' && (
+                <div>
+                  <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Color Seleccionado</h4>
+                  <button
+                    onClick={() => setIsColorModalOpen(true)}
+                    className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-blue-600 transition-all group w-full shadow-sm"
+                  >
+                    <div 
+                      className="w-10 h-10 rounded-full border border-slate-100 shadow-inner overflow-hidden"
+                      style={{ backgroundColor: selectedColor ? selectedColor.hex : '#f1f5f9' }}
+                    />
+                    <div className="flex flex-col items-start">
+                      <span className="text-xs font-black text-slate-900 uppercase tracking-tighter">
+                        {selectedColor ? selectedColor.name : 'Seleccionar Color'}
+                      </span>
+                      <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                        Haga clic para cambiar →
+                      </span>
+                    </div>
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                onClick={() => addToCart({ ...product, price: 0, priceLabel: 'Precio a Cotizar' })}
+                onClick={() => {
+                  if (product.subCategoryId === 'vinilicas-deco' && !selectedColor) {
+                    setIsColorModalOpen(true);
+                    return;
+                  }
+                  addToCart({ ...product, price: 0, priceLabel: 'Precio a Cotizar' }, quantity, selectedColor?.name);
+                }}
                 className="flex-1 px-8 py-5 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 text-sm uppercase tracking-widest"
               >
                 Añadir al Carrito

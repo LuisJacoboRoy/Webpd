@@ -116,3 +116,14 @@ export const PRODUCTS: Product[] = [
   { id: 'dec-13', categoryId: 'decorativo', subCategoryId: 'especiales-deco', tag: 'Especiales', name: 'Pintura para Tráfico', description: 'Pintura base solvente de alta resistencia a la abrasión y secado rápido para señalización vial y guarniciones.', image: '/img/catalog/generica-web-300x300.png', ogTitle: 'Pintura para Tráfico - Pinturas Diamante', ogDescription: 'Pintura de tráfico de alta resistencia a la abrasión.' },
   { id: 'dec-14', categoryId: 'decorativo', subCategoryId: 'especiales-deco', tag: 'Especiales', name: 'Pintura para Albercas', description: 'Recubrimiento de hule clorado resistente a químicos de alberca y humedad constante, color azul duradero.', image: '/img/catalog/diamaluz-esmaltes-300x300.png', ogTitle: 'Pintura para Albercas - Pinturas Diamante', ogDescription: 'Recubrimiento para albercas resistente a químicos.' }
 ];
+
+export const PRODUCT_COLORS = [
+  { name: 'Blanco', hex: '#FFFFFF' },
+  { name: 'Negro', hex: '#000000' },
+  { name: 'Rojo', hex: '#FF0000' },
+  { name: 'Azul', hex: '#0000FF' },
+  { name: 'Amarillo', hex: '#FFFF00' },
+  { name: 'Verde', hex: '#008000' },
+  { name: 'Gris', hex: '#808080' },
+  { name: 'Beige', hex: '#F5F5DC' }
+];

@@ -44,6 +44,12 @@ const CartDrawer: React.FC = () => {
                             <p className="ml-4">${(item.price * item.quantity).toFixed(2)}</p>
                           </div>
                           <p className="mt-1 text-sm text-slate-500">{item.tag}</p>
+                          {item.color && (
+                            <div className="flex items-center gap-1.5 mt-1">
+                              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Color:</span>
+                              <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest">{item.color}</span>
+                            </div>
+                          )}
                         </div>
                         <div className="flex-1 flex items-end justify-between text-sm">
                           <p className="text-slate-500 italic text-xs">Cant. {item.quantity}</p>
