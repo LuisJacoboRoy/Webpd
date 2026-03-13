@@ -33,7 +33,7 @@ const CartDrawer: React.FC = () => {
               ) : (
                 <ul className="divide-y divide-slate-100">
                   {cart.map((item) => (
-                    <li key={item.id} className="py-6 flex">
+                    <li key={item.cartItemId || item.id} className="py-6 flex">
                       <div className="flex-shrink-0 w-20 h-20 border border-slate-200 rounded-lg overflow-hidden">
                         <img src={item.image} className="w-full h-full object-cover" alt={item.name} />
                       </div>
@@ -54,7 +54,7 @@ const CartDrawer: React.FC = () => {
                           <p className="text-slate-500 italic text-xs">Cant. {item.quantity}</p>
                           <button
                             type="button"
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() => removeFromCart(item.cartItemId || item.id)}
                             className="font-medium text-blue-600 hover:text-blue-500"
                           >
                             Eliminar

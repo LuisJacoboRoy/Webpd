@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
               Distribuidores autorizados en Oaxaca para todo México. Calidad que transforma tus espacios.
             </p>
           </div>
-          
+
           <div className="flex flex-wrap gap-12">
             <div className="flex flex-col gap-2">
               <h4 className="text-slate-900 font-bold text-sm uppercase tracking-wider">Productos</h4>
@@ -38,15 +38,15 @@ const Footer: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="mt-12 pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
           <p>© {new Date().getFullYear()} Pinturas Diamante Oaxaca. Todos los derechos reservados.</p>
           <div className="flex gap-4 items-center">
             <span>Calidad</span>
-            <a 
-              href="https://diamantepinturas.com" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href="https://diamantepinturas.com.mx"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-blue-600 font-bold hover:underline"
             >
               Diamante®

@@ -30,6 +30,7 @@ export interface SubCategory {
 }
 
 export interface CartItem extends Product {
+  cartItemId: string; // Nuevo ID compuesto (id + color)
   quantity: number;
   color?: string;
 }

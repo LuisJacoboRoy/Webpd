@@ -5,8 +5,8 @@ import { Product, CartItem } from '../types';
 interface CartContextType {
   cart: CartItem[];
   addToCart: (product: Product) => void;
-  // Fix: Changed productId from number to string to match Product interface definition
-  removeFromCart: (productId: string) => void;
+  // Update: Changed from productId to cartItemId to support individual color removal
+  removeFromCart: (cartItemId: string) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -37,21 +37,24 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [searchQuery, setSearchQuery] = useState('');
 
   const addToCart = (product: Product, quantity: number = 1, color?: string) => {
+    // Generar un ID único para el carrito basado en el ID del producto y su color (si existe)
+    const cartItemId = color ? `${product.id}-${color}` : product.id;
+
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id && item.color === color);
+      const existing = prev.find((item) => item.cartItemId === cartItemId);
       if (existing) {
         return prev.map((item) =>
-          (item.id === product.id && item.color === color) ? { ...item, quantity: item.quantity + quantity } : item
+          item.cartItemId === cartItemId ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
-      return [...prev, { ...product, quantity, color }];
+      return [...prev, { ...product, cartItemId, quantity, color }];
     });
     setIsCartOpen(true);
   };
 
-  // Fix: Changed parameter type from number to string to fix comparison error on line 39
-  const removeFromCart = (productId: string) => {
-    setCart((prev) => prev.filter((item) => item.id !== productId));
+  // Fix: Changed parameter to cartItemId to allow removing specific colors of a product
+  const removeFromCart = (cartItemId: string) => {
+    setCart((prev) => prev.filter((item) => item.cartItemId !== cartItemId));
   };
 
   const clearCart = () => setCart([]);
