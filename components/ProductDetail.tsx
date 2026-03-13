@@ -23,7 +23,6 @@ const ProductDetailComponent: React.FC = () => {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = React.useState(1);
   const [selectedColor, setSelectedColor] = React.useState<{ name: string, hex: string } | null>(null);
-  const [isColorModalOpen, setIsColorModalOpen] = React.useState(false);
 
   if (!product) {
     return (
@@ -171,55 +170,7 @@ const ProductDetailComponent: React.FC = () => {
         <meta name="priceCurrency" content="MXN" />
       </Helmet>
 
-      {isColorModalOpen && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setIsColorModalOpen(false)} />
-          <div className="relative bg-white rounded-[2.5rem] w-full max-w-md p-8 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <h3 className="text-2xl font-black text-slate-900 mb-6 uppercase tracking-tighter">Selecciona un Color</h3>
-            <div className="flex flex-col gap-8 mb-8">
-              <div className="flex justify-center">
-                <TwitterPicker 
-                  width="100%"
-                  colors={PRODUCT_COLORS.map(c => c.hex)}
-                  color={selectedColor?.hex || '#FFFFFF'}
-                  onChange={(color) => {
-                    const matchedColor = PRODUCT_COLORS.find(c => c.hex.toLowerCase() === color.hex.toLowerCase());
-                    setSelectedColor(matchedColor || { name: 'Personalizado', hex: color.hex });
-                  }}
-                  styles={{
-                    default: {
-                      card: {
-                        boxShadow: 'none',
-                        border: '1px solid #f1f5f9',
-                        borderRadius: '1rem',
-                      },
-                      body: {
-                        padding: '1.5rem',
-                      }
-                    }
-                  }}
-                />
-              </div>
-              <div className="px-2">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Ajuste fino / Color personalizado</p>
-                <SliderPicker 
-                  color={selectedColor?.hex || '#FFFFFF'}
-                  onChange={(color) => {
-                    const matchedColor = PRODUCT_COLORS.find(c => c.hex.toLowerCase() === color.hex.toLowerCase());
-                    setSelectedColor(matchedColor || { name: 'Personalizado', hex: color.hex });
-                  }}
-                />
-              </div>
-            </div>
-            <button 
-              onClick={() => setIsColorModalOpen(false)}
-              className="w-full py-4 bg-slate-100 text-slate-900 font-black rounded-2xl hover:bg-slate-200 transition-all text-xs uppercase tracking-widest"
-            >
-              Cerrar
-            </button>
-          </div>
-        </div>
-      )}
+
 
       <div className="max-w-7xl mx-auto px-4 py-16">
         <nav className="flex mb-12 text-[10px] font-bold uppercase tracking-widest gap-3">
@@ -293,25 +244,44 @@ const ProductDetailComponent: React.FC = () => {
               </div>
 
               {product.subCategoryId === 'vinilicas-deco' && (
-                <div>
-                  <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Color Seleccionado</h4>
-                  <button
-                    onClick={() => setIsColorModalOpen(true)}
-                    className="flex items-center gap-4 p-4 bg-white border border-slate-200 rounded-2xl hover:border-blue-600 transition-all group w-full shadow-sm"
-                  >
-                    <div 
-                      className="w-10 h-10 rounded-full border border-slate-100 shadow-inner overflow-hidden"
-                      style={{ backgroundColor: selectedColor ? selectedColor.hex : '#f1f5f9' }}
-                    />
-                    <div className="flex flex-col items-start">
-                      <span className="text-xs font-black text-slate-900 uppercase tracking-tighter">
-                        {selectedColor ? selectedColor.name : 'Seleccionar Color'}
-                      </span>
-                      <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
-                        Haga clic para cambiar →
-                      </span>
+                <div className="w-full flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Color Seleccionado</h4>
+                    {selectedColor && (
+                      <span className="text-xs font-black text-slate-900 bg-white px-3 py-1 rounded-full border border-slate-200 shadow-sm">{selectedColor.name}</span>
+                    )}
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-6 items-center bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                    <div className="w-full sm:w-auto flex justify-center">
+                      <TwitterPicker 
+                        width="276px"
+                        colors={PRODUCT_COLORS.map(c => c.hex)}
+                        color={selectedColor?.hex || '#FFFFFF'}
+                        onChange={(color) => {
+                          const matchedColor = PRODUCT_COLORS.find(c => c.hex.toLowerCase() === color.hex.toLowerCase());
+                          setSelectedColor(matchedColor || { name: 'Personalizado', hex: color.hex });
+                        }}
+                        triangle="hide"
+                        styles={{
+                          default: {
+                            card: { boxShadow: 'none', border: 'none', background: 'transparent' },
+                            body: { padding: 0 }
+                          }
+                        }}
+                      />
                     </div>
-                  </button>
+                    <div className="w-full sm:flex-1 px-4 border-t sm:border-t-0 sm:border-l border-slate-100 pt-4 sm:pt-0 sm:pl-6">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 text-center sm:text-left">Ajuste fino (Tonalidad)</p>
+                      <SliderPicker 
+                        color={selectedColor?.hex || '#FFFFFF'}
+                        onChange={(color) => {
+                          const matchedColor = PRODUCT_COLORS.find(c => c.hex.toLowerCase() === color.hex.toLowerCase());
+                          setSelectedColor(matchedColor || { name: 'Personalizado', hex: color.hex });
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -320,7 +290,7 @@ const ProductDetailComponent: React.FC = () => {
               <button
                 onClick={() => {
                   if (product.subCategoryId === 'vinilicas-deco' && !selectedColor) {
-                    setIsColorModalOpen(true);
+                    alert('Por favor, selecciona un color en el panel antes de añadir al carrito.');
                     return;
                   }
                   addToCart({ ...product, price: 0, priceLabel: 'Precio a Cotizar' }, quantity, selectedColor?.name);
