@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect } from 'react';
+import { useActionState } from 'react';
 import emailjs from '@emailjs/browser';
 
 // ✅ Inicializar EmailJS al cargar el módulo
@@ -48,14 +48,24 @@ async function procesarPedidoPorCorreo(prevState, formData) {
     };
 
     // Extraer datos del FormData
-    const nombre = formData.get('nombre');
-    const correo = formData.get('correo');
-    const direccion = formData.get('direccion');
-    const telefono = formData.get('telefono');
-    const comentarios = formData.get('comentarios') || 'Sin comentarios adicionales';
+    let nombre = formData.get('nombre');
+    let correo = formData.get('correo');
+    let direccion = formData.get('direccion');
+    let telefono = formData.get('telefono');
+    let comentarios = formData.get('comentarios') || 'Sin comentarios adicionales';
+
+    // ✅ LIMPIEZA AGRESIVA DE ESPACIOS Y CARACTERES ESPECIALES
+    nombre = nombre?.trim().replace(/\s+/g, ' ') || '';
+    correo = correo?.trim().toLowerCase().replace(/\s/g, '') || '';
+    direccion = direccion?.trim().replace(/\s+/g, ' ') || '';
+    telefono = telefono?.trim().replace(/\s/g, '') || '';
+    comentarios = comentarios?.trim().replace(/\s+/g, ' ') || 'Sin comentarios adicionales';
 
     // Validación básica en servidor
     if (!nombre || !correo || !direccion || !telefono) {
+      console.warn('❌ Validación fallida - Campos vacíos:',
+        { nombre: !nombre, correo: !correo, direccion: !direccion, telefono: !telefono }
+      );
       return {
         exito: false,
         mensaje: 'Por favor completa todos los campos requeridos.'
@@ -63,8 +73,9 @@ async function procesarPedidoPorCorreo(prevState, formData) {
     }
 
     // Validar formato de correo electrónico
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(correo.trim())) {
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+    if (!emailRegex.test(correo)) {
+      console.warn('❌ Formato de email inválido:', correo);
       return {
         exito: false,
         mensaje: 'Por favor ingresa un correo electrónico válido.'
@@ -73,42 +84,84 @@ async function procesarPedidoPorCorreo(prevState, formData) {
 
     // Configurar las variables para la plantilla de EmailJS
     const templateParams = {
-      to_email: correo.trim(),
-      customer_name: nombre.trim(),
-      customer_email: correo.trim(),
-      customer_phone: telefono.trim(),
-      customer_address: direccion.trim(),
-      additional_comments: comentarios.trim(),
+      to_email: correo,  // ✅ Email limpio sin espacios
+      customer_name: nombre,
+      customer_email: correo,
+      customer_phone: telefono,
+      customer_address: direccion,
+      additional_comments: comentarios,
       cart_items: carrito.items.join(', '),
       cart_total: carrito.total,
       order_date: carrito.fecha
     };
 
-    console.log('📧 Enviando parámetros:', templateParams);
+    console.log('📧 Parámetros finales a enviar:', {
+      to_email: correo,
+      customer_email: correo,
+      customer_name: nombre,
+      customer_phone: telefono,
+      customer_address: direccion,
+      cart_items: carrito.items.join(', '),
+      cart_total: carrito.total,
+      order_date: carrito.fecha
+    });
 
-    // Enviar correo usando EmailJS
+    // ✅ Validación final: asegurar que to_email no esté vacío
+    if (!templateParams.to_email || templateParams.to_email.length === 0) {
+      console.error('🚨 ERROR CRÍTICO: to_email está vacío después de limpieza:', templateParams.to_email);
+      return {
+        exito: false,
+        mensaje: 'Error: El correo no pudo procesarse. Intenta nuevamente.'
+      };
+    }
+
+    console.log('✅ EmailJS.init() completado. Enviando correo...');
+
+    // Enviar correo usando EmailJS (debe estar inicializado arriba)
     const response = await emailjs.send(
       'service_w4hr6r7',         // Service ID
       'template_2l07s2f',        // Template ID
       templateParams             // Template parameters
     );
 
-    console.log('✅ Respuesta de EmailJS:', response);
+    console.log('✅ Respuesta de EmailJS:', {
+      status: response.status,
+      text: response.text,
+      message: 'Correo enviado exitosamente'
+    });
 
     // Verificar respuesta exitosa
     if (response.status === 200) {
+      console.log('🎉 Correo enviado a:', templateParams.to_email);
       return {
         exito: true,
         mensaje: '¡Pedido enviado correctamente! Recibirás confirmación en tu correo electrónico.'
       };
     } else {
-      throw new Error(`Error al enviar el correo. Status: ${response.status}`);
+      throw new Error(`EmailJS reportó status: ${response.status}`);
     }
   } catch (error) {
-    console.error('Error procesando pedido:', error);
+    console.error('❌ Error procesando pedido:', {
+      mensaje: error.message,
+      status: error.status,
+      respuesta: error.response,
+      stack: error.stack
+    });
+    
+    // Mensajes de error más descriptivos
+    let mensajeFinal = 'Error al enviar el pedido. Intenta nuevamente más tarde.';
+    
+    if (error.message?.includes('The recipients address is empty')) {
+      mensajeFinal = 'Error: El campo de correo está vacío en la plantilla de EmailJS. Revisa tu configuración.';
+    } else if (error.status === 422) {
+      mensajeFinal = 'Error 422: Verifica que el campo "To Email" en la plantilla esté configurado como {{to_email}}';
+    } else if (error.message?.includes('Service ID')) {
+      mensajeFinal = 'Error: Configuración de EmailJS incorrecta. Verifica Service ID y Template ID.';
+    }
+    
     return {
       exito: false,
-      mensaje: `Error al enviar el pedido: ${error.message || 'Intenta nuevamente más tarde.'}`
+      mensaje: mensajeFinal
     };
   }
 }
