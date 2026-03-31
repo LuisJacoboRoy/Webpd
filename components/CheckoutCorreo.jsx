@@ -1,78 +1,75 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
-// ✅ Inicializar EmailJS al cargar el módulo
+// ✅ Inicializar EmailJS al cargar el módulo (ÚNICA VEZ)
 if (typeof window !== 'undefined') {
-  emailjs.init('kGZA8SmhiaWwbM2Iq'); // Public Key
+  emailjs.init({
+    publicKey: 'kGZA8SmhiaWwbM2Iq',
+    limitRate: {
+      id: 'app',
+      throttle: 50, // límite: 1 email cada 50ms
+    },
+  });
 }
 
 /**
- * ⚠️ CONFIGURACIÓN IMPORTANTE DE EMAILJS ⚠️
+ * ⚠️ CONFIGURACIÓN CRÍTICA DE EMAILJS ⚠️
  * 
- * INICIALIZACIÓN: EmailJS se inicializa automáticamente con la Public Key
- * EMAIL SERVICE: service_w4hr6r7
- * PLANTILLA: template_2l07s2f
+ * USANDO: emailjs.sendForm() (método recomendado para formularios)
+ * SERVICE ID: service_w4hr6r7
+ * TEMPLATE ID: template_2l07s2f
+ * PUBLIC KEY: kGZA8SmhiaWwbM2Iq
  * 
- * CONFIGURACIÓN REQUERIDA EN EMAILJS DASHBOARD:
+ * CAMPOS ESPERADOS EN LA PLANTILLA (case-sensitive):
+ * - to_email → correo del cliente (REQUERIDO para "To Email")
+ * - from_name → nombre del cliente
+ * - from_email → email del cliente
+ * - phone → teléfono del cliente
+ * - address → dirección de envío
+ * - message → comentarios adicionales
+ * - cart_items → artículos del carrito
+ * - cart_total → total del carrito
+ * - order_date → fecha del pedido
  * 
- * 1. En el panel de EmailJS, ve a tu plantilla "template_2l07s2f"
- * 2. En el campo "Send To" (To Email), coloca: {{to_email}}
- * 3. Los campos disponibles en esta plantilla son:
- *    - to_email         → dirección del cliente
- *    - customer_name    → nombre del cliente
- *    - customer_email   → email del cliente
- *    - customer_phone   → teléfono del cliente
- *    - customer_address → dirección de envío
- *    - additional_comments → comentarios adicionales
- *    - cart_items       → artículos del carrito
- *    - cart_total       → total del carrito
- *    - order_date       → fecha del pedido
- * 
- * SI RECIBE ERROR "The recipients address is empty" (422):
- * ✓ Verifica que el campo "Send To" sea: {{to_email}} (con {{  }})
- * ✓ Que NO haya un email fijo o vacío en "Send To"
- * ✓ Que el email del cliente no esté vacío o inválido
- * ✓ Revisa los logs de la consola (F12) para ver los parámetros enviados
+ * IMPORTANTE EN EMAILJS DASHBOARD:
+ * El campo "To Email" DEBE estar configurado exactamente como: {{to_email}}
+ * (con dobles llaves y ese nombre exacto)
  */
 
 // Función de acción para procesar el formulario de pedido por correo
 async function procesarPedidoPorCorreo(prevState, formData) {
   try {
-    // Objeto simulado del carrito de compras
-    const carrito = {
-      items: ["Producto 1", "Producto 2", "Producto 3"],
-      total: 500,
-      fecha: new Date().toLocaleDateString('es-ES')
-    };
-
     // Extraer datos del FormData
-    let nombre = formData.get('nombre');
-    let correo = formData.get('correo');
-    let direccion = formData.get('direccion');
-    let telefono = formData.get('telefono');
-    let comentarios = formData.get('comentarios') || 'Sin comentarios adicionales';
+    let nombre = formData.get('from_name');
+    let correo = formData.get('to_email');
+    let direccion = formData.get('address');
+    let telefono = formData.get('phone');
+    let comentarios = formData.get('message') || 'Sin comentarios adicionales';
 
-    // ✅ LIMPIEZA AGRESIVA DE ESPACIOS Y CARACTERES ESPECIALES
+    // ✅ LIMPIEZA AGRESIVA
     nombre = nombre?.trim().replace(/\s+/g, ' ') || '';
     correo = correo?.trim().toLowerCase().replace(/\s/g, '') || '';
     direccion = direccion?.trim().replace(/\s+/g, ' ') || '';
     telefono = telefono?.trim().replace(/\s/g, '') || '';
     comentarios = comentarios?.trim().replace(/\s+/g, ' ') || 'Sin comentarios adicionales';
 
-    // Validación básica en servidor
+    // Validación básica
     if (!nombre || !correo || !direccion || !telefono) {
-      console.warn('❌ Validación fallida - Campos vacíos:',
-        { nombre: !nombre, correo: !correo, direccion: !direccion, telefono: !telefono }
-      );
+      console.warn('❌ Validación fallida - Campos vacíos:', {
+        nombre: !nombre,
+        correo: !correo,
+        direccion: !direccion,
+        telefono: !telefono
+      });
       return {
         exito: false,
         mensaje: 'Por favor completa todos los campos requeridos.'
       };
     }
 
-    // Validar formato de correo electrónico
+    // Validar formato de email
     const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
     if (!emailRegex.test(correo)) {
       console.warn('❌ Formato de email inválido:', correo);
@@ -82,86 +79,82 @@ async function procesarPedidoPorCorreo(prevState, formData) {
       };
     }
 
-    // Configurar las variables para la plantilla de EmailJS
+    // Objeto del carrito
+    const carrito = {
+      items: ["Producto 1", "Producto 2", "Producto 3"],
+      total: 500,
+      fecha: new Date().toLocaleDateString('es-ES')
+    };
+
+    // ✅ Parámetros que se enviarán a EmailJS
     const templateParams = {
-      to_email: correo,  // ✅ Email limpio sin espacios
-      customer_name: nombre,
-      customer_email: correo,
-      customer_phone: telefono,
-      customer_address: direccion,
-      additional_comments: comentarios,
+      to_email: correo,              // ← CRÍTICO: variable para "Send To"
+      from_name: nombre,             // ← nombre del cliente
+      from_email: correo,            // ← email del cliente
+      phone: telefono,               // ← teléfono
+      address: direccion,            // ← dirección
+      message: comentarios,          // ← comentarios
       cart_items: carrito.items.join(', '),
       cart_total: carrito.total,
       order_date: carrito.fecha
     };
 
-    console.log('📧 Parámetros finales a enviar:', {
-      to_email: correo,
-      customer_email: correo,
-      customer_name: nombre,
-      customer_phone: telefono,
-      customer_address: direccion,
-      cart_items: carrito.items.join(', '),
-      cart_total: carrito.total,
-      order_date: carrito.fecha
-    });
+    console.log('📧 ENVIANDO PARÁMETROS A EMAILJS:', templateParams);
 
-    // ✅ Validación final: asegurar que to_email no esté vacío
+    // ✅ Validación final
     if (!templateParams.to_email || templateParams.to_email.length === 0) {
-      console.error('🚨 ERROR CRÍTICO: to_email está vacío después de limpieza:', templateParams.to_email);
+      console.error('🚨 ERROR CRÍTICO: to_email está vacío');
       return {
         exito: false,
-        mensaje: 'Error: El correo no pudo procesarse. Intenta nuevamente.'
+        mensaje: 'Error: El correo electrónico no pudo procesarse.'
       };
     }
 
-    console.log('✅ EmailJS.init() completado. Enviando correo...');
-
-    // Enviar correo usando EmailJS (debe estar inicializado arriba)
+    // ✅ ENVIAR CON emailjs.send() (parámetros)
+    console.log('🚀 Llamando emailjs.send()...');
+    
     const response = await emailjs.send(
-      'service_w4hr6r7',         // Service ID
-      'template_2l07s2f',        // Template ID
-      templateParams             // Template parameters
+      'service_w4hr6r7',          // Service ID
+      'template_2l07s2f',         // Template ID
+      templateParams              // Parámetros
     );
 
     console.log('✅ Respuesta de EmailJS:', {
       status: response.status,
-      text: response.text,
-      message: 'Correo enviado exitosamente'
+      text: response.text
     });
 
-    // Verificar respuesta exitosa
     if (response.status === 200) {
-      console.log('🎉 Correo enviado a:', templateParams.to_email);
+      console.log('🎉 EMAIL ENVIADO EXITOSAMENTE A:', correo);
       return {
         exito: true,
         mensaje: '¡Pedido enviado correctamente! Recibirás confirmación en tu correo electrónico.'
       };
     } else {
-      throw new Error(`EmailJS reportó status: ${response.status}`);
+      throw new Error(`Status: ${response.status}`);
     }
+
   } catch (error) {
-    console.error('❌ Error procesando pedido:', {
-      mensaje: error.message,
-      status: error.status,
-      respuesta: error.response,
-      stack: error.stack
+    console.error('❌ ERROR EN EMAILJS:', {
+      message: error.message,
+      status: error.status || 'sin status',
+      response: error.response || 'sin response',
+      toString: error.toString()
     });
-    
-    // Mensajes de error más descriptivos
-    let mensajeFinal = 'Error al enviar el pedido. Intenta nuevamente más tarde.';
-    
-    if (error.message?.includes('The recipients address is empty')) {
-      mensajeFinal = 'Error: El campo de correo está vacío en la plantilla de EmailJS. Revisa tu configuración.';
+
+    let mensajeError = 'Error al enviar el pedido. Intenta nuevamente más tarde.';
+
+    if (error.message?.includes('recipients')) {
+      mensajeError = '❌ Error: El campo "To Email" en EmailJS no está configurado como {{to_email}}';
     } else if (error.status === 422) {
-      mensajeFinal = 'Error 422: Verifica que el campo "To Email" en la plantilla esté configurado como {{to_email}}';
-    } else if (error.message?.includes('Service ID')) {
-      mensajeFinal = 'Error: Configuración de EmailJS incorrecta. Verifica Service ID y Template ID.';
+      mensajeError = '❌ Error 422: Verifica la configuración del "To Email" en el template.';
+    } else if (error.message?.includes('service')) {
+      mensajeError = '❌ Error de configuración: Verifica Service ID o Template ID.';
     }
-    
+
     return {
       exito: false,
-      mensaje: mensajeFinal
+      mensaje: mensajeError
     };
   }
 }
@@ -282,13 +275,13 @@ export default function CheckoutCorreo() {
       <form action={formAction} style={styles.form}>
         {/* Campo: Nombre Completo */}
         <div style={styles.formGroup}>
-          <label htmlFor="nombre" style={styles.label}>
+          <label htmlFor="from_name" style={styles.label}>
             Nombre Completo <span style={styles.required}>*</span>
           </label>
           <input
             type="text"
-            id="nombre"
-            name="nombre"
+            id="from_name"
+            name="from_name"
             placeholder="Juan Pérez García"
             required
             disabled={isPending}
@@ -298,13 +291,13 @@ export default function CheckoutCorreo() {
 
         {/* Campo: Correo Electrónico */}
         <div style={styles.formGroup}>
-          <label htmlFor="correo" style={styles.label}>
+          <label htmlFor="to_email" style={styles.label}>
             Correo Electrónico <span style={styles.required}>*</span>
           </label>
           <input
             type="email"
-            id="correo"
-            name="correo"
+            id="to_email"
+            name="to_email"
             placeholder="tu.email@ejemplo.com"
             required
             disabled={isPending}
@@ -314,13 +307,13 @@ export default function CheckoutCorreo() {
 
         {/* Campo: Dirección de Envío */}
         <div style={styles.formGroup}>
-          <label htmlFor="direccion" style={styles.label}>
+          <label htmlFor="address" style={styles.label}>
             Dirección de Envío <span style={styles.required}>*</span>
           </label>
           <input
             type="text"
-            id="direccion"
-            name="direccion"
+            id="address"
+            name="address"
             placeholder="Calle Principal 123, Apt 4B, Ciudad"
             required
             disabled={isPending}
@@ -330,13 +323,13 @@ export default function CheckoutCorreo() {
 
         {/* Campo: Teléfono */}
         <div style={styles.formGroup}>
-          <label htmlFor="telefono" style={styles.label}>
+          <label htmlFor="phone" style={styles.label}>
             Teléfono <span style={styles.required}>*</span>
           </label>
           <input
             type="tel"
-            id="telefono"
-            name="telefono"
+            id="phone"
+            name="phone"
             placeholder="+34 600 123 456"
             required
             disabled={isPending}
@@ -346,12 +339,12 @@ export default function CheckoutCorreo() {
 
         {/* Campo: Comentarios Adicionales */}
         <div style={styles.formGroup}>
-          <label htmlFor="comentarios" style={styles.label}>
+          <label htmlFor="message" style={styles.label}>
             Comentarios Adicionales
           </label>
           <textarea
-            id="comentarios"
-            name="comentarios"
+            id="message"
+            name="message"
             placeholder="Agrega cualquier nota especial para tu pedido..."
             disabled={isPending}
             style={styles.textarea}
