@@ -226,6 +226,8 @@ const ProductDetailComponent: React.FC = () => {
                       -
                     </button>
                     <input 
+                      id="quantity"
+                      name="quantity"
                       type="number" 
                       min="1" 
                       value={quantity} 

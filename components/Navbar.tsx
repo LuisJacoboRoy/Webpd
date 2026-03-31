@@ -53,6 +53,8 @@ const Navbar: React.FC = () => {
             </Link>
             <div className="hidden sm:block relative ml-4">
               <input
+                id="search"
+                name="search"
                 type="text"
                 value={searchQuery}
                 onChange={handleSearchChange}
