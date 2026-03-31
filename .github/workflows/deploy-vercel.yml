@@ -81,3 +81,7 @@ jobs:
         echo "✅ CSP: ACTIVE"
         echo "🔐 Sitemap: https://pinturasdiamante.com/sitemap.xml"
         echo "📊 Robots.txt: https://pinturasdiamante.com/robots.txt"
+
+emailjs.init('kGZA8SmhiaWwbM2Iq'); // Public Key
+
+emailjs.send('ServiceID', 'TemplateID', 'TemplateParams', 'Options')

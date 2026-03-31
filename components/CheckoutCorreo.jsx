@@ -1,7 +1,41 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
+
+// ✅ Inicializar EmailJS al cargar el módulo
+if (typeof window !== 'undefined') {
+  emailjs.init('kGZA8SmhiaWwbM2Iq'); // Public Key
+}
+
+/**
+ * ⚠️ CONFIGURACIÓN IMPORTANTE DE EMAILJS ⚠️
+ * 
+ * INICIALIZACIÓN: EmailJS se inicializa automáticamente con la Public Key
+ * EMAIL SERVICE: service_w4hr6r7
+ * PLANTILLA: template_2l07s2f
+ * 
+ * CONFIGURACIÓN REQUERIDA EN EMAILJS DASHBOARD:
+ * 
+ * 1. En el panel de EmailJS, ve a tu plantilla "template_2l07s2f"
+ * 2. En el campo "Send To" (To Email), coloca: {{to_email}}
+ * 3. Los campos disponibles en esta plantilla son:
+ *    - to_email         → dirección del cliente
+ *    - customer_name    → nombre del cliente
+ *    - customer_email   → email del cliente
+ *    - customer_phone   → teléfono del cliente
+ *    - customer_address → dirección de envío
+ *    - additional_comments → comentarios adicionales
+ *    - cart_items       → artículos del carrito
+ *    - cart_total       → total del carrito
+ *    - order_date       → fecha del pedido
+ * 
+ * SI RECIBE ERROR "The recipients address is empty" (422):
+ * ✓ Verifica que el campo "Send To" sea: {{to_email}} (con {{  }})
+ * ✓ Que NO haya un email fijo o vacío en "Send To"
+ * ✓ Que el email del cliente no esté vacío o inválido
+ * ✓ Revisa los logs de la consola (F12) para ver los parámetros enviados
+ */
 
 // Función de acción para procesar el formulario de pedido por correo
 async function procesarPedidoPorCorreo(prevState, formData) {
@@ -28,28 +62,38 @@ async function procesarPedidoPorCorreo(prevState, formData) {
       };
     }
 
+    // Validar formato de correo electrónico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(correo.trim())) {
+      return {
+        exito: false,
+        mensaje: 'Por favor ingresa un correo electrónico válido.'
+      };
+    }
+
     // Configurar las variables para la plantilla de EmailJS
     const templateParams = {
-      to_email: correo,
-      customer_name: nombre,
-      customer_email: correo,
-      customer_phone: telefono,
-      customer_address: direccion,
-      additional_comments: comentarios,
+      to_email: correo.trim(),
+      customer_name: nombre.trim(),
+      customer_email: correo.trim(),
+      customer_phone: telefono.trim(),
+      customer_address: direccion.trim(),
+      additional_comments: comentarios.trim(),
       cart_items: carrito.items.join(', '),
       cart_total: carrito.total,
-      order_date: carrito.fecha,
-      reply_to: correo
+      order_date: carrito.fecha
     };
 
+    console.log('📧 Enviando parámetros:', templateParams);
+
     // Enviar correo usando EmailJS
-    // Usa las credenciales configuradas
     const response = await emailjs.send(
       'service_w4hr6r7',         // Service ID
       'template_2l07s2f',        // Template ID
-      templateParams,
-      'kGZA8SmhiaWwbM2Iq'        // Public Key
+      templateParams             // Template parameters
     );
+
+    console.log('✅ Respuesta de EmailJS:', response);
 
     // Verificar respuesta exitosa
     if (response.status === 200) {
@@ -58,7 +102,7 @@ async function procesarPedidoPorCorreo(prevState, formData) {
         mensaje: '¡Pedido enviado correctamente! Recibirás confirmación en tu correo electrónico.'
       };
     } else {
-      throw new Error('Error al enviar el correo');
+      throw new Error(`Error al enviar el correo. Status: ${response.status}`);
     }
   } catch (error) {
     console.error('Error procesando pedido:', error);
