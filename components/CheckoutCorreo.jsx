@@ -19,7 +19,7 @@ if (typeof window !== 'undefined') {
  * 
  * USANDO: emailjs.sendForm() (método recomendado para formularios)
  * SERVICE ID: service_w4hr6r7
- * TEMPLATE ID: template_2l07s2f
+ * TEMPLATE ID: template_x1or3zu
  * PUBLIC KEY: kGZA8SmhiaWwbM2Iq
  * 
  * CAMPOS ESPERADOS EN LA PLANTILLA (case-sensitive):
@@ -115,7 +115,7 @@ async function procesarPedidoPorCorreo(prevState, formData) {
     
     const response = await emailjs.send(
       'service_w4hr6r7',          // Service ID
-      'template_2l07s2f',         // Template ID
+      'template_x1or3zu',         // Template ID actualizado
       templateParams              // Parámetros
     );
 
