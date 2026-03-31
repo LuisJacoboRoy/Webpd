@@ -1,11 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
-import { useOrder } from '../hooks/useOrder';
+import CheckoutCorreo from './CheckoutCorreo';
 
 const CartDrawer: React.FC = () => {
-  const { cart, isCartOpen, setIsCartOpen, removeFromCart, totalPrice } = useCart();
-  const { placeOrder, isOrdering, orderSuccess } = useOrder();
+  const { cart, isCartOpen, setIsCartOpen, removeFromCart, totalPrice, clearCart } = useCart();
+  const [showCheckout, setShowCheckout] = useState(false);
 
   if (!isCartOpen) return null;
 
@@ -68,24 +68,31 @@ const CartDrawer: React.FC = () => {
             </div>
           </div>
 
-          {cart.length > 0 && (
+          {cart.length > 0 && !showCheckout && (
             <div className="border-t border-slate-200 py-6 px-4 sm:px-6 bg-slate-50">
               <p className="mb-6 text-sm text-slate-500 italic">Podrás confirmar los detalles de tu pedido con nuestro equipo tras enviarlo.</p>
               <button
-                disabled={isOrdering}
-                onClick={placeOrder}
-                className={`w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-xl shadow-sm text-base font-bold text-white transition-all ${
-                  isOrdering ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-                }`}
+                onClick={() => setShowCheckout(true)}
+                className="w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-xl shadow-sm text-base font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all"
               >
-                {isOrdering ? 'Procesando...' : 'Confirmar Pedido'}
+                Hacer Pedido
               </button>
             </div>
           )}
 
-          {orderSuccess && (
-            <div className="p-4 bg-blue-50 text-blue-700 text-center font-bold">
-              🎉 ¡Pedido realizado con éxito!
+          {showCheckout && (
+            <div className="border-t border-slate-200 py-6 px-4 sm:px-6 bg-slate-50 overflow-y-auto">
+              <button
+                onClick={() => setShowCheckout(false)}
+                className="mb-4 text-sm text-blue-600 hover:text-blue-700 font-medium"
+              >
+                ← Volver al carrito
+              </button>
+              <CheckoutCorreo cartItems={cart} cartTotal={totalPrice} onSuccess={() => {
+                clearCart();
+                setShowCheckout(false);
+                setIsCartOpen(false);
+              }} />
             </div>
           )}
         </div>
