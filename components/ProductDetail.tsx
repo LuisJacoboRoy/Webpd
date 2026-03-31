@@ -293,7 +293,12 @@ const ProductDetailComponent: React.FC = () => {
                     alert('Por favor, selecciona un color en el panel antes de añadir al carrito.');
                     return;
                   }
-                  addToCart({ ...product, price: 0, priceLabel: 'Precio a Cotizar' }, quantity, selectedColor?.name);
+                  // Si el color es personalizado, pasamos el hexadecimal como identificador
+                  const colorIdentifier = selectedColor?.name === 'Personalizado' 
+                    ? selectedColor.hex.toUpperCase() 
+                    : selectedColor?.name;
+                    
+                  addToCart({ ...product, price: 0, priceLabel: 'Precio a Cotizar' }, quantity, colorIdentifier);
                 }}
                 className="flex-1 px-8 py-5 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 text-sm uppercase tracking-widest"
               >
