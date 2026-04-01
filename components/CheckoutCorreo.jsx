@@ -287,7 +287,6 @@ export default function CheckoutCorreo() {
       <h1 style={styles.title}>Enviar Pedido por Correo</h1>
 
       <form id="contact-form" action={formAction} style={styles.form}>
-        <!-- Campo oculto con fecha dinámica -->
         <input type="hidden" name="time" value={new Date().toISOString()}>
 
         <!-- Campo oculto para el subject del correo -->
