@@ -17,22 +17,29 @@ if (typeof window !== 'undefined') {
 /**
  * ⚠️ CONFIGURACIÓN CRÍTICA DE EMAILJS ⚠️
  * 
- * PLANTILLA: Order Confirmation
+ * PLANTILLA: Order Confirmation (template_x1or3zu)
  * USANDO: emailjs.sendForm() (método recomendado para formularios)
  * SERVICE ID: service_w4hr6r7
  * TEMPLATE ID: template_x1or3zu ← Order Confirmation
  * PUBLIC KEY: kGZA8SmhiaWwbM2Iq
  * 
- * CAMPOS ESPERADOS POR LA PLANTILLA (name attributes):
- * - email → correo del cliente (REQUERIDO para "To Email")
- * - name → nombre del cliente
- * - order_items → artículos del pedido (con cantidades y precios)
- * - total_price → precio total del pedido
- * - order_date → fecha del pedido
+ * CAMPOS ESPERADOS POR LA PLANTILLA (name attributes - CRÍTICOS):
+ * - email → correo del cliente (REQUERIDO para "To Email" → {{email}})
+ * - name → nombre del cliente ({{name}})
+ * - order_items → artículos desglosados con cantidad, color e imagen
+ * - order_items_html → versión HTML de items para mejor presentación
+ * - total_price → precio total (muestra "-" si es 0)
+ * - order_date → fecha del pedido ({{order_date}})
  * 
- * IMPORTANTE EN EMAILJS DASHBOARD:
- * El campo "To Email" DEBE estar configurado exactamente como: {{email}}
- * (con dobles llaves y ese nombre exacto)
+ * ⚠️ IMPORTANTE:
+ * - NO cambiar los nombres de los campos sin actualizar la plantilla en EmailJS
+ * - El campo email DEBE estar en "To Email" como {{email}} en el dashboard
+ * - readOnly en inputs para evitar que se excluyan de FormData
+ * - VALIDACIÓN: email requerido (si está vacío, error 422)
+ * 
+ * HISTORIAL DE FIXES:
+ * [1] Error 422 "recipients address empty" → Cambiar disabled por readOnly
+ * [2] Mejora: Campo order_items_html para desglose con imágenes y colores
  */
 
 // Componente CheckoutCorreo
@@ -56,8 +63,8 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
         name,
         email,
         order_date: formData.get('order_date'),
-        order_items: formData.get('order_items'),
-        total_price: formData.get('total_price')
+        total_price: formData.get('total_price'),
+        items_count: cartItems.length
       });
 
       if (!name || !email) {
@@ -80,12 +87,42 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
         return;
       }
 
+      // ✅ GENERAR DESGLOSE COMPLETO DE ITEMS CON IMÁGENES Y COLORES
+      const itemsDesglose = cartItems.length > 0 
+        ? cartItems.map((item, idx) => {
+            const colorInfo = item.color ? `Color: ${item.color}` : '';
+            const priceDisplay = item.price && item.price > 0 ? `$${item.price}` : '-';
+            return {
+              numero: idx + 1,
+              nombre: item.name,
+              cantidad: item.quantity,
+              color: item.color || 'N/A',
+              precio: priceDisplay,
+              imagen: item.image || 'Sin imagen',
+              texto: `${idx + 1}. ${item.name} (Cant: ${item.quantity}${colorInfo ? ', ' + colorInfo : ''}) - ${priceDisplay}`
+            };
+          })
+        : [];
+
+      // Formato texto simple para email
+      const itemsTexto = itemsDesglose.length > 0
+        ? itemsDesglose.map(it => it.texto).join('\n')
+        : 'Sin productos';
+
+      // Actualizar campo oculto con desglose de items
+      const orderItemsInput = form.current.elements['order_items'];
+      if (orderItemsInput) {
+        orderItemsInput.value = itemsTexto;
+      }
+
       console.log('✅ Validación pasada');
+      console.log('📦 Items a enviar:', itemsDesglose);
       console.log('📧 Enviando formulario con EmailJS...');
       console.log('📤 Parámetros enviados:', {
         serviceID: 'service_w4hr6r7',
         templateID: 'template_x1or3zu',
-        formElement: form.current.name || 'contact-form'
+        formElement: form.current.id || 'contact-form',
+        itemsCount: itemsDesglose.length
       });
 
       // Enviar formulario con EmailJS
@@ -250,20 +287,24 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
         {/* Campo oculto con la fecha del pedido */}
         <input type="hidden" name="order_date" value={new Date().toLocaleDateString('es-ES')} />
 
-        {/* Campo oculto con los items del pedido formateados */}
-        <input type="hidden" name="order_items" value={
-          cartItems.length > 0 
-            ? cartItems.map((item, idx) => {
-                const colorInfo = item.color ? ` (Color: ${item.color})` : '';
-                return `${idx + 1}. ${item.name} - Cant. ${item.quantity}${colorInfo}`;
-              }).join(' | ')
-            : 'Sin productos'
-        } />
+        {/* Campo oculto con los items del pedido (se actualiza en sendEmail) */}
+        <input type="hidden" name="order_items" value="Procesando items..." />
 
-        {/* Campo oculto con el total del pedido */}
-        <input type="hidden" name="total_price" value={cartTotal || '0'} />
+        {/* Campo oculto con el total del pedido - Muestra "-" si es 0 */}
+        <input 
+          type="hidden" 
+          name="total_price" 
+          value={cartTotal && cartTotal > 0 ? `$${cartTotal}` : '-'} 
+        />
 
-        {/* Campo para el nombre del cliente */}
+        {/* 
+          ⚠️ CAMPOS CRÍTICOS - NO CAMBIAR SIN ACTUALIZAR PLANTILLA EMAILJS
+          Los nombres (name) de estos campos deben coincidir exactamente con
+          las variables en la plantilla de EmailJS (template_x1or3zu)
+          https://dashboard.emailjs.com/admin/templates/template_x1or3zu
+        */}
+
+        {/* Campo para el nombre del cliente - {{name}} en plantilla */}
         <div style={styles.formGroup}>
           <label htmlFor="name" style={styles.label}>
             Nombre Completo <span style={styles.required}>*</span>
@@ -280,7 +321,10 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
           />
         </div>
 
-        {/* Campo para el correo del cliente - CRÍTICO: name debe ser email */}
+        {/* 
+          ⚠️ CRÍTICO: Campo email - Debe estar en "To Email" como {{email}}
+          Si cambia el nombre, actualizar en EmailJS dashboard
+        */}
         <div style={styles.formGroup}>
           <label htmlFor="email" style={styles.label}>
             Correo Electrónico <span style={styles.required}>*</span>
@@ -297,7 +341,7 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
           />
         </div>
 
-        {/* Campo para el teléfono del cliente */}
+        {/* Campos opcionales - Se envían a la plantilla si se rellenan */}
         <div style={styles.formGroup}>
           <label htmlFor="phone" style={styles.label}>
             Teléfono
@@ -313,7 +357,6 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
           />
         </div>
 
-        {/* Campo para la dirección del cliente */}
         <div style={styles.formGroup}>
           <label htmlFor="address" style={styles.label}>
             Dirección de Envío
@@ -329,7 +372,6 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
           />
         </div>
 
-        {/* Campo para el mensaje del cliente */}
         <div style={styles.formGroup}>
           <label htmlFor="message" style={styles.label}>
             Comentarios Adicionales
@@ -344,7 +386,11 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
           />
         </div>
 
-        {/* Botón de envío */}
+        {/* 
+          Botón de envío
+          IMPORTANTE: type="submit" dispara onSubmit del formulario
+          NO cambiar a onClick, mantener onSubmit para consistencia
+        */}
         <button
           type="submit"
           disabled={isPending}
