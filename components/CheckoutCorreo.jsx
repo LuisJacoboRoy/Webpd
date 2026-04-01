@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useRef } from 'react';
+import { useActionState, useRef, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 
 // ✅ Inicializar EmailJS al cargar el módulo (ÚNICA VEZ)
@@ -79,10 +79,14 @@ async function procesarPedidoPorCorreo(prevState, formData) {
       };
     }
 
+    // Obtener los items del carrito desde el formulario
+    let cartItemsText = formData.get('cart_items') || 'Sin productos';
+    let cartTotal = formData.get('cart_total') || '0';
+
     // Objeto del carrito
     const carrito = {
-      items: ["Producto 1", "Producto 2", "Producto 3"],
-      total: 500,
+      items: cartItemsText,
+      total: cartTotal,
       fecha: new Date().toLocaleDateString('es-ES')
     };
 
@@ -94,7 +98,7 @@ async function procesarPedidoPorCorreo(prevState, formData) {
       phone: telefono,               // ← teléfono
       address: direccion,            // ← dirección
       message: comentarios,          // ← comentarios
-      cart_items: carrito.items.join(', '),
+      cart_items: carrito.items,
       cart_total: carrito.total,
       order_date: carrito.fecha
     };
@@ -160,7 +164,7 @@ async function procesarPedidoPorCorreo(prevState, formData) {
 }
 
 // Componente CheckoutCorreo
-export default function CheckoutCorreo() {
+export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSuccess }) {
   const [state, formAction, isPending] = useActionState(procesarPedidoPorCorreo, {
     exito: null,
     mensaje: ''
@@ -282,13 +286,40 @@ export default function CheckoutCorreo() {
     };
   }, []);
 
+  // Llamar onSuccess cuando el email se envía correctamente
+  useEffect(() => {
+    if (state?.exito && onSuccess) {
+      const timer = setTimeout(() => {
+        onSuccess();
+      }, 1500); // Esperar 1.5 segundos antes de ejecutar onSuccess
+
+      return () => clearTimeout(timer);
+    }
+  }, [state?.exito, onSuccess]);
+
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Enviar Pedido por Correo</h1>
 
       <form id="contact-form" action={formAction} style={styles.form}>
+        {/* Campo oculto con fecha dinámica */}
         <input type="hidden" name="time" value={new Date().toISOString()} />
+
+        {/* Campo oculto para el subject del correo */}
         <input type="hidden" name="subject" value="Pedido Realizado" />
+
+        {/* Campo oculto con los items del carrito formateados */}
+        <input type="hidden" name="cart_items" value={
+          cartItems.length > 0 
+            ? cartItems.map((item, idx) => {
+                const colorInfo = item.color ? ` (Color: ${item.color})` : '';
+                return `${idx + 1}. ${item.name} - Cant. ${item.quantity}${colorInfo}`;
+              }).join(' | ')
+            : 'Sin productos'
+        } />
+
+        {/* Campo oculto con el total del carrito */}
+        <input type="hidden" name="cart_total" value={cartTotal || '0'} />
 
         {/* Campo para el nombre del cliente */}
         <div style={styles.formGroup}>

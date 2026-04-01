@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { Product, CartItem } from '../types';
 
@@ -37,28 +38,16 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const addToCart = (product: Product, quantity: number = 1, color?: string) => {
     // Generar un ID único para el carrito basado en el ID del producto y su color (si existe)
-    const cartItemId = `${product.id}-${color || 'default'}`; // ID único basado en producto y color
+    const cartItemId = color ? `${product.id}-${color}` : product.id;
 
     setCart((prev) => {
-      const existingItem = prev.find((item) => item.cartItemId === cartItemId);
-
-      if (existingItem) {
+      const existing = prev.find((item) => item.cartItemId === cartItemId);
+      if (existing) {
         return prev.map((item) =>
-          item.cartItemId === cartItemId
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
+          item.cartItemId === cartItemId ? { ...item, quantity: item.quantity + quantity } : item
         );
       }
-
-      return [
-        ...prev,
-        {
-          ...product,
-          cartItemId,
-          quantity,
-          color,
-        },
-      ];
+      return [...prev, { ...product, cartItemId, quantity, color }];
     });
     setIsCartOpen(true);
   };

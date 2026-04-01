@@ -142,18 +142,6 @@ const ProductDetailComponent: React.FC = () => {
   useHelmetJsonLd(productSchema);
   useHelmetJsonLd(breadcrumbSchema);
 
-  const handleAddToCart = () => {
-    if (!selectedColor) {
-      alert('Por favor selecciona un color antes de agregar al carrito.');
-      return;
-    }
-
-    addToCart({
-      ...product,
-      color: selectedColor.hex, // Agregar el color seleccionado
-    }, quantity);
-  };
-
   return (
     <>
       <Helmet>
@@ -260,7 +248,7 @@ const ProductDetailComponent: React.FC = () => {
               {product.subCategoryId === 'vinilicas-deco' && (
                 <div className="w-full flex flex-col gap-4">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Color Seleccionado</h4>
+                    <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Color Seleccionado <span className="text-slate-300 font-normal">(Opcional)</span></h4>
                     {selectedColor && (
                       <span className="text-xs font-black text-slate-900 bg-white px-3 py-1 rounded-full border border-slate-200 shadow-sm">{selectedColor.name}</span>
                     )}
@@ -302,7 +290,23 @@ const ProductDetailComponent: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                onClick={handleAddToCart}
+                onClick={() => {
+                  // Para vinílicas: agregar con color si está seleccionado
+                  // Si no hay color seleccionado, agregar sin color
+                  let colorIdentifier = undefined;
+                  
+                  if (product.subCategoryId === 'vinilicas-deco' && selectedColor) {
+                    // Si el color es personalizado, pasamos el hexadecimal como identificador
+                    colorIdentifier = selectedColor?.name === 'Personalizado' 
+                      ? selectedColor.hex.toUpperCase() 
+                      : selectedColor?.name;
+                  }
+                  
+                  addToCart({ ...product, price: 0, priceLabel: 'Precio a Cotizar' }, quantity, colorIdentifier);
+                  
+                  // Opcional: reseteamos la cantidad después de agregar
+                  setQuantity(1);
+                }}
                 className="flex-1 px-8 py-5 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 text-sm uppercase tracking-widest"
               >
                 Añadir al Carrito
