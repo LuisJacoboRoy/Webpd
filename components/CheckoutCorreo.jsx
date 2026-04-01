@@ -268,12 +268,32 @@ export default function CheckoutCorreo() {
     }
   };
 
+  useEffect(() => {
+    // Cargar el script de EmailJS desde el CDN
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      // Eliminar el script cuando el componente se desmonte
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Enviar Pedido por Correo</h1>
 
-      <form action={formAction} style={styles.form}>
-        {/* Campo: Nombre Completo */}
+      <form id="contact-form" action={formAction} style={styles.form}>
+        <!-- Campo oculto con fecha dinámica -->
+        <input type="hidden" name="time" value={new Date().toISOString()}>
+
+        <!-- Campo oculto para el subject del correo -->
+        <input type="hidden" name="subject" value="Pedido Realizado">
+
+        {/* Campo para el nombre del cliente */}
         <div style={styles.formGroup}>
           <label htmlFor="from_name" style={styles.label}>
             Nombre Completo <span style={styles.required}>*</span>
@@ -282,46 +302,30 @@ export default function CheckoutCorreo() {
             type="text"
             id="from_name"
             name="from_name"
-            placeholder="Juan Pérez García"
+            placeholder="Escriba su nombre"
             required
             disabled={isPending}
             style={styles.input}
           />
         </div>
 
-        {/* Campo: Correo Electrónico */}
+        {/* Campo para el correo del cliente */}
         <div style={styles.formGroup}>
-          <label htmlFor="to_email" style={styles.label}>
+          <label htmlFor="from_email" style={styles.label}>
             Correo Electrónico <span style={styles.required}>*</span>
           </label>
           <input
             type="email"
-            id="to_email"
-            name="to_email"
-            placeholder="tu.email@ejemplo.com"
+            id="from_email"
+            name="from_email"
+            placeholder="tu.email@electronico.com"
             required
             disabled={isPending}
             style={styles.input}
           />
         </div>
 
-        {/* Campo: Dirección de Envío */}
-        <div style={styles.formGroup}>
-          <label htmlFor="address" style={styles.label}>
-            Dirección de Envío <span style={styles.required}>*</span>
-          </label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            placeholder="Calle Principal 123, Apt 4B, Ciudad"
-            required
-            disabled={isPending}
-            style={styles.input}
-          />
-        </div>
-
-        {/* Campo: Teléfono */}
+        {/* Campo para el teléfono del cliente */}
         <div style={styles.formGroup}>
           <label htmlFor="phone" style={styles.label}>
             Teléfono <span style={styles.required}>*</span>
@@ -330,14 +334,30 @@ export default function CheckoutCorreo() {
             type="tel"
             id="phone"
             name="phone"
-            placeholder="+34 600 123 456"
+            placeholder="Numero de contacto"
             required
             disabled={isPending}
             style={styles.input}
           />
         </div>
 
-        {/* Campo: Comentarios Adicionales */}
+        {/* Campo para la dirección del cliente */}
+        <div style={styles.formGroup}>
+          <label htmlFor="address" style={styles.label}>
+            Dirección de Envío <span style={styles.required}>*</span>
+          </label>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            placeholder="Calle 123, colonia, Ciudad"
+            required
+            disabled={isPending}
+            style={styles.input}
+          />
+        </div>
+
+        {/* Campo para el mensaje del cliente */}
         <div style={styles.formGroup}>
           <label htmlFor="message" style={styles.label}>
             Comentarios Adicionales
@@ -351,7 +371,7 @@ export default function CheckoutCorreo() {
           />
         </div>
 
-        {/* Botón de Envío */}
+        {/* Botón de envío */}
         <button
           type="submit"
           disabled={isPending}
