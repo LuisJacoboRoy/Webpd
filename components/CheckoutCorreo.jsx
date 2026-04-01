@@ -289,7 +289,6 @@ export default function CheckoutCorreo() {
       <form id="contact-form" action={formAction} style={styles.form}>
         <input type="hidden" name="time" value={new Date().toISOString()}>
 
-        <!-- Campo oculto para el subject del correo -->
         <input type="hidden" name="subject" value="Pedido Realizado">
 
         {/* Campo para el nombre del cliente */}
