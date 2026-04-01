@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import emailjs from '@emailjs/browser';
 
 // ✅ Inicializar EmailJS al cargar el módulo (ÚNICA VEZ)
@@ -17,158 +17,114 @@ if (typeof window !== 'undefined') {
 /**
  * ⚠️ CONFIGURACIÓN CRÍTICA DE EMAILJS ⚠️
  * 
+ * PLANTILLA: Order Confirmation
  * USANDO: emailjs.sendForm() (método recomendado para formularios)
  * SERVICE ID: service_w4hr6r7
- * TEMPLATE ID: template_x1or3zu
+ * TEMPLATE ID: template_x1or3zu ← Order Confirmation
  * PUBLIC KEY: kGZA8SmhiaWwbM2Iq
  * 
- * CAMPOS ESPERADOS EN LA PLANTILLA (case-sensitive):
- * - to_email → correo del cliente (REQUERIDO para "To Email")
+ * CAMPOS REQUERIDOS EN EL FORMULARIO (name attributes):
  * - from_name → nombre del cliente
- * - from_email → email del cliente
+ * - to_email → correo del cliente (REQUERIDO para "To Email")
  * - phone → teléfono del cliente
  * - address → dirección de envío
  * - message → comentarios adicionales
- * - cart_items → artículos del carrito
- * - cart_total → total del carrito
- * - order_date → fecha del pedido
+ * - cart_items → artículos del carrito (hidden)
+ * - cart_total → total del carrito (hidden)
+ * - order_date → fecha del pedido (hidden)
  * 
  * IMPORTANTE EN EMAILJS DASHBOARD:
  * El campo "To Email" DEBE estar configurado exactamente como: {{to_email}}
  * (con dobles llaves y ese nombre exacto)
  */
 
-// Función de acción para procesar el formulario de pedido por correo
-async function procesarPedidoPorCorreo(prevState, formData) {
-  try {
-    // Extraer datos del FormData
-    let nombre = formData.get('from_name');
-    let correo = formData.get('to_email');
-    let direccion = formData.get('address');
-    let telefono = formData.get('phone');
-    let comentarios = formData.get('message') || 'Sin comentarios adicionales';
-
-    // ✅ LIMPIEZA AGRESIVA
-    nombre = nombre?.trim().replace(/\s+/g, ' ') || '';
-    correo = correo?.trim().toLowerCase().replace(/\s/g, '') || '';
-    direccion = direccion?.trim().replace(/\s+/g, ' ') || '';
-    telefono = telefono?.trim().replace(/\s/g, '') || '';
-    comentarios = comentarios?.trim().replace(/\s+/g, ' ') || 'Sin comentarios adicionales';
-
-    // Validación básica
-    if (!nombre || !correo || !direccion || !telefono) {
-      console.warn('❌ Validación fallida - Campos vacíos:', {
-        nombre: !nombre,
-        correo: !correo,
-        direccion: !direccion,
-        telefono: !telefono
-      });
-      return {
-        exito: false,
-        mensaje: 'Por favor completa todos los campos requeridos.'
-      };
-    }
-
-    // Validar formato de email
-    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
-    if (!emailRegex.test(correo)) {
-      console.warn('❌ Formato de email inválido:', correo);
-      return {
-        exito: false,
-        mensaje: 'Por favor ingresa un correo electrónico válido.'
-      };
-    }
-
-    // Obtener los items del carrito desde el formulario
-    let cartItemsText = formData.get('cart_items') || 'Sin productos';
-    let cartTotal = formData.get('cart_total') || '0';
-
-    // Objeto del carrito
-    const carrito = {
-      items: cartItemsText,
-      total: cartTotal,
-      fecha: new Date().toLocaleDateString('es-ES')
-    };
-
-    // ✅ Parámetros que se enviarán a EmailJS
-    const templateParams = {
-      to_email: correo,              // ← CRÍTICO: variable para "Send To"
-      from_name: nombre,             // ← nombre del cliente
-      from_email: correo,            // ← email del cliente
-      phone: telefono,               // ← teléfono
-      address: direccion,            // ← dirección
-      message: comentarios,          // ← comentarios
-      cart_items: carrito.items,
-      cart_total: carrito.total,
-      order_date: carrito.fecha
-    };
-
-    console.log('📧 ENVIANDO PARÁMETROS A EMAILJS:', templateParams);
-
-    // ✅ Validación final
-    if (!templateParams.to_email || templateParams.to_email.length === 0) {
-      console.error('🚨 ERROR CRÍTICO: to_email está vacío');
-      return {
-        exito: false,
-        mensaje: 'Error: El correo electrónico no pudo procesarse.'
-      };
-    }
-
-    // ✅ ENVIAR CON emailjs.send() (parámetros)
-    console.log('🚀 Llamando emailjs.send()...');
-    
-    const response = await emailjs.send(
-      'service_w4hr6r7',          // Service ID
-      'template_x1or3zu',         // Template ID actualizado
-      templateParams              // Parámetros
-    );
-
-    console.log('✅ Respuesta de EmailJS:', {
-      status: response.status,
-      text: response.text
-    });
-
-    if (response.status === 200) {
-      console.log('🎉 EMAIL ENVIADO EXITOSAMENTE A:', correo);
-      return {
-        exito: true,
-        mensaje: '¡Pedido enviado correctamente! Recibirás confirmación en tu correo electrónico.'
-      };
-    } else {
-      throw new Error(`Status: ${response.status}`);
-    }
-
-  } catch (error) {
-    console.error('❌ ERROR EN EMAILJS:', {
-      message: error.message,
-      status: error.status || 'sin status',
-      response: error.response || 'sin response',
-      toString: error.toString()
-    });
-
-    let mensajeError = 'Error al enviar el pedido. Intenta nuevamente más tarde.';
-
-    if (error.message?.includes('recipients')) {
-      mensajeError = '❌ Error: El campo "To Email" en EmailJS no está configurado como {{to_email}}';
-    } else if (error.status === 422) {
-      mensajeError = '❌ Error 422: Verifica la configuración del "To Email" en el template.';
-    } else if (error.message?.includes('service')) {
-      mensajeError = '❌ Error de configuración: Verifica Service ID o Template ID.';
-    }
-
-    return {
-      exito: false,
-      mensaje: mensajeError
-    };
-  }
-}
-
 // Componente CheckoutCorreo
 export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSuccess }) {
-  const [state, formAction, isPending] = useActionState(procesarPedidoPorCorreo, {
-    exito: null,
-    mensaje: ''
-  });
+  const form = useRef();
+  const [isPending, setIsPending] = useState(false);
+  const [message, setMessage] = useState({ text: '', isSuccess: false });
+
+  const sendEmail = async (e) => {
+    e.preventDefault();
+    setIsPending(true);
+    setMessage({ text: '', isSuccess: false });
+
+    try {
+      // Validar que el formulario tenga datos
+      const formData = new FormData(form.current);
+      const nombre = formData.get('from_name')?.trim();
+      const correo = formData.get('to_email')?.trim();
+      const telefono = formData.get('phone')?.trim();
+      const direccion = formData.get('address')?.trim();
+
+      if (!nombre || !correo || !telefono || !direccion) {
+        setMessage({
+          text: '❌ Por favor completa todos los campos requeridos.',
+          isSuccess: false
+        });
+        setIsPending(false);
+        return;
+      }
+
+      // Validar formato de email
+      const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+      if (!emailRegex.test(correo)) {
+        setMessage({
+          text: '❌ Por favor ingresa un correo electrónico válido.',
+          isSuccess: false
+        });
+        setIsPending(false);
+        return;
+      }
+
+      console.log('📧 Enviando formulario con EmailJS...');
+
+      // Enviar formulario con EmailJS
+      const response = await emailjs.sendForm(
+        'service_w4hr6r7',          // Service ID
+        'template_x1or3zu',         // Template ID
+        form.current               // Referencia al formulario
+      );
+
+      console.log('✅ Email enviado exitosamente:', response);
+
+      setMessage({
+        text: '✅ ¡Pedido enviado correctamente! Recibirás confirmación en tu correo.',
+        isSuccess: true
+      });
+
+      // Resetear formulario
+      form.current.reset();
+
+      // Llamar callback onSuccess después de 1.5 segundos
+      if (onSuccess) {
+        setTimeout(() => {
+          onSuccess();
+        }, 1500);
+      }
+
+    } catch (error) {
+      console.error('❌ Error al enviar email:', error);
+
+      let errorMsg = '❌ Error al enviar el pedido. Intenta nuevamente más tarde.';
+
+      if (error.message?.includes('recipients')) {
+        errorMsg = '❌ Error: Configuración incorrecta del "To Email" en EmailJS.';
+      } else if (error.status === 422) {
+        errorMsg = '❌ Error 422: Verifica los campos en la plantilla de EmailJS.';
+      } else if (error.message?.includes('service')) {
+        errorMsg = '❌ Error: Service ID o Template ID inválidos.';
+      }
+
+      setMessage({
+        text: errorMsg,
+        isSuccess: false
+      });
+
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   const styles = {
     container: {
@@ -243,9 +199,6 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
       transition: 'background-color 0.3s ease',
       marginTop: '1rem'
     },
-    buttonHover: {
-      backgroundColor: isPending ? '#007bff' : '#0056b3'
-    },
     message: {
       padding: '1rem',
       borderRadius: '4px',
@@ -272,41 +225,13 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
     }
   };
 
-  useEffect(() => {
-    // Cargar el script de EmailJS desde el CDN
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      // Eliminar el script cuando el componente se desmonte
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  // Llamar onSuccess cuando el email se envía correctamente
-  useEffect(() => {
-    if (state?.exito && onSuccess) {
-      const timer = setTimeout(() => {
-        onSuccess();
-      }, 1500); // Esperar 1.5 segundos antes de ejecutar onSuccess
-
-      return () => clearTimeout(timer);
-    }
-  }, [state?.exito, onSuccess]);
-
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Enviar Pedido por Correo</h1>
 
-      <form id="contact-form" action={formAction} style={styles.form}>
-        {/* Campo oculto con fecha dinámica */}
-        <input type="hidden" name="time" value={new Date().toISOString()} />
-
-        {/* Campo oculto para el subject del correo */}
-        <input type="hidden" name="subject" value="Pedido Realizado" />
+      <form ref={form} id="contact-form" onSubmit={sendEmail} style={styles.form}>
+        {/* Campo oculto con la fecha del pedido */}
+        <input type="hidden" name="order_date" value={new Date().toLocaleDateString('es-ES')} />
 
         {/* Campo oculto con los items del carrito formateados */}
         <input type="hidden" name="cart_items" value={
@@ -408,10 +333,7 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
         <button
           type="submit"
           disabled={isPending}
-          style={{
-            ...styles.button,
-            ...(isPending && styles.buttonHover)
-          }}
+          style={styles.button}
           onMouseEnter={(e) => {
             if (!isPending) e.target.style.backgroundColor = '#0056b3';
           }}
@@ -431,14 +353,14 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
       </form>
 
       {/* Mensaje de éxito o error */}
-      {state?.mensaje && (
+      {message.text && (
         <div
           style={{
             ...styles.message,
-            ...(state.exito ? styles.successMessage : styles.errorMessage)
+            ...(message.isSuccess ? styles.successMessage : styles.errorMessage)
           }}
         >
-          {state.mensaje}
+          {message.text}
         </div>
       )}
 
