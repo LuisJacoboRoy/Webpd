@@ -333,22 +333,24 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
             placeholder="Escriba su nombre"
             required
             disabled={isPending}
+            autoComplete="name"
             style={styles.input}
           />
         </div>
 
-        {/* Campo para el correo del cliente */}
+        {/* Campo para el correo del cliente - CRÍTICO: name debe ser to_email */}
         <div style={styles.formGroup}>
-          <label htmlFor="from_email" style={styles.label}>
+          <label htmlFor="to_email" style={styles.label}>
             Correo Electrónico <span style={styles.required}>*</span>
           </label>
           <input
             type="email"
-            id="from_email"
-            name="from_email"
+            id="to_email"
+            name="to_email"
             placeholder="tu.email@electronico.com"
             required
             disabled={isPending}
+            autoComplete="email"
             style={styles.input}
           />
         </div>
@@ -365,6 +367,7 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
             placeholder="Numero de contacto"
             required
             disabled={isPending}
+            autoComplete="tel"
             style={styles.input}
           />
         </div>
@@ -381,6 +384,7 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
             placeholder="Calle 123, colonia, Ciudad"
             required
             disabled={isPending}
+            autoComplete="street-address"
             style={styles.input}
           />
         </div>
@@ -395,6 +399,7 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
             name="message"
             placeholder="Agrega cualquier nota especial para tu pedido..."
             disabled={isPending}
+            autoComplete="off"
             style={styles.textarea}
           />
         </div>
