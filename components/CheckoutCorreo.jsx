@@ -23,18 +23,15 @@ if (typeof window !== 'undefined') {
  * TEMPLATE ID: template_x1or3zu ← Order Confirmation
  * PUBLIC KEY: kGZA8SmhiaWwbM2Iq
  * 
- * CAMPOS REQUERIDOS EN EL FORMULARIO (name attributes):
- * - from_name → nombre del cliente
- * - to_email → correo del cliente (REQUERIDO para "To Email")
- * - phone → teléfono del cliente
- * - address → dirección de envío
- * - message → comentarios adicionales
- * - cart_items → artículos del carrito (hidden)
- * - cart_total → total del carrito (hidden)
- * - order_date → fecha del pedido (hidden)
+ * CAMPOS ESPERADOS POR LA PLANTILLA (name attributes):
+ * - email → correo del cliente (REQUERIDO para "To Email")
+ * - name → nombre del cliente
+ * - order_items → artículos del pedido (con cantidades y precios)
+ * - total_price → precio total del pedido
+ * - order_date → fecha del pedido
  * 
  * IMPORTANTE EN EMAILJS DASHBOARD:
- * El campo "To Email" DEBE estar configurado exactamente como: {{to_email}}
+ * El campo "To Email" DEBE estar configurado exactamente como: {{email}}
  * (con dobles llaves y ese nombre exacto)
  */
 
@@ -52,14 +49,20 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
     try {
       // Validar que el formulario tenga datos
       const formData = new FormData(form.current);
-      const nombre = formData.get('from_name')?.trim();
-      const correo = formData.get('to_email')?.trim();
-      const telefono = formData.get('phone')?.trim();
-      const direccion = formData.get('address')?.trim();
+      const name = formData.get('name')?.trim();
+      const email = formData.get('email')?.trim();
 
-      if (!nombre || !correo || !telefono || !direccion) {
+      console.log('📋 Datos del formulario:', {
+        name,
+        email,
+        order_date: formData.get('order_date'),
+        order_items: formData.get('order_items'),
+        total_price: formData.get('total_price')
+      });
+
+      if (!name || !email) {
         setMessage({
-          text: '❌ Por favor completa todos los campos requeridos.',
+          text: '❌ Por favor completa el nombre y correo electrónico.',
           isSuccess: false
         });
         setIsPending(false);
@@ -68,7 +71,7 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
 
       // Validar formato de email
       const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
-      if (!emailRegex.test(correo)) {
+      if (!emailRegex.test(email)) {
         setMessage({
           text: '❌ Por favor ingresa un correo electrónico válido.',
           isSuccess: false
@@ -77,13 +80,22 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
         return;
       }
 
+      console.log('✅ Validación pasada');
       console.log('📧 Enviando formulario con EmailJS...');
+      console.log('📤 Parámetros enviados:', {
+        serviceID: 'service_w4hr6r7',
+        templateID: 'template_x1or3zu',
+        formElement: form.current.name || 'contact-form'
+      });
 
       // Enviar formulario con EmailJS
       const response = await emailjs.sendForm(
         'service_w4hr6r7',          // Service ID
         'template_x1or3zu',         // Template ID
-        form.current               // Referencia al formulario
+        form.current,               // Referencia al formulario
+        {
+          publicKey: 'kGZA8SmhiaWwbM2Iq'  // Especificar public key explícitamente
+        }
       );
 
       console.log('✅ Email enviado exitosamente:', response);
@@ -105,13 +117,18 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
 
     } catch (error) {
       console.error('❌ Error al enviar email:', error);
+      console.error('📋 Detalles del error:', {
+        message: error.message,
+        status: error.status,
+        text: error.text
+      });
 
       let errorMsg = '❌ Error al enviar el pedido. Intenta nuevamente más tarde.';
 
       if (error.message?.includes('recipients')) {
-        errorMsg = '❌ Error: Configuración incorrecta del "To Email" en EmailJS.';
+        errorMsg = '❌ Error: El correo no puede estar vacío. Verifica el campo de email.';
       } else if (error.status === 422) {
-        errorMsg = '❌ Error 422: Verifica los campos en la plantilla de EmailJS.';
+        errorMsg = '❌ Error 422: El correo está vacío. Por favor, rellena el campo de email.';
       } else if (error.message?.includes('service')) {
         errorMsg = '❌ Error: Service ID o Template ID inválidos.';
       }
@@ -233,8 +250,8 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
         {/* Campo oculto con la fecha del pedido */}
         <input type="hidden" name="order_date" value={new Date().toLocaleDateString('es-ES')} />
 
-        {/* Campo oculto con los items del carrito formateados */}
-        <input type="hidden" name="cart_items" value={
+        {/* Campo oculto con los items del pedido formateados */}
+        <input type="hidden" name="order_items" value={
           cartItems.length > 0 
             ? cartItems.map((item, idx) => {
                 const colorInfo = item.color ? ` (Color: ${item.color})` : '';
@@ -243,38 +260,38 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
             : 'Sin productos'
         } />
 
-        {/* Campo oculto con el total del carrito */}
-        <input type="hidden" name="cart_total" value={cartTotal || '0'} />
+        {/* Campo oculto con el total del pedido */}
+        <input type="hidden" name="total_price" value={cartTotal || '0'} />
 
         {/* Campo para el nombre del cliente */}
         <div style={styles.formGroup}>
-          <label htmlFor="from_name" style={styles.label}>
+          <label htmlFor="name" style={styles.label}>
             Nombre Completo <span style={styles.required}>*</span>
           </label>
           <input
             type="text"
-            id="from_name"
-            name="from_name"
+            id="name"
+            name="name"
             placeholder="Escriba su nombre"
             required
-            disabled={isPending}
+            readOnly={isPending}
             autoComplete="name"
             style={styles.input}
           />
         </div>
 
-        {/* Campo para el correo del cliente - CRÍTICO: name debe ser to_email */}
+        {/* Campo para el correo del cliente - CRÍTICO: name debe ser email */}
         <div style={styles.formGroup}>
-          <label htmlFor="to_email" style={styles.label}>
+          <label htmlFor="email" style={styles.label}>
             Correo Electrónico <span style={styles.required}>*</span>
           </label>
           <input
             type="email"
-            id="to_email"
-            name="to_email"
+            id="email"
+            name="email"
             placeholder="tu.email@electronico.com"
             required
-            disabled={isPending}
+            readOnly={isPending}
             autoComplete="email"
             style={styles.input}
           />
@@ -283,15 +300,14 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
         {/* Campo para el teléfono del cliente */}
         <div style={styles.formGroup}>
           <label htmlFor="phone" style={styles.label}>
-            Teléfono <span style={styles.required}>*</span>
+            Teléfono
           </label>
           <input
             type="tel"
             id="phone"
             name="phone"
             placeholder="Numero de contacto"
-            required
-            disabled={isPending}
+            readOnly={isPending}
             autoComplete="tel"
             style={styles.input}
           />
@@ -300,15 +316,14 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
         {/* Campo para la dirección del cliente */}
         <div style={styles.formGroup}>
           <label htmlFor="address" style={styles.label}>
-            Dirección de Envío <span style={styles.required}>*</span>
+            Dirección de Envío
           </label>
           <input
             type="text"
             id="address"
             name="address"
             placeholder="Calle 123, colonia, Ciudad"
-            required
-            disabled={isPending}
+            readOnly={isPending}
             autoComplete="street-address"
             style={styles.input}
           />
@@ -323,7 +338,7 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
             id="message"
             name="message"
             placeholder="Agrega cualquier nota especial para tu pedido..."
-            disabled={isPending}
+            readOnly={isPending}
             autoComplete="off"
             style={styles.textarea}
           />
@@ -333,7 +348,11 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
         <button
           type="submit"
           disabled={isPending}
-          style={styles.button}
+          style={{
+            ...styles.button,
+            opacity: isPending ? 0.6 : 1,
+            cursor: isPending ? 'not-allowed' : 'pointer'
+          }}
           onMouseEnter={(e) => {
             if (!isPending) e.target.style.backgroundColor = '#0056b3';
           }}
@@ -341,7 +360,7 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
             if (!isPending) e.target.style.backgroundColor = '#007bff';
           }}
         >
-          {isPending ? 'Enviando pedido...' : 'Enviar Pedido'}
+          {isPending ? '⏳ Enviando pedido...' : '📤 Enviar Pedido'}
         </button>
 
         {/* Indicador de carga */}
