@@ -44,7 +44,8 @@ export const BUSINESS_INFO = {
 
 // Palabras clave por sección (máximo 5)
 export const SEO_KEYWORDS = {
-  home: ['pinturas Oaxaca', 'pintura automotriz', 'pintura maderas', 'pintura decorativa', 'Diamante'],
+  home: ['pinturas premium', 'automotriz', 'maderas', 'decorativo', 'Oaxaca'],
+  catalog: ['pinturas Oaxaca', 'pintura automotriz', 'pintura maderas', 'pintura decorativa', 'Diamante'],
   automotriz: ['pintura automotriz', 'esmalte automotriz', 'primer automotriz', 'barniz transparente', 'repintado'],
   maderas: ['pintura maderas', 'barniz madera', 'laca madera', 'protección madera', 'acabado madera'],
   decorativo: ['pintura decorativa', 'pintura vinil-acrílica', 'impermeabilizante', 'pintura muros', 'acabado decorativo']
