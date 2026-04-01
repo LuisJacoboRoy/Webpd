@@ -287,9 +287,8 @@ export default function CheckoutCorreo() {
       <h1 style={styles.title}>Enviar Pedido por Correo</h1>
 
       <form id="contact-form" action={formAction} style={styles.form}>
-        <input type="hidden" name="time" value={new Date().toISOString()}>
-
-        <input type="hidden" name="subject" value="Pedido Realizado">
+        <input type="hidden" name="time" value={new Date().toISOString()} />
+        <input type="hidden" name="subject" value="Pedido Realizado" />
 
         {/* Campo para el nombre del cliente */}
         <div style={styles.formGroup}>
