@@ -142,6 +142,18 @@ const ProductDetailComponent: React.FC = () => {
   useHelmetJsonLd(productSchema);
   useHelmetJsonLd(breadcrumbSchema);
 
+  const handleAddToCart = () => {
+    if (!selectedColor) {
+      alert('Por favor selecciona un color antes de agregar al carrito.');
+      return;
+    }
+
+    addToCart({
+      ...product,
+      color: selectedColor.hex, // Agregar el color seleccionado
+    }, quantity);
+  };
+
   return (
     <>
       <Helmet>
@@ -290,18 +302,7 @@ const ProductDetailComponent: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                onClick={() => {
-                  if (product.subCategoryId === 'vinilicas-deco' && !selectedColor) {
-                    alert('Por favor, selecciona un color en el panel antes de añadir al carrito.');
-                    return;
-                  }
-                  // Si el color es personalizado, pasamos el hexadecimal como identificador
-                  const colorIdentifier = selectedColor?.name === 'Personalizado' 
-                    ? selectedColor.hex.toUpperCase() 
-                    : selectedColor?.name;
-                    
-                  addToCart({ ...product, price: 0, priceLabel: 'Precio a Cotizar' }, quantity, colorIdentifier);
-                }}
+                onClick={handleAddToCart}
                 className="flex-1 px-8 py-5 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 text-sm uppercase tracking-widest"
               >
                 Añadir al Carrito
