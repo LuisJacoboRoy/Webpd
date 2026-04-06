@@ -45,7 +45,18 @@ if (typeof window !== 'undefined') {
  * [1] Error 422 "recipients address empty" → Cambiar disabled por readOnly
  * [2] Mejora: Desglose con imágenes y colores
  * [3] Mejora: Agregada hora del pedido (order_time)
+ * [4] Fix: URLs de imágenes convertidas a absolutas para EmailJS
  */
+
+// Función Helper: Convertir URLs relativas a URLs completas
+const getFullImageUrl = (imageUrl) => {
+  if (!imageUrl) return '';
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl;
+  }
+  // Convertir URL relativa a URL completa con dominio
+  return `https://pinturasdiamante.com${imageUrl}`;
+};
 
 // Componente CheckoutCorreo
 export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSuccess }) {
@@ -103,7 +114,7 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
               cantidad: item.quantity,
               color: colorInfo,
               precio: priceDisplay,
-              imagen: item.image || 'Sin imagen',
+              imagen: getFullImageUrl(item.image) || 'Sin imagen',
               sku: item.id,
               texto: `${idx + 1}. ${item.name} (Cant: ${item.quantity}${colorInfo !== 'N/A' ? ', Color: ' + colorInfo : ''}) - ${priceDisplay}`
             };

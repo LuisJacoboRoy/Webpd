@@ -22,6 +22,7 @@ const CatalogCategories = lazy(() => import('./components/CatalogCategories'));
 const SubCategorySelector = lazy(() => import('./components/SubCategorySelector'));
 const ProductList = lazy(() => import('./components/ProductList'));
 const ProductDetail = lazy(() => import('./components/ProductDetail'));
+const SearchResults = lazy(() => import('./components/SearchResults'));
 
 // Loading component para Suspense
 const LoadingComponent = () => (
@@ -88,6 +89,7 @@ const AppContent: React.FC = () => {
             <Routes>
               <Route path="/" element={<About />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/search" element={<SearchResults />} />
               <Route path="/catalog" element={<CatalogCategories />} />
               <Route path="/catalog/:categoryId" element={<SubCategorySelector />} />
               <Route path="/catalog/:categoryId/:subCategoryId" element={<ProductList />} />

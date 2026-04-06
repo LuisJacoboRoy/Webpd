@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from '@dr.pogodin/react-helmet';
 import { useHelmetJsonLd } from '../hooks/useHelmet';
@@ -13,17 +13,22 @@ import { useRandomProductImage } from '../hooks/useRandomProductImage';
  * - useMemo para esquemas JSON-LD
  * - React.memo en exportación
  * - Meta tags dinámicos
+ * - Sección de especialidades con navegación a categorías
+ * - Efectos de scroll usando Intersection Observer (eficiente)
  */
 const AboutComponent: React.FC = () => {
+  const sectionsRef = useRef<HTMLDivElement>(null);
+
   const regions = [
     "Oaxaca", "Puebla", "Veracruz", "Chiapas", "Guerrero"
   ];
 
+  // Especialidades mapeadas a categorías reales
   const expertises = [
-    { title: "Arquitectónica", desc: "Soluciones residenciales y decorativas de alta durabilidad." },
-    { title: "Automotriz", desc: "Sistemas de repintado profesional y alta gama." },
-    { title: "Maderas", desc: "Barnices y tintas que realzan la belleza natural." },
-    { title: "Industrial", desc: "Recubrimientos de alto desempeño para máxima protección." }
+    { title: "Arquitectónica y Decorativo", desc: "Soluciones residenciales y decorativas de alta durabilidad.", categoryId: "decorativo", icon: "🏠" },
+    { title: "Automotriz", desc: "Sistemas de repintado profesional y alta gama.", categoryId: "automotriz", icon: "🚗" },
+    { title: "Maderas", desc: "Barnices y tintas que realzan la belleza natural.", categoryId: "maderas", icon: "🪵" },
+    { title: "Industrial", desc: "Recubrimientos de alto desempeño para máxima protección.", categoryId: "decorativo", icon: "⚙️" }
   ];
 
   // Keywords optimizados (máximo 5)
@@ -72,6 +77,26 @@ const AboutComponent: React.FC = () => {
   useHelmetJsonLd(localBusinessSchema);
   useHelmetJsonLd(breadcrumbSchema);
 
+  // ✅ Efecto de scroll eficiente con Intersection Observer
+  useEffect(() => {
+    const elements = document.querySelectorAll('[data-scroll-animate]');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('scroll-in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <Helmet>
@@ -88,11 +113,26 @@ const AboutComponent: React.FC = () => {
 
         {/* Canonical */}
         <link rel="canonical" href={BUSINESS_INFO.url} />
+        
+        {/* Estilos de animación de scroll */}
+        <style>{`
+          @media (prefers-reduced-motion: no-preference) {
+            [data-scroll-animate] {
+              opacity: 0;
+              transform: translateY(20px);
+              transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            }
+            [data-scroll-animate].scroll-in {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}</style>
       </Helmet>
 
-      <div className="max-w-7xl mx-auto px-4 py-20">
+      <div className="max-w-7xl mx-auto px-4 py-20" ref={sectionsRef}>
         {/* Hero Section */}
-        <div className="mb-24">
+        <div className="mb-24" data-scroll-animate>
           <h1 className="text-6xl lg:text-7xl font-black text-slate-900 tracking-tighter mb-6 leading-none">
             30 Años de <span className="text-blue-600">Excelencia</span> en Pintura
           </h1>
@@ -103,7 +143,7 @@ const AboutComponent: React.FC = () => {
         </div>
 
         {/* Timeline / History */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24" data-scroll-animate>
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8">
             <div className="text-5xl font-black text-blue-600 mb-2">30+</div>
             <h3 className="text-lg font-black text-slate-900 mb-2">Años en el Mercado</h3>
@@ -121,24 +161,8 @@ const AboutComponent: React.FC = () => {
           </div>
         </div>
 
-        {/* Expertise Areas */}
-        <div className="mb-24">
-          <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-12">Nuestras Especialidades</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {expertises.map((exp, i) => (
-              <div key={i} className="bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-blue-200 hover:shadow-xl transition-all">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-black mb-4">
-                  {i + 1}
-                </div>
-                <h3 className="text-xl font-black text-slate-900 mb-3">{exp.title}</h3>
-                <p className="text-sm text-slate-600">{exp.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Regional Presence */}
-        <div className="mb-24">
+        <div className="mb-24" data-scroll-animate>
           <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-12">Presencia Regional</h2>
           <div className="flex flex-wrap gap-4">
             {regions.map((region, i) => (
@@ -149,8 +173,31 @@ const AboutComponent: React.FC = () => {
           </div>
         </div>
 
+        {/* Expertise Areas - MOVIDO AL FINAL (antes del CTA) */}
+        <div className="mb-24" data-scroll-animate>
+          <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-12">Nuestras Especialidades</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {expertises.map((exp, i) => (
+              <Link
+                key={i}
+                to={`/catalog/${exp.categoryId}`}
+                className="group bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-blue-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer no-underline"
+              >
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-2xl font-black mb-4 group-hover:bg-blue-200 transition-colors">
+                  {exp.icon}
+                </div>
+                <h3 className="text-xl font-black text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">{exp.title}</h3>
+                <p className="text-sm text-slate-600 group-hover:text-slate-700 transition-colors">{exp.desc}</p>
+                <div className="mt-4 inline-flex items-center text-blue-600 font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                  Ver Catálogo →
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-3xl p-12 text-center">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-3xl p-12 text-center" data-scroll-animate>
           <h2 className="text-4xl font-black text-white mb-6">¿Necesitas Soluciones de Pintura?</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
             Contáctanos para conocer nuestras líneas de productos especializados

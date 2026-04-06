@@ -34,19 +34,16 @@ const HeroHeader: React.FC = () => {
         }}
       />
 
-      {/* Color overlay - Blue tint */}
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 via-transparent to-slate-50 z-1" />
+      {/* Color overlay - Green tint oscuro */}
+      <div className="absolute inset-0 bg-gradient-to-b from-green-900/40 via-transparent to-slate-50 z-1" />
 
       {/* Centered Logo Content */}
       <div
         className="relative z-10 flex flex-col items-center transition-transform duration-300 ease-out"
         style={{ transform: `translateY(${offsetY * -0.05}px)` }}
       >
-        <img src="/img/logo.png" alt="Pinturas Diamante Logo" className="w-24 h-24 object-contain mb-4" />
-        <h1 className="mt-6 text-4xl md:text-5xl font-black text-white tracking-tighter drop-shadow-lg text-center uppercase">
-          PINTURAS<span className="text-blue-400"> DIAMANTE</span>
-        </h1>
-        <p className="mt-2 text-blue-100 font-medium tracking-widest uppercase text-[10px] opacity-60">
+        <img src="https://pinturasdiamante.com/img/logo.png" alt="Pinturas Diamante Logo" className="w-64 h-64 object-contain" />
+        <p className="mt-6 text-black font-black tracking-widest uppercase text-lg">
           Oaxaca: Bienvenido
         </p>
       </div>

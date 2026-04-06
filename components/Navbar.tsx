@@ -11,15 +11,16 @@ const Navbar: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const { totalItems, setIsCartOpen, searchQuery, setSearchQuery } = useCart();
+  const { totalItems, setIsCartOpen, searchQuery, setSearchQuery, cart, totalPrice } = useCart();
 
   const isActive = (path: string) => location.pathname === path;
   const isCatalogActive = location.pathname.startsWith('/catalog');
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    if (!location.pathname.startsWith('/catalog')) {
-      navigate('/catalog');
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (query.trim()) {
+      navigate('/search');
     }
   };
 
@@ -104,14 +105,68 @@ const Navbar: React.FC = () => {
       </div>
 
       {isOpen && (
-        <div className="md:hidden bg-white border-b border-slate-200">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link to="/" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-medium text-slate-500">Principal</Link>
+        <div className="md:hidden bg-white border-b border-slate-200 max-h-[calc(100vh-64px)] overflow-y-auto">
+          {/* Buscador móvil */}
+          <div className="px-4 py-3 border-b border-slate-100">
+            <input
+              id="search-mobile"
+              name="search-mobile"
+              type="text"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              placeholder="Buscar producto..."
+              className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full text-sm focus:ring-2 focus:ring-green-500/20 transition-all bg-slate-50"
+            />
+          </div>
+
+          {/* Menú de navegación */}
+          <div className="px-2 pt-2 pb-3 space-y-1 border-b border-slate-100">
+            <Link to="/" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-medium text-slate-500 hover:text-green-600">Principal</Link>
             <Link to="/catalog" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-bold text-green-600">Catálogo</Link>
             {CATEGORIES.map(cat => (
-              <Link key={cat.id} to={`/catalog/${cat.id}`} onClick={() => setIsOpen(false)} className="block px-6 py-1.5 text-xs text-slate-400 uppercase">{cat.name}</Link>
+              <Link key={cat.id} to={`/catalog/${cat.id}`} onClick={() => setIsOpen(false)} className="block px-6 py-1.5 text-xs text-slate-400 uppercase hover:text-slate-600">{cat.name}</Link>
             ))}
-            <Link to="/contact" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-medium text-slate-500">Contactanos</Link>
+            <Link to="/contact" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-medium text-slate-500 hover:text-green-600">Contactanos</Link>
+          </div>
+
+          {/* Mini Carrito */}
+          <div className="px-4 py-4 space-y-3 border-b border-slate-100">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-slate-900 text-sm">Tu Carrito</h3>
+              <span className="text-xs font-black bg-red-600 text-white px-2 py-1 rounded-full">{totalItems}</span>
+            </div>
+            
+            {cart.length === 0 ? (
+              <p className="text-xs text-slate-500 italic">Tu carrito está vacío</p>
+            ) : (
+              <div className="space-y-2 max-h-[200px] overflow-y-auto">
+                {cart.map((item) => (
+                  <div key={item.cartItemId || item.id} className="flex justify-between items-start text-xs p-2 bg-slate-50 rounded">
+                    <div className="flex-1">
+                      <p className="font-bold text-slate-900 line-clamp-1">{item.name}</p>
+                      <p className="text-slate-500 text-[10px]">Cant: {item.quantity}</p>
+                      {item.color && <p className="text-blue-600 font-bold text-[10px]">{item.color}</p>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Total y Botón */}
+            {cart.length > 0 && (
+              <div className="pt-3 border-t border-slate-200">
+                <div className="flex justify-between items-center font-bold mb-3">
+                  <span className="text-slate-600">Total:</span>
+                  <span className="text-lg text-green-600">${totalPrice.toFixed(2)}</span>
+                </div>
+                <button
+                  onClick={() => {setIsCartOpen(true); setIsOpen(false);}}
+                  className="w-full py-2 bg-blue-600 text-white font-bold text-sm rounded-lg hover:bg-blue-700 transition-all"
+                >
+                  Ver Carrito Completo
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
