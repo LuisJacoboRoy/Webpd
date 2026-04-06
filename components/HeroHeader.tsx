@@ -33,7 +33,6 @@ const HeroHeader: React.FC = () => {
           transform: `translateY(${offsetY * 0.2}px)`
         }}
       />
-
       {/* Color overlay - Green tint oscuro */}
       <div className="absolute inset-0 bg-gradient-to-b from-green-900/40 via-transparent to-slate-50 z-1" />
 
