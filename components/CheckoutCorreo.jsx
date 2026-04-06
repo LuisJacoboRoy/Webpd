@@ -26,20 +26,25 @@ if (typeof window !== 'undefined') {
  * CAMPOS ESPERADOS POR LA PLANTILLA (name attributes - CRÍTICOS):
  * - email → correo del cliente (REQUERIDO para "To Email" → {{email}})
  * - name → nombre del cliente ({{name}})
- * - order_items → artículos desglosados con cantidad, color e imagen
- * - order_items_html → versión HTML de items para mejor presentación
- * - total_price → precio total (muestra "-" si es 0)
+ * - phone → teléfono ({{phone}})
+ * - address → dirección ({{address}})
+ * - message → comentarios ({{#message}}...{{/message}})
  * - order_date → fecha del pedido ({{order_date}})
+ * - order_time → hora del pedido ({{order_time}}) ← NUEVO
+ * - order_items → artículos desglosados como texto simple
+ * - total_price → precio total (muestra "-" si es 0)
  * 
  * ⚠️ IMPORTANTE:
  * - NO cambiar los nombres de los campos sin actualizar la plantilla en EmailJS
  * - El campo email DEBE estar en "To Email" como {{email}} en el dashboard
  * - readOnly en inputs para evitar que se excluyan de FormData
  * - VALIDACIÓN: email requerido (si está vacío, error 422)
+ * - order_time se calcula automáticamente en sendEmail
  * 
  * HISTORIAL DE FIXES:
  * [1] Error 422 "recipients address empty" → Cambiar disabled por readOnly
- * [2] Mejora: Campo order_items_html para desglose con imágenes y colores
+ * [2] Mejora: Desglose con imágenes y colores
+ * [3] Mejora: Agregada hora del pedido (order_time)
  */
 
 // Componente CheckoutCorreo
@@ -90,46 +95,68 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
       // ✅ GENERAR DESGLOSE COMPLETO DE ITEMS CON IMÁGENES Y COLORES
       const itemsDesglose = cartItems.length > 0 
         ? cartItems.map((item, idx) => {
-            const colorInfo = item.color ? `Color: ${item.color}` : '';
+            const colorInfo = item.color ? item.color : 'N/A';
             const priceDisplay = item.price && item.price > 0 ? `$${item.price}` : '-';
             return {
               numero: idx + 1,
               nombre: item.name,
               cantidad: item.quantity,
-              color: item.color || 'N/A',
+              color: colorInfo,
               precio: priceDisplay,
               imagen: item.image || 'Sin imagen',
-              texto: `${idx + 1}. ${item.name} (Cant: ${item.quantity}${colorInfo ? ', ' + colorInfo : ''}) - ${priceDisplay}`
+              sku: item.id,
+              texto: `${idx + 1}. ${item.name} (Cant: ${item.quantity}${colorInfo !== 'N/A' ? ', Color: ' + colorInfo : ''}) - ${priceDisplay}`
             };
           })
         : [];
 
-      // Formato texto simple para email
+      // Formato texto simple para email (fallback)
       const itemsTexto = itemsDesglose.length > 0
         ? itemsDesglose.map(it => it.texto).join('\n')
         : 'Sin productos';
 
-      // Actualizar campo oculto con desglose de items
-      const orderItemsInput = form.current.elements['order_items'];
-      if (orderItemsInput) {
-        orderItemsInput.value = itemsTexto;
-      }
+      // Obtener hora actual
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const orderTime = `${hours}:${minutes}`;
+
+      // Obtener fecha en formato español
+      const orderDate = new Date().toLocaleDateString('es-ES');
 
       console.log('✅ Validación pasada');
       console.log('📦 Items a enviar:', itemsDesglose);
-      console.log('📧 Enviando formulario con EmailJS...');
-      console.log('📤 Parámetros enviados:', {
-        serviceID: 'service_w4hr6r7',
-        templateID: 'template_x1or3zu',
-        formElement: form.current.id || 'contact-form',
-        itemsCount: itemsDesglose.length
-      });
+      console.log('⏰ Hora del pedido:', orderTime);
+      console.log('📧 Enviando email con EmailJS.send()...');
 
-      // Enviar formulario con EmailJS
-      const response = await emailjs.sendForm(
+      // ✅ PREPARAR OBJETO CON TODA LA ESTRUCTURA PARA LA PLANTILLA
+      // Usar emailjs.send() para poder enviar objetos complejos (no solo strings)
+      const templateParams = {
+        email: email,                    // Para "To Email" en EmailJS
+        name: name,
+        phone: formData.get('phone')?.trim() || 'No proporcionado',
+        address: formData.get('address')?.trim() || 'No proporcionado',
+        message: formData.get('message')?.trim() || '',
+        order_date: orderDate,
+        order_time: orderTime,
+        total_price: cartTotal && cartTotal > 0 ? `$${cartTotal}` : '-',
+        order_items: itemsTexto,        // Para texto simple en plantilla
+        // ✅ ITEMS COMO ARRAY PARA LOOPS EN LA PLANTILLA
+        items: itemsDesglose.map(it => ({
+          quantity: it.cantidad,
+          name: it.nombre,
+          color: it.color,
+          price: it.precio,
+          image: it.imagen,
+          sku: it.sku
+        }))
+      };
+
+      // Enviar con emailjs.send() para mejor control de datos
+      const response = await emailjs.send(
         'service_w4hr6r7',          // Service ID
         'template_x1or3zu',         // Template ID
-        form.current,               // Referencia al formulario
+        templateParams,             // Objeto con datos estructurados
         {
           publicKey: 'kGZA8SmhiaWwbM2Iq'  // Especificar public key explícitamente
         }
@@ -286,6 +313,9 @@ export default function CheckoutCorreo({ cartItems = [], cartTotal = 0, onSucces
       <form ref={form} id="contact-form" onSubmit={sendEmail} style={styles.form}>
         {/* Campo oculto con la fecha del pedido */}
         <input type="hidden" name="order_date" value={new Date().toLocaleDateString('es-ES')} />
+
+        {/* Campo oculto con la hora del pedido (se actualiza en sendEmail) */}
+        <input type="hidden" name="order_time" value="--:--" />
 
         {/* Campo oculto con los items del pedido (se actualiza en sendEmail) */}
         <input type="hidden" name="order_items" value="Procesando items..." />
