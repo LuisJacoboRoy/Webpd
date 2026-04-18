@@ -207,7 +207,7 @@ const Contact: React.FC = () => {
       </div>
 
       <div className="mt-20 text-center">
-        <p className="text-slate-400 italic">Sitio web: www.pinturasdiamante.com</p>
+        <p className="text-slate-400 italic">Sitio web: <a href="https://pinturasdiamante.com" className="hover:text-green-500 transition-colors">pinturasdiamante.com</a></p>
       </div>
     </section>
   );
