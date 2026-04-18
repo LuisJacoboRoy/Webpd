@@ -5,7 +5,7 @@
 # ======================
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTPS} on
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
@@ -60,9 +60,6 @@
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
-  
-  # Reescribir todas las requests a index.html
-  RewriteRule ^(.*)$ index.html [L]
 </IfModule>
 
 # ======================
@@ -85,7 +82,7 @@
 # ======================
 
 # Solo permitir ciertos tipos de archivo
-<FilesMatch "\.(php|phtml|php3|php4|php5|phps|pht|phar|pgif|shtml|htaccess|fcgi|pl|sh|cgi)$">
+<FilesMatch "\.(php|phtml|php3|php4|php5|phps|pht|phar|pgif|shtml|xml|htaccess|fcgi|pl|sh|cgi)$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>
