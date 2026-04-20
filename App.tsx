@@ -84,29 +84,27 @@ const AppContent: React.FC = () => {
   });
 
   return (
-    <BrowserRouter>
-      <div className="flex flex-col min-h-screen">
-        <HeroHeader />
-        <Navbar />
-        <main className="flex-grow">
-          <Suspense fallback={<LoadingComponent />}>
-            <Routes>
-              <Route path="/" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/search" element={<SearchResults />} />
-              <Route path="/catalog" element={<CatalogCategories />} />
-              <Route path="/catalog/:categoryId" element={<SubCategorySelector />} />
-              <Route path="/catalog/:categoryId/:subCategoryId" element={<ProductList />} />
-              <Route path="/product/:productId" element={<ProductDetail />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Suspense>
-        </main>
-        <ImageSlider />
-        <Footer />
-        <CartDrawer />
-      </div>
-    </BrowserRouter>
+    <div className="flex flex-col min-h-screen">
+      <HeroHeader />
+      <Navbar />
+      <main className="flex-grow">
+        <Suspense fallback={<LoadingComponent />}>
+          <Routes>
+            <Route path="/" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/search" element={<SearchResults />} />
+            <Route path="/catalog" element={<CatalogCategories />} />
+            <Route path="/catalog/:categoryId" element={<SubCategorySelector />} />
+            <Route path="/catalog/:categoryId/:subCategoryId" element={<ProductList />} />
+            <Route path="/product/:productId" element={<ProductDetail />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
+      </main>
+      <ImageSlider />
+      <Footer />
+      <CartDrawer />
+    </div>
   );
 };
 
@@ -119,42 +117,44 @@ const App: React.FC = () => {
   return (
     <HelmetProvider context={helmetContext}>
       <CartProvider>
-        <Helmet>
-          <html lang="es" />
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta httpEquiv="x-ua-compatible" content="IE=edge" />
-          <meta name="theme-color" content="#3b82f6" />
+        <BrowserRouter>
+          <Helmet>
+            <html lang="es" />
+            <meta charSet="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta httpEquiv="x-ua-compatible" content="IE=edge" />
+            <meta name="theme-color" content="#3b82f6" />
 
-          {/* Open Graph básico */}
-          <meta property="og:site_name" content={BUSINESS_INFO.name} />
-          <meta property="og:locale" content="es_MX" />
-          <meta property="og:type" content="website" />
+            {/* Open Graph básico */}
+            <meta property="og:site_name" content={BUSINESS_INFO.name} />
+            <meta property="og:locale" content="es_MX" />
+            <meta property="og:type" content="website" />
 
-          {/* Twitter Card */}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:creator" content="@DiamantePinturas" />
+            {/* Twitter Card */}
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:creator" content="@DiamantePinturas" />
 
-          {/* SEO básico */}
-          <meta name="description" content={BUSINESS_INFO.description} />
-          <meta name="keywords" content="pinturas, diamante, oaxaca, automotriz, maderas, decorativo" />
-          <meta name="author" content={BUSINESS_INFO.name} />
+            {/* SEO básico */}
+            <meta name="description" content={BUSINESS_INFO.description} />
+            <meta name="keywords" content="pinturas, diamante, oaxaca, automotriz, maderas, decorativo" />
+            <meta name="author" content={BUSINESS_INFO.name} />
 
-          {/* Preconnect para mejorar performance */}
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://cdn.tailwindcss.com" />
+            {/* Preconnect para mejorar performance */}
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://cdn.tailwindcss.com" />
 
-          {/* Canonical por defecto */}
-          <link rel="canonical" href={BUSINESS_INFO.url} />
+            {/* Canonical por defecto */}
+            <link rel="canonical" href={BUSINESS_INFO.url} />
 
-          {/* Apple touch icon */}
-          <link rel="apple-touch-icon" href={BUSINESS_INFO.logo} />
+            {/* Apple touch icon */}
+            <link rel="apple-touch-icon" href={BUSINESS_INFO.logo} />
 
-          {/* Favicon */}
-          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-          <link rel="manifest" href="/site.webmanifest" />
-        </Helmet>
-        <AppContent />
+            {/* Favicon */}
+            <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+            <link rel="manifest" href="/site.webmanifest" />
+          </Helmet>
+          <AppContent />
+        </BrowserRouter>
       </CartProvider>
     </HelmetProvider>
   );
