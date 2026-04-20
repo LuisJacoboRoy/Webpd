@@ -13,6 +13,7 @@ import HeroHeader from './components/HeroHeader';
 import { CartProvider } from './context/CartContext';
 import { useJsonLd } from './hooks/useJsonLd';
 import { useFavicon, useBeforeUnloadWarning } from './hooks/usePersistence';
+import { useScrollToTop } from './hooks/useScrollToTop';
 import { BUSINESS_INFO, BUSINESS_LOCATIONS } from './data/seo';
 
 // Lazy-loaded route components (code splitting)
@@ -32,6 +33,9 @@ const LoadingComponent = () => (
 );
 
 const AppContent: React.FC = () => {
+  // Scroll automático al inicio cuando cambia la ruta
+  useScrollToTop();
+
   // Schema Organization con múltiples ubicaciones
   useJsonLd({
     '@context': 'https://schema.org',

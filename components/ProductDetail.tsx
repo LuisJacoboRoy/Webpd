@@ -6,16 +6,22 @@ import { useCart } from '../context/CartContext';
 import { useHelmetJsonLd } from '../hooks/useHelmet';
 import { BUSINESS_INFO } from '../data/seo';
 import { TwitterPicker, SliderPicker } from 'react-color';
+import { 
+  generateEnhancedProductSchema,
+  generateLocalBusinessSchemaForProduct,
+  generateProductPageSchema,
+  validateProductSchema
+} from '../utils/productSchemaGenerator';
 
 /**
- * ProductDetail Component - Ejemplo de mejor práctica con Helmet + Optimizaciones SSR
+ * ProductDetail Component - SEO Optimizado para Google Rich Results
  * 
  * Mejoras implementadas:
- * 1. Reemplazó useMetaTags/useJsonLd con Helmet (más estándar, SSR-ready)
- * 2. Agregó React.memo para evitar re-renders innecesarios
- * 3. Usó useMemo para optimizar cálculos costosos
- * 4. Preparado para SSR con Helmet context
- * 5. Meta tags dinámicos con canonical URL
+ * 1. Schema Product completo según Google (requerimientos para Rich Results)
+ * 2. LocalBusiness schema para presencia local
+ * 3. Validación automática de schema
+ * 4. Todos los campos recomendados por Google incluidos
+ * 5. Optimizado para Search Console indexing
  */
 const ProductDetailComponent: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -60,45 +66,26 @@ const ProductDetailComponent: React.FC = () => {
     return `${BUSINESS_INFO.url}${src.startsWith('/') ? '' : '/'}${src}`;
   }, [product]);
 
-  // Schema Product en formato JSON-LD
-  const productSchema = useMemo(() => ({
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    'name': product.name,
-    'description': product.description,
-    'image': imageUrl,
-    'category': subCat?.name || category?.name,
-    'brand': {
-      '@type': 'Brand',
-      'name': 'Pinturas Diamante'
-    },
-    'manufacturer': {
-      '@type': 'Organization',
-      'name': BUSINESS_INFO.name,
-      'url': BUSINESS_INFO.url,
-      'logo': BUSINESS_INFO.logo,
-      'sameAs': BUSINESS_INFO.sameAs
-    },
-    'offers': {
-      '@type': 'Offer',
-      'url': canonicalUrl,
-      'priceCurrency': 'MXN',
-      'price': 'Consultar',
-      'priceValidUntil': new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-      'availability': 'https://schema.org/InStock',
-      'seller': {
-        '@type': 'Organization',
-        'name': BUSINESS_INFO.name
-      }
-    },
-    'aggregateRating': {
-      '@type': 'AggregateRating',
-      'ratingValue': '4.8',
-      'reviewCount': '127',
-      'bestRating': '5',
-      'worstRating': '1'
+  // Schema Product mejorado optimizado para Google Rich Results
+  const productSchema = useMemo(() => {
+    const schema = generateEnhancedProductSchema(product, category, subCat, true);
+    // Validar schema
+    const validationErrors = validateProductSchema(schema);
+    if (validationErrors.length > 0) {
+      console.warn('⚠️ Product Schema Validation Warnings:', validationErrors);
     }
-  }), [product, category, subCat, canonicalUrl, imageUrl]);
+    return schema;
+  }, [product, category, subCat]);
+
+  // Schema de LocalBusiness para presencia local
+  const localBusinessSchema = useMemo(() => 
+    generateLocalBusinessSchemaForProduct()
+  , []);
+
+  // Schema de WebPage conectando con el producto como mainEntity
+  const webPageSchema = useMemo(() =>
+    generateProductPageSchema(product, category, subCat)
+  , [product, category, subCat]);
 
   // Schema BreadcrumbList
   const breadcrumbSchema = useMemo(() => ({
@@ -141,6 +128,8 @@ const ProductDetailComponent: React.FC = () => {
   // Inyectar JSON-LD schemas con Hook
   useHelmetJsonLd(productSchema);
   useHelmetJsonLd(breadcrumbSchema);
+  useHelmetJsonLd(localBusinessSchema);
+  useHelmetJsonLd(webPageSchema);
 
   return (
     <>
@@ -184,17 +173,17 @@ const ProductDetailComponent: React.FC = () => {
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          <div className="aspect-square bg-slate-100 rounded-[3rem] border border-slate-200 flex items-center justify-center relative shadow-inner overflow-hidden">
+          <div className="bg-slate-100 rounded-[3rem] border border-slate-200 flex items-center justify-center relative shadow-inner overflow-hidden">
             {product.image ? (
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-cover"
+                className="w-full h-auto max-h-96 object-contain"
                 title={`${product.name} - Pinturas Diamante Oaxaca`}
                 loading="lazy"
               />
             ) : (
-              <span className="text-slate-400 font-bold uppercase tracking-widest text-sm text-center px-6">Espacio para Fotografía del Producto</span>
+              <span className="text-slate-400 font-bold uppercase tracking-widest text-sm text-center px-6 py-20">Espacio para Fotografía del Producto</span>
             )}
           </div>
 

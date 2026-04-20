@@ -11,7 +11,8 @@
     "build:ssg": "npm run build && npm run prerender",
     "seo:verify": "node scripts/seo-verify.js",
     "validate:pages": "node scripts/validate-github-pages.js",
-    "prepare:deploy": "pwsh scripts/prepare-github-pages.ps1"
+    "prepare:deploy": "pwsh scripts/prepare-github-pages.ps1",
+    "validate:schemas": "tsx scripts/validate-product-schemas.js"
   },
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.0.6",

@@ -92,12 +92,12 @@ const SearchResults: React.FC = () => {
                     to={`/product/${product.id}`}
                     className="group bg-white rounded-[2rem] border border-slate-100 p-4 hover:shadow-2xl transition-all overflow-hidden flex flex-col h-full"
                   >
-                    <div className="aspect-[4/3] bg-slate-50 rounded-[1.5rem] flex items-center justify-center overflow-hidden mb-4">
+                    <div className="bg-slate-50 rounded-[1.5rem] flex items-center justify-center overflow-hidden mb-4 h-56">
                       {product.image ? (
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                         />
                       ) : (
                         <div className="text-slate-200 font-bold text-xs uppercase tracking-widest">Sin Imagen</div>

@@ -31,7 +31,7 @@ const OptimizedImage = ({ src, alt, aspectRatio, className, style }) => {
             left: 0,
             width: '100%',
             height: '100%',
-            objectFit: 'cover', // Ajusta la imagen al contenedor
+            objectFit: 'contain', // Mantiene la proporción sin cortar
           }}
         />
       )}
