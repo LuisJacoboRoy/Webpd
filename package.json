@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "prerender": "node scripts/prerender.js",
+    "prerender": "tsx scripts/prerender.js",
     "build:ssg": "npm run build && npm run prerender",
-    "seo:verify": "node scripts/seo-verify.js"
+    "seo:verify": "node scripts/seo-verify.js",
+    "validate:pages": "node scripts/validate-github-pages.js",
+    "prepare:deploy": "pwsh scripts/prepare-github-pages.ps1"
   },
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.0.6",

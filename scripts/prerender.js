@@ -11,19 +11,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Importar datos de productos y funciones SEO
-import { PRODUCTS, CATEGORIES, SUB_CATEGORIES } from '../data/products.js';
-import {
-  generateProductSEOData,
-  generateCategorySEOData,
-  generateDynamicSitemap,
-  generateRobotsTxt,
-  generateOrganizationSchema,
-  generateLocalBusinessSchema,
-  exportAllProductsSEO
-} from '../utils/seoPrerender.js';
-
-const DOMAIN = 'https://pinturasdiamante.com';
+// Determinar el dominio base según el entorno
+const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+const DOMAIN = isGitHubPages ? 'https://luisjacoboroy.github.io/Webpd' : 'https://pinturasdiamante.com';
 const OUTPUT_DIR = path.join(__dirname, '../prerendered');
 
 /**

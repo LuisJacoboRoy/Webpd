@@ -14,7 +14,9 @@
 import { PRODUCTS, CATEGORIES, SUB_CATEGORIES } from '../data/products';
 import { Product, Category, SubCategory } from '../types';
 
-const DOMAIN = 'https://pinturasdiamante.com';
+// Determinar el dominio base según el entorno
+const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+const DOMAIN = isGitHubPages ? 'https://luisjacoboroy.github.io/Webpd' : 'https://pinturasdiamante.com';
 
 /**
  * Interfaz para datos SEO de producto
@@ -499,6 +501,7 @@ export const generateDynamicSitemap = (): string => {
   const staticUrls = [
     { url: '', priority: '1.0', changefreq: 'weekly' },
     { url: 'contact', priority: '0.8', changefreq: 'monthly' },
+    { url: 'search', priority: '0.7', changefreq: 'monthly' },
     { url: 'catalog', priority: '0.9', changefreq: 'weekly' }
   ];
 

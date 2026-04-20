@@ -6,7 +6,12 @@ import fs from 'fs';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
 
+  // Detectar si estamos en GitHub Pages
+  const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+  const base = isGitHubPages ? '/Webpd/' : '/';
+
   return {
+    base,
     server: {
       port: 3000,
       host: '0.0.0.0',
@@ -22,6 +27,8 @@ export default defineConfig(({ mode }) => {
     build: {
       minify: 'terser',
       sourcemap: false,
+      outDir: 'dist',
+      assetsDir: 'assets',
       rollupOptions: {
         output: {
           manualChunks: {
@@ -34,6 +41,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [react()],
     define: {
+      __BASE_URL__: JSON.stringify(base),
     },
     resolve: {
       alias: {
