@@ -1,25 +1,58 @@
 # Robots.txt para Pinturas Diamante
-# https://developers.google.com/search/docs/crawling-indexing/robots/create-robots-txt
+# Última actualización: 2026-04-20
+# Versión: 2.0 - Optimizado para Google Search Console
 
+# Permitir a todos los bots acceso general
 User-agent: *
+Allow: /
 Allow: /contact
+Allow: /product/
+Allow: /catalog/
+Allow: /about
+
+# Desallows para rutas que no queremos indexar
 Disallow: /certs/
 Disallow: /.git/
 Disallow: /node_modules/
 Disallow: /dist/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /cart
 Disallow: /*.json$
 
-# Delay para bots lentos
+# Delay para crawling
 Crawl-delay: 1
+Request-rate: 30/60
 
-# Sitemaps
+# Sitemaps - Crucial para Google Search Console y indexación
 Sitemap: https://pinturasdiamante.com/sitemap.xml
-  Sitemap: https://pinturasdiamante.com/sitemap-products.xml
+Sitemap: https://pinturasdiamante.com/sitemap-products.xml
+Sitemap: https://pinturasdiamante.com/sitemap-categories.xml
+Sitemap: https://pinturasdiamante.com/sitemap-metadata.json
 
-# Google Adsbot
+# Google específico
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Mobile
+Allow: /
+
 User-agent: AdsBot-Google
 Allow: /
 
-# Google Mobile
-User-agent: Googlebot-Mobile
+# Bing
+User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
+
+# Redes sociales (permitir sin restricciones para scraping de metadata)
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+

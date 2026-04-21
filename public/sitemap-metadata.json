@@ -1,0 +1,256 @@
+{
+  "generatedAt": "2026-04-21T14:58:39.249Z",
+  "baseUrl": "https://pinturasdiamante.com",
+  "sitemaps": {
+    "general": "sitemap.xml",
+    "products": "sitemap-products.xml",
+    "categories": "sitemap-categories.xml"
+  },
+  "statistics": {
+    "totalURLs": 73,
+    "bySchema": {
+      "Organization": 2,
+      "LocalBusiness": 3,
+      "Category": 21,
+      "Product": 46,
+      "CollectionPage": 1
+    },
+    "breakdown": {
+      "staticPages": 4,
+      "locations": 2,
+      "categories": 3,
+      "subcategories": 18,
+      "products": 46
+    }
+  },
+  "measurementGuide": {
+    "title": "Cómo medir el alcance SEO por tipo de esquema en Google Search Console",
+    "step1": {
+      "title": "Ir a Google Search Console",
+      "url": "https://search.google.com/search-console",
+      "action": "Selecciona tu propiedad: pinturasdiamante.com"
+    },
+    "step2": {
+      "title": "Agregar Sitemaps",
+      "location": "Menú izquierdo > Sitemaps",
+      "urls": [
+        "https://pinturasdiamante.com/sitemap.xml",
+        "https://pinturasdiamante.com/sitemap-products.xml",
+        "https://pinturasdiamante.com/sitemap-categories.xml"
+      ]
+    },
+    "step3": {
+      "title": "Ver Resultados Enriquecidos por Tipo de Esquema",
+      "location": "Menú izquierdo > Apariencia en búsqueda > Resultados enriquecidos",
+      "options": {
+        "product": {
+          "name": "Product",
+          "description": "Muestra todas las páginas de productos indexadas",
+          "expectedCount": 46
+        },
+        "breadcrumb": {
+          "name": "BreadcrumbList",
+          "description": "Migas de pan para navegación",
+          "expectedCount": "Múltiples (una por página de producto/categoría)"
+        },
+        "organization": {
+          "name": "Organization",
+          "description": "Información de la organización",
+          "expectedCount": 1
+        },
+        "localBusiness": {
+          "name": "LocalBusiness",
+          "description": "Información de sucursales y ubicaciones",
+          "expectedCount": 2
+        }
+      }
+    },
+    "step4": {
+      "title": "Ver Performance por Página",
+      "location": "Menú izquierdo > Rendimiento",
+      "filters": {
+        "byType": "Usa \"Filtros avanzados\" para ver por tipo de página",
+        "byQueryParameter": "Agrupa por \"Página\" para ver clics/impresiones por producto o categoría",
+        "byDevice": "Filtra por dispositivo (móvil/escritorio) para ver qué schemas funcionan mejor"
+      }
+    },
+    "step5": {
+      "title": "Monitorear Cobertura",
+      "location": "Menú izquierdo > Cobertura",
+      "whatToLook": {
+        "valid": "Debe mostrar 73 URLs válidas",
+        "excluded": "Verifica qué URLs están excluidas y por qué",
+        "error": "Resuelve cualquier error de indexación"
+      }
+    }
+  },
+  "schemasTracking": {
+    "products": {
+      "schema": "Product",
+      "count": 46,
+      "documentation": "https://developers.google.com/search/docs/appearance/structured-data/product",
+      "howToMeasure": "En \"Resultados enriquecidos\" > \"Product\", verás el número de productos indexados",
+      "expectedMetrics": [
+        "indexed",
+        "valid",
+        "invalid",
+        "excluded"
+      ]
+    },
+    "categories": {
+      "schema": "Category / BreadcrumbList",
+      "count": 22,
+      "documentation": "https://developers.google.com/search/docs/appearance/structured-data/breadcrumb",
+      "howToMeasure": "En \"Resultados enriquecidos\" > \"BreadcrumbList\"",
+      "expectedMetrics": [
+        "indexed",
+        "valid",
+        "invalid"
+      ]
+    },
+    "locations": {
+      "schema": "LocalBusiness",
+      "count": 3,
+      "documentation": "https://developers.google.com/search/docs/appearance/structured-data/local-business",
+      "howToMeasure": "En \"Resultados enriquecidos\" > \"LocalBusiness\" o mediante Google Business Profile",
+      "expectedMetrics": [
+        "indexed",
+        "valid",
+        "invalid"
+      ]
+    },
+    "organization": {
+      "schema": "Organization",
+      "count": 2,
+      "documentation": "https://developers.google.com/search/docs/appearance/structured-data/organization",
+      "howToMeasure": "En \"Resultados enriquecidos\" > \"Organization\"",
+      "expectedMetrics": [
+        "indexed",
+        "valid"
+      ]
+    }
+  },
+  "analyticsIntegration": {
+    "googleAnalytics": {
+      "howToTrack": "Configura eventos en Google Analytics para rastrear clics en resultados enriquecidos",
+      "eventExample": {
+        "eventName": "view_item",
+        "parameters": {
+          "item_id": "product_id",
+          "item_name": "product_name",
+          "item_category": "product_category",
+          "value": "price"
+        }
+      }
+    },
+    "gscIntegration": {
+      "howToTrack": "Google Search Console te muestra automáticamente las impresiones por tipo de esquema",
+      "metricsAvailable": [
+        "Clics",
+        "Impresiones",
+        "CTR",
+        "Posición promedio"
+      ]
+    }
+  },
+  "urls": {
+    "products": [
+      {
+        "url": "https://pinturasdiamante.com/#/product/auto-1",
+        "lastmod": "2026-03-15"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/product/auto-2",
+        "lastmod": "2026-03-15"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/product/auto-3",
+        "lastmod": "2026-03-15"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/product/auto-4",
+        "lastmod": "2026-03-15"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/product/auto-5",
+        "lastmod": "2026-03-15"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/product/auto-6",
+        "lastmod": "2026-03-15"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/product/auto-7",
+        "lastmod": "2026-03-15"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/product/auto-8",
+        "lastmod": "2026-03-15"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/product/auto-9",
+        "lastmod": "2026-03-15"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/product/auto-10",
+        "lastmod": "2026-03-15"
+      }
+    ],
+    "categories": [
+      {
+        "url": "https://pinturasdiamante.com/#/catalog",
+        "lastmod": "2026-04-21"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/catalog/automotriz",
+        "lastmod": "2026-04-21"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/catalog/maderas",
+        "lastmod": "2026-04-21"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/catalog/decorativo",
+        "lastmod": "2026-04-21"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/catalog/automotriz/complementos-auto",
+        "lastmod": "2026-04-21"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/catalog/automotriz/poliuretano-auto",
+        "lastmod": "2026-04-21"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/catalog/automotriz/secado-rapido-auto",
+        "lastmod": "2026-04-21"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/catalog/automotriz/acrilicos-auto",
+        "lastmod": "2026-04-21"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/catalog/automotriz/primarios-auto",
+        "lastmod": "2026-04-21"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/catalog/automotriz/resanadores-auto",
+        "lastmod": "2026-04-21"
+      }
+    ],
+    "locations": [
+      {
+        "url": "https://pinturasdiamante.com/#/contact",
+        "lastmod": "2026-04-21"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/location/ferrocarril",
+        "lastmod": "2026-04-21"
+      },
+      {
+        "url": "https://pinturasdiamante.com/#/location/culturas-xoxo",
+        "lastmod": "2026-04-21"
+      }
+    ]
+  }
+}

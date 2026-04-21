@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run sitemap:generate && vite build",
     "preview": "vite preview",
     "prerender": "tsx scripts/prerender.js",
     "build:ssg": "npm run build && npm run prerender",
+    "sitemap:generate": "tsx scripts/generate-sitemap.ts",
     "seo:verify": "node scripts/seo-verify.js",
     "validate:pages": "node scripts/validate-github-pages.js",
     "prepare:deploy": "pwsh scripts/prepare-github-pages.ps1",
