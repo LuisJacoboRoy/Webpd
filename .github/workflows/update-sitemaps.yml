@@ -84,3 +84,34 @@ jobs:
           test -f public/sitemap-categories.xml && echo "✓ sitemap-categories.xml encontrado" || exit 1
           test -f public/sitemap-metadata.json && echo "✓ sitemap-metadata.json encontrado" || exit 1
           echo "🎉 Todos los sitemaps están listos para desplegar"
+
+      - name: 🔐 Deploy to Vercel Production
+        if: steps.verify_changed.outputs.changed == 'true'
+        run: |
+          echo "🚀 Iniciando despliegue en Vercel..."
+          npx vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --yes
+        env:
+          VITE_API_URL: 'https://api.pinturasdiamante.com'
+          VITE_ENVIRONMENT: 'production'
+
+      - name: ✅ Verify SEO Headers & Robots
+        if: steps.verify_changed.outputs.changed == 'true'
+        run: |
+          echo "✅ Verificando que NO hay headers noindex..."
+          if grep -r "X-Robots-Tag.*noindex" . --include="*.yml" --include="*.json" --include="*.ts" 2>/dev/null | grep -v ".git" | grep -v "node_modules"; then
+            echo "⚠️  ADVERTENCIA: Se detectó header X-Robots-Tag noindex. Esto bloqueará la indexación"
+            exit 1
+          fi
+          echo "✓ No se detectó header X-Robots-Tag: noindex - Indexación habilitada"
+          echo "✓ Verificando robots.txt..."
+          grep -q "Sitemap:" public/robots.txt && echo "✓ Sitemaps declarados en robots.txt" || exit 1
+
+      - name: 🔔 Notify Search Engines
+        if: steps.verify_changed.outputs.changed == 'true'
+        run: |
+          echo "📢 Notificando a motores de búsqueda..."
+          # Google
+          curl -s "https://www.google.com/ping?sitemap=https://pinturasdiamante.com/sitemap.xml" | head -n 5 || true
+          # Bing
+          curl -s "https://www.bing.com/ping?sitemap=https://pinturasdiamante.com/sitemap.xml" | head -n 5 || true
+          echo "✅ Ping enviado a Google y Bing"
