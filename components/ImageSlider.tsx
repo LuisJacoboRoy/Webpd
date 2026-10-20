@@ -1,11 +1,16 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { CATEGORIES, PRODUCTS } from '../data/products';
 
 const ImageSlider: React.FC = () => {
+  const { pathname } = useLocation();
+  const currentProductId = pathname.match(/^\/product\/([^/]+)/)?.[1];
+  const currentProduct = PRODUCTS.find(product => product.id === currentProductId);
+
   // Configuración de las 10 imágenes proporcionadas por el usuario
   // Se asume que los archivos están en la carpeta /img/ del proyecto
-  const items = [
+  const featuredItems = [
     { 
       id: 'auto-innova', 
       img: '/img/car.jpeg',
@@ -68,42 +73,74 @@ const ImageSlider: React.FC = () => {
     },
   ];
 
+  const relatedProducts = currentProduct
+    ? PRODUCTS
+        .filter(product =>
+          product.categoryId === currentProduct.categoryId &&
+          product.id !== currentProduct.id
+        )
+        .slice(0, 8)
+    : [];
+
+  const items = currentProduct
+    ? relatedProducts.map(product => ({
+        id: product.id,
+        img: product.image || product.ogImage || '',
+        label: product.name,
+        link: `/product/${product.id}`
+      }))
+    : featuredItems;
+
+  const categoryName = currentProduct
+    ? CATEGORIES.find(category => category.id === currentProduct.categoryId)?.name.toLowerCase()
+    : undefined;
+
   // Duplicamos los items para lograr el efecto de scroll infinito sin saltos
   const displayItems = [...items, ...items];
 
   return (
-    <div className="w-full h-[180px] bg-slate-50 border-y border-slate-200 overflow-hidden relative group">
-      <div className="animate-scroll py-4">
-        {displayItems.map((item, index) => (
-          <Link
-            key={`${item.id}-${index}`}
-            to={item.link}
-            className="block w-[320px] h-[140px] flex-shrink-0 relative px-3 transition-transform hover:scale-105 duration-300"
-          >
-            <div className="w-full h-full relative overflow-hidden rounded-2xl shadow-md border border-white bg-white group/card">
-              <img
-                src={item.img}
-                alt={item.label}
-                title={`${item.label} | Diamante Pinturas`}
-                className="w-full h-full object-cover transition-all duration-500"
-                onError={(e) => {
-                  // Fallback visual informativo
-                  (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/0284c7/ffffff?text=' + item.label;
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex flex-col justify-end p-4">
-                <span className="text-white text-[10px] font-black uppercase tracking-[0.2em] mb-1 drop-shadow-md">
-                  {item.label}
-                </span>
-                <span className="text-blue-300 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover/card:opacity-100 transition-opacity">
-                  Ver Colección →
-                </span>
+    <section
+      aria-label={currentProduct ? 'Productos relacionados' : 'Productos destacados'}
+      className="w-full bg-slate-50 border-y border-slate-200 overflow-hidden relative group"
+    >
+      {currentProduct && (
+        <h2 className="max-w-7xl mx-auto px-4 pt-6 text-xl font-bold text-slate-900">
+          Productos relacionados {categoryName ? `de ${categoryName}` : ''}
+        </h2>
+      )}
+      <div className="h-[180px]">
+        <div className="animate-scroll py-4">
+          {displayItems.map((item, index) => (
+            <Link
+              key={`${item.id}-${index}`}
+              to={item.link}
+              className="block w-[320px] h-[140px] flex-shrink-0 relative px-3 transition-transform hover:scale-105 duration-300"
+            >
+              <div className="w-full h-full relative overflow-hidden rounded-2xl shadow-md border border-white bg-white group/card">
+                <img
+                  src={item.img}
+                  alt={item.label}
+                  title={`${item.label} | Diamante Pinturas`}
+                  className="w-full h-full object-cover transition-all duration-500"
+                  onError={(e) => {
+                    // Fallback visual informativo
+                    (e.target as HTMLImageElement).src = 'https://placehold.co/600x400/0284c7/ffffff?text=' + item.label;
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex flex-col justify-end p-4">
+                  <span className="text-white text-[10px] font-black uppercase tracking-[0.2em] mb-1 drop-shadow-md">
+                    {item.label}
+                  </span>
+                  <span className="text-blue-300 text-[8px] font-bold uppercase tracking-widest opacity-0 group-hover/card:opacity-100 transition-opacity">
+                    Ver producto →
+                  </span>
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CATEGORIES } from '../data/products';
+import { BUSINESS_LOCATIONS } from '../data/seo';
 
 const Footer: React.FC = () => {
   return (
@@ -19,22 +20,34 @@ const Footer: React.FC = () => {
 
           <div className="flex flex-wrap gap-12">
             <div className="flex flex-col gap-2">
-              <h4 className="text-slate-900 font-bold text-sm uppercase tracking-wider">Productos</h4>
+              <p className="text-slate-900 font-bold text-sm uppercase tracking-wider">Líneas de pintura</p>
               {CATEGORIES.map(cat => (
                 <Link key={cat.id} to={`/catalog/${cat.id}`} className="text-slate-500 text-sm hover:text-blue-600 capitalize transition-colors">
-                  {cat.name.toLowerCase()}
+                  Ver pinturas {cat.name.toLowerCase()}
                 </Link>
               ))}
             </div>
-            <div className="flex flex-col gap-2">
-              <h4 className="text-slate-900 font-bold text-sm uppercase tracking-wider">Ubicaciones</h4>
-              <Link to="/contact" className="text-slate-500 text-sm hover:text-blue-600 transition-colors">Suc. Ferrocarril</Link>
-              <Link to="/contact" className="text-slate-500 text-sm hover:text-blue-600 transition-colors">Suc. Las Culturas</Link>
+            <div className="flex flex-col gap-4 max-w-xs">
+              <p className="text-slate-900 font-bold text-sm uppercase tracking-wider">Sucursales en Oaxaca</p>
+              {BUSINESS_LOCATIONS.map(location => (
+                <div key={location.id} className="flex flex-col gap-1">
+                  <p className="text-slate-700 text-sm font-semibold">{location.name}</p>
+                  <address className="text-slate-500 text-sm not-italic">
+                    {location.address}, {location.city}, Oaxaca, C.P. {location.postalCode}
+                  </address>
+                  <Link
+                    to="/contact"
+                    className="text-blue-600 text-sm hover:underline transition-colors"
+                  >
+                    Ver horarios y cómo llegar a {location.name}
+                  </Link>
+                </div>
+              ))}
             </div>
             <div className="flex flex-col gap-2">
-              <h4 className="text-slate-900 font-bold text-sm uppercase tracking-wider">Empresa</h4>
-              <Link to="/" className="text-slate-500 text-sm hover:text-blue-600 transition-colors">Sobre Nosotros</Link>
-              <Link to="/contact" className="text-slate-500 text-sm hover:text-blue-600 transition-colors">Sucursales</Link>
+              <p className="text-slate-900 font-bold text-sm uppercase tracking-wider">Empresa</p>
+              <Link to="/" className="text-slate-500 text-sm hover:text-blue-600 transition-colors">Conoce Pinturas Diamante en Oaxaca</Link>
+              <Link to="/contact" className="text-slate-500 text-sm hover:text-blue-600 transition-colors">Contacto y sucursales en Oaxaca</Link>
             </div>
           </div>
         </div>

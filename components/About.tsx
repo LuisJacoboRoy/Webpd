@@ -100,16 +100,19 @@ const AboutComponent: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Pinturas Diamante | Líderes en Recubrimientos Mexicanos</title>
-        <meta name="description" content="30 años de experiencia en pinturas de calidad premium. Soluciones automotriz, maderas y decorativo. Presencia en Oaxaca, Puebla, Veracruz y más." />
+        <title>Pinturas Diamante Oaxaca | Pinturas y Recubrimientos</title>
+        <meta name="description" content="Pinturas Diamante en Oaxaca: soluciones automotrices, para madera y decorativas. Visita nuestras sucursales y encuentra opciones para tu proyecto." />
         <meta name="keywords" content={keywords} />
 
         {/* Open Graph */}
-        <meta property="og:title" content="Pinturas Diamante | 30 Años de Excelencia" />
-        <meta property="og:description" content="Empresa mexicana líder en soluciones de pintura y recubrimientos de alta gama" />
+        <meta property="og:title" content="Pinturas Diamante Oaxaca | 30 Años de Excelencia" />
+        <meta property="og:description" content="Conoce Pinturas Diamante en Oaxaca: soluciones automotrices, para madera y decorativas, con atención en nuestras sucursales." />
+        <meta property="og:locale" content="es_MX" />
         <meta property="og:image" content={ogImage} />
         <meta property="og:url" content={`${BUSINESS_INFO.url}/`} />
         <meta property="og:type" content="business.business" />
+        <meta name="twitter:title" content="Pinturas Diamante Oaxaca | 30 Años de Excelencia" />
+        <meta name="twitter:description" content="Soluciones automotrices, para madera y decorativas. Visita nuestras sucursales en Oaxaca." />
 
         {/* Canonical */}
         <link rel="canonical" href={`${BUSINESS_INFO.url}/`} />
@@ -146,17 +149,17 @@ const AboutComponent: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-24" data-scroll-animate>
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8">
             <div className="text-5xl font-black text-blue-600 mb-2">30+</div>
-            <h3 className="text-lg font-black text-slate-900 mb-2">Años en el Mercado</h3>
+            <p className="text-lg font-black text-slate-900 mb-2">Años en el Mercado</p>
             <p className="text-sm text-slate-600">Desde 1996, construyendo confianza y calidad</p>
           </div>
           <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-3xl p-8">
             <div className="text-5xl font-black text-emerald-600 mb-2">5+</div>
-            <h3 className="text-lg font-black text-slate-900 mb-2">Regiones Servidas</h3>
+            <p className="text-lg font-black text-slate-900 mb-2">Regiones Servidas</p>
             <p className="text-sm text-slate-600">Cobertura en todo México central y sur</p>
           </div>
           <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-3xl p-8">
             <div className="text-5xl font-black text-orange-600 mb-2">66+</div>
-            <h3 className="text-lg font-black text-slate-900 mb-2">Productos</h3>
+            <p className="text-lg font-black text-slate-900 mb-2">Productos</p>
             <p className="text-sm text-slate-600">Soluciones especializadas para cada aplicación</p>
           </div>
         </div>

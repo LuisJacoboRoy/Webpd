@@ -165,9 +165,9 @@ function breadcrumbSchema(route, label, category, subCategory, product) {
 
 function pageData(route) {
   if (route === '/') {
-    const description = '30 años de experiencia en pinturas de calidad premium. Soluciones automotriz, maderas y decorativo. Presencia en Oaxaca, Puebla, Veracruz y más.';
+    const description = 'Pinturas Diamante en Oaxaca: soluciones automotrices, para madera y decorativas. Visita nuestras sucursales y encuentra opciones para tu proyecto.';
     return {
-      title: 'Pinturas Diamante | Líderes en Recubrimientos Mexicanos',
+      title: 'Pinturas Diamante Oaxaca | Pinturas y Recubrimientos',
       description,
       keywords: SEO_KEYWORDS.home.join(', '),
       image: BUSINESS_INFO.logo,
