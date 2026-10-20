@@ -125,7 +125,7 @@ export const generateOrganizationSchema = () => ({
     'ratingCount': 1247,
     'reviewCount': 356
   },
-  'priceRange': '$$$'
+  'priceRange': SEO_CONFIG.schema.priceRange
 });
 
 /**
@@ -156,7 +156,7 @@ export const generateProductSchema = (product: ProductDataForSchema, baseUrl: st
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    '@id': `${baseUrl}/product/${product.id}`,
+    '@id': `${baseUrl.replace(/\/+$/, '')}/product/${product.id}/`,
     'name': product.name,
     'description': product.description,
     'image': {
@@ -179,7 +179,7 @@ export const generateProductSchema = (product: ProductDataForSchema, baseUrl: st
     },
     'offers': {
       '@type': 'Offer',
-      'url': `${baseUrl}/#/product/${product.id}`,
+      'url': `${baseUrl.replace(/\/+$/, '')}/product/${product.id}/`,
       'priceCurrency': 'MXN',
       'price': product.price || 'Consultar',
       'priceValidUntil': new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
@@ -223,7 +223,7 @@ export const generateProductCollectionSchema = (
   '@type': 'CollectionPage',
   'name': category,
   'description': description,
-  'url': `${baseUrl}/#/catalog/${category.toLowerCase().replace(' ', '-')}`,
+  'url': `${baseUrl.replace(/\/+$/, '')}/catalog/${category.toLowerCase().replace(' ', '-')}/`,
   'image': {
     '@type': 'ImageObject',
     'url': imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`,
@@ -268,10 +268,11 @@ export const generateFAQSchema = (faqs: FAQItem[]) => ({
 export const generateContactSchema = () => ({
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
-  'url': `${SEO_CONFIG.domain}/#/contact`,
+  'url': `${SEO_CONFIG.domain}/contact/`,
   'mainEntity': {
     '@type': 'LocalBusiness',
     'name': SEO_CONFIG.business.name,
+    'priceRange': SEO_CONFIG.schema.priceRange,
     'contactPoint': {
       '@type': 'ContactPoint',
       'telephone': SEO_CONFIG.business.phone,

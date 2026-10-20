@@ -17,6 +17,10 @@ import { Product, Category, SubCategory } from '../types';
 // Determinar el dominio base según el entorno
 const isGitHubPages = process.env.GITHUB_PAGES === 'true';
 const DOMAIN = isGitHubPages ? 'https://luisjacoboroy.github.io/Webpd' : 'https://pinturasdiamante.com';
+const pageUrl = (route: string) => {
+  const normalizedRoute = route.replace(/^\/+|\/+$/g, '');
+  return normalizedRoute ? `${DOMAIN}/${normalizedRoute}/` : `${DOMAIN}/`;
+};
 
 /**
  * Interfaz para datos SEO de producto
@@ -81,31 +85,31 @@ export const generateBreadcrumbSchema = (
       '@type': 'ListItem',
       position: 1,
       name: 'Inicio',
-      item: `${DOMAIN}/`
+      item: pageUrl('/')
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Catálogo',
-      item: `${DOMAIN}/catalog`
+      item: pageUrl('/catalog')
     },
     {
       '@type': 'ListItem',
       position: 3,
       name: category.name,
-      item: `${DOMAIN}/catalog/${category.id}`
+      item: pageUrl(`/catalog/${category.id}`)
     },
     {
       '@type': 'ListItem',
       position: 4,
       name: subCategory.name,
-      item: `${DOMAIN}/catalog/${category.id}/${subCategory.id}`
+      item: pageUrl(`/catalog/${category.id}/${subCategory.id}`)
     },
     {
       '@type': 'ListItem',
       position: 5,
       name: product.name,
-      item: `${DOMAIN}/product/${product.id}`
+      item: pageUrl(`/product/${product.id}`)
     }
   ]
 });
@@ -124,10 +128,11 @@ export const generateBreadcrumbSchema = (
  * - reviews (si aplica)
  */
 export const generateProductSchema = (product: Product) => {
+  const productUrl = pageUrl(`/product/${product.id}`);
   const baseSchema = {
     '@context': 'https://schema.org/',
     '@type': 'Product',
-    '@id': `${DOMAIN}/product/${product.id}`,
+    '@id': `${productUrl}#product`,
     name: product.name,
     description: product.description,
     // REQUERIDO: Al menos una imagen
@@ -138,7 +143,7 @@ export const generateProductSchema = (product: Product) => {
     // SKU para identificación única
     sku: product.id,
     // URL canónica del producto
-    url: `${DOMAIN}/product/${product.id}`,
+    url: productUrl,
     // Brand y manufacturer (importante para Rich Results)
     brand: {
       '@type': 'Brand',
@@ -160,7 +165,7 @@ export const generateProductSchema = (product: Product) => {
     // Información de oferta (REQUERIDA para mostrar en Rich Results con precio)
     offers: {
       '@type': 'Offer',
-      url: `${DOMAIN}/product/${product.id}`,
+      url: productUrl,
       // Disponibilidad (InStock es ideal para Rich Results)
       availability: 'https://schema.org/InStock',
       // Divisa (MXN por defecto en México)
@@ -207,10 +212,10 @@ export const generateWebPageSchema = (
   return {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    '@id': `${DOMAIN}/product/${product.id}`,
+    '@id': `${pageUrl(`/product/${product.id}`)}#webpage`,
     name: product.name,
     description: product.description,
-    url: `${DOMAIN}/product/${product.id}`,
+    url: pageUrl(`/product/${product.id}`),
     image: product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`,
     datePublished: new Date().toISOString().split('T')[0],
     inLanguage: 'es-MX',
@@ -222,7 +227,7 @@ export const generateWebPageSchema = (
     // mainEntity apunta al Product schema (Google utiliza esto para Rich Results)
     mainEntity: productSchema,
     breadcrumb: {
-      '@id': `${DOMAIN}/product/${product.id}/breadcrumb`
+      '@id': `${pageUrl(`/product/${product.id}`)}#breadcrumb`
     }
   };
 };
@@ -233,7 +238,7 @@ export const generateWebPageSchema = (
  */
 export const generateOpenGraphTags = (product: Product): Record<string, string> => ({
   'og:type': 'product',
-  'og:url': `${DOMAIN}/product/${product.id}`,
+  'og:url': pageUrl(`/product/${product.id}`),
   'og:title': product.ogTitle || `${product.name} - Pinturas Diamante`,
   'og:description': product.ogDescription || product.description,
   'og:image': product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`,
@@ -261,7 +266,7 @@ export const generateTwitterCardTags = (product: Product): Record<string, string
  * Genera meta tags canónicos y de robots
  */
 export const generateCanonicalAndRobotsMetaTags = (productId: string): Record<string, string> => ({
-  canonical: `${DOMAIN}/product/${productId}`,
+  canonical: pageUrl(`/product/${productId}`),
   robots: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
   googlebot: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
 });
@@ -279,7 +284,7 @@ export const generateProductSEOData = (productId: string): ProductSEOData | null
   if (!category || !subCategory) return null;
 
   return {
-    canonical: `${DOMAIN}/product/${productId}`,
+    canonical: pageUrl(`/product/${productId}`),
     title: product.ogTitle || `${product.name} - Pinturas Diamante`,
     description: product.ogDescription || product.description,
     ogImage: product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`,
@@ -318,7 +323,7 @@ export const generateCategorySEOData = (categoryId: string) => {
   if (!category) return null;
 
   return {
-    canonical: `${DOMAIN}/catalog/${categoryId}`,
+    canonical: pageUrl(`/catalog/${categoryId}`),
     title: `${category.name} | Pinturas Diamante Oaxaca`,
     description: category.description,
     ogImage: category.ogImage ? `${DOMAIN}${category.ogImage}` : `${DOMAIN}${category.image}`,
@@ -328,10 +333,10 @@ export const generateCategorySEOData = (categoryId: string) => {
         generateOrganizationSchema(),
         {
           '@type': 'CollectionPage',
-          '@id': `${DOMAIN}/catalog/${categoryId}`,
+          '@id': pageUrl(`/catalog/${categoryId}`),
           name: category.name,
           description: category.description,
-          url: `${DOMAIN}/catalog/${categoryId}`,
+          url: pageUrl(`/catalog/${categoryId}`),
           image: category.ogImage ? `${DOMAIN}${category.ogImage}` : `${DOMAIN}${category.image}`
         }
       ]
@@ -358,7 +363,7 @@ export const generateLocalBusinessSchema = () => ({
   },
   telephone: '+52-951-143-3467',
   image: `${DOMAIN}/img/catalog/LOGO-WEB-DIAMANTE-PNG.png`,
-  priceRange: '$',
+  priceRange: '$$',
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -491,7 +496,6 @@ export const validateAllProductsSEO = (): Record<string, string[]> => {
  * Genera sitemap XML actualizado desde productos
  */
 export const generateDynamicSitemap = (): string => {
-  const baseUrl = DOMAIN;
   const lastmod = new Date().toISOString().split('T')[0];
 
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
@@ -501,13 +505,12 @@ export const generateDynamicSitemap = (): string => {
   const staticUrls = [
     { url: '', priority: '1.0', changefreq: 'weekly' },
     { url: 'contact', priority: '0.8', changefreq: 'monthly' },
-    { url: 'search', priority: '0.7', changefreq: 'monthly' },
     { url: 'catalog', priority: '0.9', changefreq: 'weekly' }
   ];
 
   staticUrls.forEach(({ url, priority, changefreq }) => {
     xml += `  <url>\n`;
-    xml += `    <loc>${baseUrl}/${url}</loc>\n`;
+    xml += `    <loc>${pageUrl(url)}</loc>\n`;
     xml += `    <lastmod>${lastmod}</lastmod>\n`;
     xml += `    <changefreq>${changefreq}</changefreq>\n`;
     xml += `    <priority>${priority}</priority>\n`;
@@ -517,7 +520,7 @@ export const generateDynamicSitemap = (): string => {
   // Categorías
   CATEGORIES.forEach(category => {
     xml += `  <url>\n`;
-    xml += `    <loc>${baseUrl}/catalog/${category.id}</loc>\n`;
+    xml += `    <loc>${pageUrl(`/catalog/${category.id}`)}</loc>\n`;
     xml += `    <lastmod>${lastmod}</lastmod>\n`;
     xml += `    <changefreq>weekly</changefreq>\n`;
     xml += `    <priority>0.85</priority>\n`;
@@ -527,7 +530,7 @@ export const generateDynamicSitemap = (): string => {
   // Subcategorías
   SUB_CATEGORIES.forEach(subCat => {
     xml += `  <url>\n`;
-    xml += `    <loc>${baseUrl}/catalog/${subCat.categoryId}/${subCat.id}</loc>\n`;
+    xml += `    <loc>${pageUrl(`/catalog/${subCat.categoryId}/${subCat.id}`)}</loc>\n`;
     xml += `    <lastmod>${lastmod}</lastmod>\n`;
     xml += `    <changefreq>weekly</changefreq>\n`;
     xml += `    <priority>0.80</priority>\n`;
@@ -537,7 +540,7 @@ export const generateDynamicSitemap = (): string => {
   // Productos
   PRODUCTS.forEach(product => {
     xml += `  <url>\n`;
-    xml += `    <loc>${baseUrl}/product/${product.id}</loc>\n`;
+    xml += `    <loc>${pageUrl(`/product/${product.id}`)}</loc>\n`;
     xml += `    <lastmod>${lastmod}</lastmod>\n`;
     xml += `    <changefreq>monthly</changefreq>\n`;
     xml += `    <priority>0.70</priority>\n`;
@@ -552,31 +555,16 @@ export const generateDynamicSitemap = (): string => {
  * Genera robots.txt optimizado
  */
 export const generateRobotsTxt = (): string => {
-  return `# Robots.txt para Pinturas Diamante
-# https://developers.google.com/search/docs/crawling-indexing/robots/create-robots-txt
-
+  return `# Reglas de rastreo para Pinturas Diamante
 User-agent: *
 Allow: /
-Disallow: /certs/
-Disallow: /.git/
-Disallow: /node_modules/
-Disallow: /dist/
-Disallow: /*.json$
+Disallow: /api/
+Disallow: /admin/
 
-# Delay para bots lentos
-Crawl-delay: 1
-
-# Sitemaps
+# Sitemaps con URLs públicas y canónicas
 Sitemap: https://pinturasdiamante.com/sitemap.xml
-  Sitemap: https://pinturasdiamante.com/sitemap-products.xml
-
-# Google Adsbot
-User-agent: AdsBot-Google
-Allow: /
-
-# Google Mobile
-User-agent: Googlebot-Mobile
-Allow: /
+Sitemap: https://pinturasdiamante.com/sitemap-products.xml
+Sitemap: https://pinturasdiamante.com/sitemap-categories.xml
 `;
 };
 

@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { PRODUCTS, CATEGORIES, SUB_CATEGORIES } from '../data/products.js';
-import { BUSINESS_LOCATIONS } from '../data/seo.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -59,38 +58,20 @@ function generatePagesSitemap(): SitemapEntry[] {
       schema: 'Organization'
     },
     {
-      loc: `${BASE_URL}/contact`,
+      loc: `${BASE_URL}/contact/`,
       lastmod: today,
       changefreq: 'monthly',
       priority: 0.8,
-      schema: 'LocalBusiness'
+      schema: 'ContactPage'
     },
     {
-      loc: `${BASE_URL}/catalog`,
+      loc: `${BASE_URL}/catalog/`,
       lastmod: today,
       changefreq: 'weekly',
       priority: 0.9,
       schema: 'CollectionPage'
-    },
-    {
-      loc: `${BASE_URL}/about`,
-      lastmod: today,
-      changefreq: 'monthly',
-      priority: 0.7,
-      schema: 'Organization'
     }
   ];
-
-  // Agregar ubicaciones de sucursales
-  BUSINESS_LOCATIONS.forEach(location => {
-    pages.push({
-      loc: `${BASE_URL}/location/${location.id}`,
-      lastmod: today,
-      changefreq: 'monthly',
-      priority: 0.6,
-      schema: 'LocalBusiness'
-    });
-  });
 
   return pages;
 }
@@ -102,7 +83,7 @@ function generateCategoriesSitemap(): SitemapEntry[] {
   // Categorías principales
   CATEGORIES.forEach(category => {
     categories.push({
-      loc: `${BASE_URL}/catalog/${category.id}`,
+      loc: `${BASE_URL}/catalog/${category.id}/`,
       lastmod: today,
       changefreq: 'weekly',
       priority: 0.85,
@@ -113,7 +94,7 @@ function generateCategoriesSitemap(): SitemapEntry[] {
   // Subcategorías
   SUB_CATEGORIES.forEach(subCategory => {
     categories.push({
-      loc: `${BASE_URL}/catalog/${subCategory.categoryId}/${subCategory.id}`,
+      loc: `${BASE_URL}/catalog/${subCategory.categoryId}/${subCategory.id}/`,
       lastmod: today,
       changefreq: 'weekly',
       priority: 0.80,
@@ -130,7 +111,7 @@ function generateProductsSitemap(): SitemapEntry[] {
 
   PRODUCTS.forEach(product => {
     products.push({
-      loc: `${BASE_URL}/product/${product.id}`,
+      loc: `${BASE_URL}/product/${product.id}/`,
       lastmod: today,
       changefreq: 'monthly',
       priority: 0.7,
@@ -167,24 +148,16 @@ function createSitemaps() {
   fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), sitemapIndex);
 
   // Generar un robots.txt mejorado
-  const robotsTxt = `# Pinturas Diamante Robots.txt
+  const robotsTxt = `# Reglas de rastreo para Pinturas Diamante
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
 
-# Sitemaps
+# Sitemaps con URLs públicas y canónicas
 Sitemap: ${BASE_URL}/sitemap.xml
-
-# Crawl-delay
-Crawl-delay: 1
-
-# Descargar user agents específicos
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 0
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
+Sitemap: ${BASE_URL}/sitemap-products.xml
+Sitemap: ${BASE_URL}/sitemap-categories.xml
 `;
 
   fs.writeFileSync(path.join(PUBLIC_DIR, 'robots.txt'), robotsTxt);

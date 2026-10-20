@@ -20,6 +20,7 @@ import { Product, Category, SubCategory } from '../types';
 const DOMAIN = process.env.GITHUB_PAGES === 'true' 
   ? 'https://luisjacoboroy.github.io/Webpd'
   : 'https://pinturasdiamante.com';
+const productPageUrl = (productId: string) => `${DOMAIN}/product/${productId}/`;
 
 /**
  * Genera schema completo de Product optimizado para Google Rich Results
@@ -31,7 +32,7 @@ export const generateEnhancedProductSchema = (
   subCategory?: SubCategory,
   includeReviews: boolean = true
 ) => {
-  const productUrl = `${DOMAIN}/product/${product.id}`;
+  const productUrl = productPageUrl(product.id);
   const imageUrl = product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`;
 
   const schema: any = {
@@ -59,7 +60,7 @@ export const generateEnhancedProductSchema = (
       '@type': 'Brand',
       '@id': `${DOMAIN}/#brand`,
       name: 'Pinturas Diamante',
-      url: DOMAIN,
+      url: `${DOMAIN}/`,
       logo: {
         '@type': 'ImageObject',
         url: `${DOMAIN}/img/catalog/LOGO-WEB-DIAMANTE-PNG.png`,
@@ -270,8 +271,8 @@ export const generateProductPageSchema = (
 ) => ({
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  '@id': `${DOMAIN}/product/${product.id}#webpage`,
-  url: `${DOMAIN}/product/${product.id}`,
+  '@id': `${productPageUrl(product.id)}#webpage`,
+  url: productPageUrl(product.id),
   name: `${product.name} - Pinturas Diamante`,
   description: product.description.substring(0, 160),
   image: product.ogImage 

@@ -11,49 +11,43 @@ import { BUSINESS_INFO } from '../data/seo';
  * Úsalo en una ruta /sitemap.xml si lo requieres
  */
 export const generateSitemap = (): string => {
-  const baseUrl = BUSINESS_INFO.url;
-  
+  const baseUrl = BUSINESS_INFO.url.replace(/\/+$/, '');
+  const lastmod = new Date().toISOString().split('T')[0];
   const urls = [
-    // Home
     {
-      loc: `${baseUrl}/#/`,
-      lastmod: new Date().toISOString().split('T')[0],
+      loc: `${baseUrl}/`,
+      lastmod,
       changefreq: 'weekly',
       priority: '1.0'
     },
-    // Catálogo
     {
-      loc: `${baseUrl}/#/catalog`,
-      lastmod: new Date().toISOString().split('T')[0],
-      changefreq: 'monthly',
+      loc: `${baseUrl}/catalog/`,
+      lastmod,
+      changefreq: 'weekly',
       priority: '0.9'
     },
-    // Categorías
     ...CATEGORIES.map(cat => ({
-      loc: `${baseUrl}/#/catalog/${cat.id}`,
-      lastmod: new Date().toISOString().split('T')[0],
-      changefreq: 'monthly',
+      loc: `${baseUrl}/catalog/${cat.id}/`,
+      lastmod,
+      changefreq: 'weekly',
       priority: '0.8'
     })),
-    // Subcategorías
     ...SUB_CATEGORIES.map(sub => ({
-      loc: `${baseUrl}/#/catalog/${CATEGORIES.find(c => c.id === sub.categoryId)?.id}/${sub.id}`,
-      lastmod: new Date().toISOString().split('T')[0],
-      changefreq: 'monthly',
+      loc: `${baseUrl}/catalog/${sub.categoryId}/${sub.id}/`,
+      lastmod,
+      changefreq: 'weekly',
       priority: '0.7'
     })),
-    // Productos
     ...PRODUCTS.map(product => ({
-      loc: `${baseUrl}/#/product/${product.id}`,
-      lastmod: new Date().toISOString().split('T')[0],
+      loc: `${baseUrl}/product/${product.id}/`,
+      lastmod,
       changefreq: 'monthly',
       priority: '0.6'
     })),
-    // Contacto
     {
-      loc: `${baseUrl}/#/contact`,
-      lastmod: new Date().toISOString().split('T')[0],
-      changefreq: 'yearly',
+      loc: `${baseUrl}/contact/`,
+      lastmod,
+      changefreq: 'monthly',
       priority: '0.8'
     }
   ];
@@ -77,21 +71,15 @@ ${urls.map(url => `
  * Genera robots.txt para optimizar crawling
  */
 export const generateRobotsTxt = (): string => {
+  const baseUrl = BUSINESS_INFO.url.replace(/\/+$/, '');
   return `User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
 
-# Disallow paths if needed:
-# Disallow: /admin/
-# Disallow: /private/
-
-Sitemap: ${BUSINESS_INFO.url}/sitemap.xml
-
-# Crawl delay (in seconds)
-Crawl-delay: 1
-
-# Comments
-# Pinturas Diamante Oaxaca
-# SEO Optimized for search engines
+Sitemap: ${baseUrl}/sitemap.xml
+Sitemap: ${baseUrl}/sitemap-products.xml
+Sitemap: ${baseUrl}/sitemap-categories.xml
 `;
 };
 

@@ -108,11 +108,11 @@ const AboutComponent: React.FC = () => {
         <meta property="og:title" content="Pinturas Diamante | 30 Años de Excelencia" />
         <meta property="og:description" content="Empresa mexicana líder en soluciones de pintura y recubrimientos de alta gama" />
         <meta property="og:image" content={ogImage} />
-        <meta property="og:url" content={BUSINESS_INFO.url} />
+        <meta property="og:url" content={`${BUSINESS_INFO.url}/`} />
         <meta property="og:type" content="business.business" />
 
         {/* Canonical */}
-        <link rel="canonical" href={BUSINESS_INFO.url} />
+        <link rel="canonical" href={`${BUSINESS_INFO.url}/`} />
         
         {/* Estilos de animación de scroll */}
         <style>{`

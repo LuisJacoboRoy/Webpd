@@ -116,7 +116,7 @@ async function loadProductsData() {
 }
 
 async function generateSitemaps() {
-  const baseUrl = process.env.SITE_URL || 'https://pinturasdiamante.com';
+  const baseUrl = (process.env.SITE_URL || 'https://pinturasdiamante.com').replace(/\/+$/, '');
   const today = new Date().toISOString().split('T')[0];
 
   try {
@@ -146,7 +146,6 @@ async function generateSitemaps() {
     // 1. SITEMAP GENERAL (todas las URLs)
     // ============================================
     const allUrls: URLEntry[] = [
-      // URLs estáticas
       {
         loc: `${baseUrl}/`,
         lastmod: today,
@@ -155,50 +154,30 @@ async function generateSitemaps() {
         schemaType: 'Organization'
       },
       {
-        loc: `${baseUrl}/#/catalog`,
+        loc: `${baseUrl}/catalog/`,
         lastmod: today,
         changefreq: 'weekly',
         priority: 0.9,
         schemaType: 'CollectionPage'
       },
       {
-        loc: `${baseUrl}/#/contact`,
+        loc: `${baseUrl}/contact/`,
         lastmod: today,
         changefreq: 'monthly',
         priority: 0.8,
-        schemaType: 'LocalBusiness'
-      },
-      {
-        loc: `${baseUrl}/#/about`,
-        lastmod: today,
-        changefreq: 'monthly',
-        priority: 0.7,
-        schemaType: 'Organization'
+        schemaType: 'ContactPage'
       }
     ];
-
-    // Agregar ubicaciones de sucursales
-    if (businessLocations && Array.isArray(businessLocations)) {
-      businessLocations.forEach(location => {
-        allUrls.push({
-          loc: `${baseUrl}/#/location/${location.id}`,
-          lastmod: today,
-          changefreq: 'monthly',
-          priority: 0.6,
-          schemaType: 'LocalBusiness'
-        });
-      });
-    }
 
     // Agregar categorías
     if (Array.isArray(categories)) {
       categories.forEach(cat => {
         allUrls.push({
-          loc: `${baseUrl}/#/catalog/${cat.id}`,
+          loc: `${baseUrl}/catalog/${cat.id}/`,
           lastmod: today,
           changefreq: 'weekly',
           priority: 0.85,
-          schemaType: 'Category'
+          schemaType: 'CollectionPage'
         });
       });
     }
@@ -209,11 +188,11 @@ async function generateSitemaps() {
         const category = categories.find(c => c.id === subCat.categoryId);
         if (category) {
           allUrls.push({
-            loc: `${baseUrl}/#/catalog/${category.id}/${subCat.id}`,
+            loc: `${baseUrl}/catalog/${category.id}/${subCat.id}/`,
             lastmod: today,
             changefreq: 'weekly',
             priority: 0.80,
-            schemaType: 'Category'
+            schemaType: 'CollectionPage'
           });
         }
       });
@@ -221,11 +200,10 @@ async function generateSitemaps() {
 
     // Agregar productos
     if (Array.isArray(products)) {
-      products.forEach((product, index) => {
-        const date = new Date(2026, 2, 15 + Math.floor(index / 10)).toISOString().split('T')[0];
+      products.forEach(product => {
         allUrls.push({
-          loc: `${baseUrl}/#/product/${product.id}`,
-          lastmod: date,
+          loc: `${baseUrl}/product/${product.id}/`,
+          lastmod: today,
           changefreq: 'monthly',
           priority: 0.70,
           schemaType: 'Product'
@@ -254,9 +232,7 @@ async function generateSitemaps() {
     // ============================================
     // 3. SITEMAP DE CATEGORÍAS
     // ============================================
-    const categoryUrls = allUrls.filter(u =>
-      u.schemaType === 'Category' || u.schemaType === 'CollectionPage'
-    );
+    const categoryUrls = allUrls.filter(u => u.schemaType === 'CollectionPage');
     const categorySitemap = generateSitemapXML(categoryUrls);
     const categoryPath = path.join(__dirname, '..', 'public', 'sitemap-categories.xml');
     fs.writeFileSync(categoryPath, categorySitemap);
@@ -268,13 +244,10 @@ async function generateSitemaps() {
     // ============================================
     const schemaStats = {
       Organization: allUrls.filter(u => u.schemaType === 'Organization').length,
-      LocalBusiness: allUrls.filter(u => u.schemaType === 'LocalBusiness').length,
-      Category: allUrls.filter(u => u.schemaType === 'Category').length,
       Product: allUrls.filter(u => u.schemaType === 'Product').length,
-      CollectionPage: allUrls.filter(u => u.schemaType === 'CollectionPage').length
+      CollectionPage: categoryUrls.length,
+      ContactPage: allUrls.filter(u => u.schemaType === 'ContactPage').length
     };
-
-    const localBusinessUrls = allUrls.filter(u => u.schemaType === 'LocalBusiness');
 
     const metadata = {
       generatedAt: new Date().toISOString(),
@@ -288,8 +261,7 @@ async function generateSitemaps() {
         totalURLs: allUrls.length,
         bySchema: schemaStats,
         breakdown: {
-          staticPages: 4,
-          locations: businessLocations.length,
+          staticPages: 3,
           categories: categories.length,
           subcategories: subCategories.length,
           products: products.length
@@ -350,8 +322,8 @@ async function generateSitemaps() {
           title: 'Monitorear Cobertura',
           location: 'Menú izquierdo > Cobertura',
           whatToLook: {
-            valid: `Debe mostrar ${allUrls.length} URLs válidas`,
-            excluded: 'Verifica qué URLs están excluidas y por qué',
+            valid: `Se enviaron ${allUrls.length} URLs; el envío no garantiza que Google las indexe`,
+            excluded: 'Las URLs enviadas no garantizan indexación; revisa las exclusiones y sus motivos',
             error: 'Resuelve cualquier error de indexación'
           }
         }
@@ -369,13 +341,6 @@ async function generateSitemaps() {
           count: categoryUrls.length,
           documentation: 'https://developers.google.com/search/docs/appearance/structured-data/breadcrumb',
           howToMeasure: 'En "Resultados enriquecidos" > "BreadcrumbList"',
-          expectedMetrics: ['indexed', 'valid', 'invalid']
-        },
-        locations: {
-          schema: 'LocalBusiness',
-          count: localBusinessUrls.length,
-          documentation: 'https://developers.google.com/search/docs/appearance/structured-data/local-business',
-          howToMeasure: 'En "Resultados enriquecidos" > "LocalBusiness" o mediante Google Business Profile',
           expectedMetrics: ['indexed', 'valid', 'invalid']
         },
         organization: {
@@ -406,8 +371,7 @@ async function generateSitemaps() {
       },
       urls: {
         products: productUrls.slice(0, 10).map(u => ({ url: u.loc, lastmod: u.lastmod })),
-        categories: categoryUrls.slice(0, 10).map(u => ({ url: u.loc, lastmod: u.lastmod })),
-        locations: localBusinessUrls.map(u => ({ url: u.loc, lastmod: u.lastmod }))
+        categories: categoryUrls.slice(0, 10).map(u => ({ url: u.loc, lastmod: u.lastmod }))
       }
     };
 
@@ -427,8 +391,7 @@ async function generateSitemaps() {
     });
 
     console.log(`\n📍 DESGLOSE DETALLADO:`);
-    console.log(`   Páginas estáticas   : 4`);
-    console.log(`   Sucursales/Ubicaciones: ${businessLocations.length}`);
+    console.log(`   Páginas estáticas   : 3`);
     console.log(`   Categorías          : ${categories.length}`);
     console.log(`   Subcategorías       : ${subCategories.length}`);
     console.log(`   Productos           : ${products.length}`);
@@ -467,4 +430,3 @@ async function generateSitemaps() {
 
 // Ejecutar
 generateSitemaps();
-

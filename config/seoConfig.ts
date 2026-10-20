@@ -135,7 +135,7 @@ export const SEO_CONFIG = {
     includeOrganization: true,
     includeLocalBusiness: true,
     includeBreadcrumbs: true,
-    priceRange: '$'
+    priceRange: '$$'
   },
 
   // Opciones de prerendering
@@ -151,9 +151,9 @@ export const SEO_CONFIG = {
 
   // URLs especiales
   urls: {
-    contact: '#/contact',
-    catalog: '#/catalog',
-    home: '#/',
+    contact: '/contact/',
+    catalog: '/catalog/',
+    home: '/',
     sitemapXml: '/sitemap.xml',
     robotsTxt: '/robots.txt'
   }

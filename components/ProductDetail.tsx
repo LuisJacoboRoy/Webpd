@@ -54,7 +54,7 @@ const ProductDetailComponent: React.FC = () => {
   }, [product, category, subCat]);
 
   // Construir URLs con useMemo
-  const canonicalUrl = useMemo(() => `${BUSINESS_INFO.url}/product/${product.id}`, [product.id]);
+  const canonicalUrl = useMemo(() => `${BUSINESS_INFO.url}/product/${product.id}/`, [product.id]);
 
   // og:image: usa la imagen real del producto con URL absoluta
   const imageUrl = useMemo(() => {

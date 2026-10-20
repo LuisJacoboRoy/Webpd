@@ -44,7 +44,7 @@ const AppContent: React.FC = () => {
     '@type': 'Organization',
     'name': BUSINESS_INFO.name,
     'description': BUSINESS_INFO.description,
-    'url': BUSINESS_INFO.url,
+    'url': `${BUSINESS_INFO.url}/`,
     'logo': BUSINESS_INFO.logo,
     'email': BUSINESS_INFO.email,
     'telephone': BUSINESS_INFO.phone,
@@ -58,6 +58,8 @@ const AppContent: React.FC = () => {
     'location': BUSINESS_LOCATIONS.map(loc => ({
       '@type': 'LocalBusiness',
       'name': loc.name,
+      'url': `${BUSINESS_INFO.url}/`,
+      'priceRange': '$$',
       'address': {
         '@type': 'PostalAddress',
         'streetAddress': loc.address,

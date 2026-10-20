@@ -12,6 +12,7 @@ import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from '../data/products.ts';
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const distDirectory = path.resolve(scriptDirectory, '../dist');
 const domain = BUSINESS_INFO.url.replace(/\/$/, '');
+const pageUrl = route => `${domain}${route === '/' ? '/' : `${route}/`}`;
 
 function escapeHtml(value) {
   return String(value)
@@ -42,7 +43,7 @@ function getBusinessSchemas() {
     '@id': organizationId,
     name: BUSINESS_INFO.name,
     description: BUSINESS_INFO.description,
-    url: domain,
+    url: pageUrl('/'),
     logo: absoluteUrl(BUSINESS_INFO.logo),
     email: BUSINESS_INFO.email,
     telephone: BUSINESS_INFO.phone,
@@ -57,8 +58,9 @@ function getBusinessSchemas() {
     '@id': `${domain}/#business-${location.id}`,
     name: location.name,
     description: `${BUSINESS_INFO.name} - ${location.name}`,
-    url: domain,
+    url: pageUrl('/'),
     image: absoluteUrl(BUSINESS_INFO.logo),
+    priceRange: '$$',
     telephone: location.phone,
     address: {
       '@type': 'PostalAddress',
@@ -96,7 +98,7 @@ function getBusinessSchemas() {
   const website = {
     '@type': 'WebSite',
     '@id': `${domain}/#website`,
-    url: domain,
+    url: pageUrl('/'),
     name: BUSINESS_INFO.name,
     publisher: { '@id': organizationId },
     potentialAction: {
@@ -113,17 +115,17 @@ function getBusinessSchemas() {
 }
 
 function breadcrumbSchema(route, label, category, subCategory, product) {
-  const items = [{ name: 'Inicio', url: `${domain}/` }];
+  const items = [{ name: 'Inicio', url: pageUrl('/') }];
   if (route === '/catalog' || route.startsWith('/catalog/') || route.startsWith('/product/')) {
-    items.push({ name: 'Catálogo', url: `${domain}/catalog` });
+    items.push({ name: 'Catálogo', url: pageUrl('/catalog') });
   }
-  if (category) items.push({ name: category.name, url: `${domain}/catalog/${category.id}` });
+  if (category) items.push({ name: category.name, url: pageUrl(`/catalog/${category.id}`) });
   if (subCategory) items.push({
     name: subCategory.name,
-    url: `${domain}/catalog/${category.id}/${subCategory.id}`
+    url: pageUrl(`/catalog/${category.id}/${subCategory.id}`)
   });
-  if (product) items.push({ name: product.name, url: `${domain}/product/${product.id}` });
-  else if (route === '/contact') items.push({ name: label, url: `${domain}${route}` });
+  if (product) items.push({ name: product.name, url: pageUrl(`/product/${product.id}`) });
+  else if (route === '/contact') items.push({ name: label, url: pageUrl(route) });
 
   return {
     '@type': 'BreadcrumbList',
@@ -148,7 +150,7 @@ function pageData(route) {
         '@type': 'WebPage',
         '@id': `${domain}/#home`,
         name: 'Pinturas Diamante Oaxaca',
-        url: `${domain}/`,
+        url: pageUrl('/'),
         description,
         inLanguage: 'es-MX'
       }, breadcrumbSchema(route, 'Inicio')]
@@ -165,14 +167,14 @@ function pageData(route) {
         {
           '@type': 'CollectionPage',
           name: 'Catálogo de Pinturas',
-          url: `${domain}${route}`,
+          url: pageUrl(route),
           mainEntity: {
             '@type': 'ItemList',
             itemListElement: CATEGORIES.map((category, index) => ({
               '@type': 'ListItem',
               position: index + 1,
               name: category.name,
-              url: `${domain}/catalog/${category.id}`
+              url: pageUrl(`/catalog/${category.id}`)
             }))
           }
         },
@@ -190,7 +192,7 @@ function pageData(route) {
       schemas: [{
         '@type': 'ContactPage',
         name: 'Nuestras Sucursales',
-        url: `${domain}${route}`,
+        url: pageUrl(route),
         description: 'Visítanos en cualquiera de nuestras sucursales en Oaxaca.'
       }, breadcrumbSchema(route, 'Contacto')]
     };
@@ -206,7 +208,7 @@ function pageData(route) {
       schemas: [{
         '@type': 'WebPage',
         name: 'Buscar productos',
-        url: `${domain}${route}`,
+        url: pageUrl(route),
         description: 'Búsqueda de productos de Pinturas Diamante.'
       }]
     };
@@ -220,7 +222,7 @@ function pageData(route) {
     const subCategory = SUB_CATEGORIES.find(item => item.id === product.subCategoryId);
     const title = product.ogTitle || `${product.name} - Diamante Oaxaca`;
     const description = product.ogDescription || product.description.slice(0, 160);
-    const productUrl = `${domain}${route}`;
+    const productUrl = pageUrl(route);
 
     return {
       title,
@@ -261,7 +263,7 @@ function pageData(route) {
         {
           '@type': 'CollectionPage',
           name: title,
-          url: `${domain}${route}`,
+          url: pageUrl(route),
           description,
           mainEntity: {
             '@type': 'ItemList',
@@ -269,7 +271,7 @@ function pageData(route) {
               '@type': 'ListItem',
               position: index + 1,
               name: subCategory.name,
-              url: `${domain}/catalog/${category.id}/${subCategory.id}`
+              url: pageUrl(`/catalog/${category.id}/${subCategory.id}`)
             }))
           }
         },
@@ -298,7 +300,7 @@ function pageData(route) {
         {
           '@type': 'CollectionPage',
           name: title,
-          url: `${domain}${route}`,
+          url: pageUrl(route),
           description,
           mainEntity: {
             '@type': 'ItemList',
@@ -309,7 +311,7 @@ function pageData(route) {
               item: {
                 '@type': 'Product',
                 name: product.name,
-                url: `${domain}/product/${product.id}`,
+                url: pageUrl(`/product/${product.id}`),
                 image: absoluteUrl(product.ogImage || product.image),
                 description: product.description.slice(0, 160)
               }
@@ -350,7 +352,7 @@ function renderPage(template, route, data) {
     keywords: data.keywords,
     robots: data.noIndex ? 'noindex, follow' : 'index, follow',
     'og:type': route.startsWith('/product/') ? 'product' : 'website',
-    'og:url': `${domain}${route === '/' ? '/' : route}`,
+    'og:url': pageUrl(route),
     'og:title': data.title,
     'og:description': data.description,
     'og:image': absoluteUrl(data.image),
@@ -366,7 +368,7 @@ function renderPage(template, route, data) {
     html = setMeta(html, name.startsWith('og:') ? 'property' : 'name', name, content);
   }
   html = html.replace(/<\/head>/i, [
-    `  <link rel="canonical" href="${escapeHtml(`${domain}${route === '/' ? '/' : route}`)}">`,
+    `  <link rel="canonical" href="${escapeHtml(pageUrl(route))}">`,
     `  <meta name="static-seo-route" content="${escapeHtml(route)}">`,
     `  <script type="application/ld+json" data-static-seo="true">${jsonForHtml({
       '@context': 'https://schema.org',
