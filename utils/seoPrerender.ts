@@ -363,7 +363,6 @@ export const generateLocalBusinessSchema = () => ({
   },
   telephone: '+52-951-143-3467',
   image: `${DOMAIN}/img/catalog/LOGO-WEB-DIAMANTE-PNG.png`,
-  priceRange: '$$',
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],

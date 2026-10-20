@@ -59,7 +59,6 @@ const AppContent: React.FC = () => {
       '@type': 'LocalBusiness',
       'name': loc.name,
       'url': `${BUSINESS_INFO.url}/`,
-      'priceRange': '$$',
       'address': {
         '@type': 'PostalAddress',
         'streetAddress': loc.address,

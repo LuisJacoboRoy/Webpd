@@ -134,8 +134,7 @@ export const SEO_CONFIG = {
     context: 'https://schema.org',
     includeOrganization: true,
     includeLocalBusiness: true,
-    includeBreadcrumbs: true,
-    priceRange: '$$'
+    includeBreadcrumbs: true
   },
 
   // Opciones de prerendering

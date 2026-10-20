@@ -251,8 +251,6 @@ export const generateLocalBusinessSchemaForProduct = () => ({
     opens: '08:30',
     closes: '18:30'
   },
-  // Rango de precios
-  priceRange: '$$',
   // Social media
   sameAs: [
     'https://www.facebook.com/pinturasdiamantemx',

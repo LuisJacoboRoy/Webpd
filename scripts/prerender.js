@@ -60,7 +60,6 @@ function getBusinessSchemas() {
     description: `${BUSINESS_INFO.name} - ${location.name}`,
     url: pageUrl('/'),
     image: absoluteUrl(BUSINESS_INFO.logo),
-    priceRange: '$$',
     telephone: location.phone,
     address: {
       '@type': 'PostalAddress',
@@ -342,11 +341,6 @@ function setTitle(html, title) {
 
 function renderPage(template, route, data) {
   const schemaGraph = [...getBusinessSchemas(), ...data.schemas];
-  for (const schema of schemaGraph) {
-    if (schema['@type'] === 'LocalBusiness') {
-      schema.priceRange = '$$';
-    }
-  }
 
   let html = template
     .replace(/<script\b(?=[^>]*type=["']application\/ld\+json["'])[^>]*>[\s\S]*?<\/script>/gi, '')

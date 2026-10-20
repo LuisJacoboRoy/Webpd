@@ -75,10 +75,6 @@ for (const route of routes) {
     if (route === '/' && !types.includes('WebPage')) {
       fail(`${route}: falta el schema WebPage`);
     }
-    const localBusinesses = graph.filter(item => item['@type'] === 'LocalBusiness');
-    if (!localBusinesses.length || localBusinesses.some(item => item.priceRange !== '$$')) {
-      fail(`${route}: falta priceRange "$$" en el schema LocalBusiness`);
-    }
   } catch (error) {
     fail(`${route}: JSON-LD no parseable (${error.message})`);
   }

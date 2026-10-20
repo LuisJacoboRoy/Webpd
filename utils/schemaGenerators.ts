@@ -125,7 +125,6 @@ export const generateOrganizationSchema = () => ({
     'ratingCount': 1247,
     'reviewCount': 356
   },
-  'priceRange': SEO_CONFIG.schema.priceRange
 });
 
 /**
@@ -272,7 +271,6 @@ export const generateContactSchema = () => ({
   'mainEntity': {
     '@type': 'LocalBusiness',
     'name': SEO_CONFIG.business.name,
-    'priceRange': SEO_CONFIG.schema.priceRange,
     'contactPoint': {
       '@type': 'ContactPoint',
       'telephone': SEO_CONFIG.business.phone,

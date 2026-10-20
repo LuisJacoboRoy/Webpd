@@ -47,7 +47,6 @@
     },
     "telephone": "+52-951-143-3467",
     "image": "https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png",
-    "priceRange": "$",
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": [
