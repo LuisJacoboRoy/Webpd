@@ -4,6 +4,11 @@
     "@type": "Organization",
     "@id": "https://pinturasdiamante.com/#organization",
     "name": "Pinturas Diamante",
+    "brand": {
+      "@type": "Brand",
+      "@id": "https://pinturasdiamante.com/#brand",
+      "name": "Diamante Pinturas"
+    },
     "url": "https://pinturasdiamante.com",
     "logo": "https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png",
     "image": "https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png",
@@ -37,6 +42,11 @@
     "@type": "LocalBusiness",
     "@id": "https://pinturasdiamante.com/#local-business",
     "name": "Pinturas Diamante",
+    "brand": {
+      "@type": "Brand",
+      "@id": "https://pinturasdiamante.com/#brand",
+      "name": "Diamante Pinturas"
+    },
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Avenida ferrocarril 805-D",

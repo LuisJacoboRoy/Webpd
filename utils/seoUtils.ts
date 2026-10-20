@@ -80,6 +80,7 @@ Disallow: /admin/
 Sitemap: ${baseUrl}/sitemap.xml
 Sitemap: ${baseUrl}/sitemap-products.xml
 Sitemap: ${baseUrl}/sitemap-categories.xml
+Sitemap: ${baseUrl}/sitemap-images.xml
 `;
 };
 

@@ -27,6 +27,30 @@ function absoluteUrl(value) {
   return value.startsWith('http') ? value : `${domain}${value.startsWith('/') ? '' : '/'}${value}`;
 }
 
+function availableImages(values) {
+  return [...new Set(values.filter(Boolean))].filter(value => {
+    if (/^https?:\/\//i.test(value)) return true;
+    return fs.existsSync(path.join(
+      scriptDirectory,
+      '../public',
+      value.replace(/^\/+/, '')
+    ));
+  });
+}
+
+function imageSchema(value, name, description) {
+  return {
+    '@type': 'ImageObject',
+    contentUrl: absoluteUrl(value),
+    name,
+    description,
+    creator: { '@id': `${domain}/#organization` },
+    creditText: 'Diamante Pinturas',
+    copyrightHolder: { '@id': `${domain}/#organization` },
+    copyrightNotice: '© Diamante Pinturas'
+  };
+}
+
 function jsonForHtml(value) {
   return JSON.stringify(value)
     .replaceAll('<', '\\u003c')
@@ -42,9 +66,10 @@ function getBusinessSchemas() {
     '@type': 'Organization',
     '@id': organizationId,
     name: BUSINESS_INFO.name,
+    brand: { '@type': 'Brand', '@id': `${domain}/#brand`, name: 'Diamante Pinturas' },
     description: BUSINESS_INFO.description,
     url: pageUrl('/'),
-    logo: absoluteUrl(BUSINESS_INFO.logo),
+    logo: imageSchema(BUSINESS_INFO.logo, 'Logotipo de Diamante Pinturas', BUSINESS_INFO.description),
     email: BUSINESS_INFO.email,
     telephone: BUSINESS_INFO.phone,
     sameAs: BUSINESS_INFO.sameAs,
@@ -59,7 +84,8 @@ function getBusinessSchemas() {
     name: location.name,
     description: `${BUSINESS_INFO.name} - ${location.name}`,
     url: pageUrl('/'),
-    image: absoluteUrl(BUSINESS_INFO.logo),
+    image: imageSchema(BUSINESS_INFO.logo, 'Logotipo de Diamante Pinturas', BUSINESS_INFO.description),
+    brand: { '@type': 'Brand', name: 'Diamante Pinturas' },
     telephone: location.phone,
     address: {
       '@type': 'PostalAddress',
@@ -151,6 +177,11 @@ function pageData(route) {
         name: 'Pinturas Diamante Oaxaca',
         url: pageUrl('/'),
         description,
+        primaryImageOfPage: imageSchema(
+          '/img/heads/head.jpg',
+          'Pinturas Diamante',
+          description
+        ),
         inLanguage: 'es-MX'
       }, breadcrumbSchema(route, 'Inicio')]
     };
@@ -167,6 +198,9 @@ function pageData(route) {
           '@type': 'CollectionPage',
           name: 'Catálogo de Pinturas',
           url: pageUrl(route),
+          image: CATEGORIES.map(category =>
+            imageSchema(category.ogImage || category.image, category.name, category.description)
+          ),
           mainEntity: {
             '@type': 'ItemList',
             itemListElement: CATEGORIES.map((category, index) => ({
@@ -227,18 +261,29 @@ function pageData(route) {
       title,
       description,
       keywords: [product.tag, product.name, subCategory?.name, category?.name, 'Oaxaca'].filter(Boolean).join(', '),
-      image: product.ogImage || product.image,
+      image: availableImages([product.ogImage, product.image])[0] || BUSINESS_INFO.logo,
+      noscriptContent: `<main><article><h1>${escapeHtml(product.name)}</h1><p>${escapeHtml(product.description)}</p>${availableImages([product.image, product.ogImage]).map(image => `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(`${product.name} | Diamante Pinturas`)}" title="${escapeHtml(product.name)}" /><figcaption>© Diamante Pinturas</figcaption></figure>`).join('')}</article></main>`,
       schemas: [
         {
-          '@type': 'Product',
-          '@id': `${productUrl}#product`,
+          '@type': 'WebPage',
+          '@id': `${productUrl}#webpage`,
           name: product.name,
           url: productUrl,
           description: product.description,
-          image: [product.ogImage, product.image].filter(Boolean).map(absoluteUrl),
-          sku: product.id,
-          brand: { '@type': 'Brand', name: BUSINESS_INFO.name },
-          category: subCategory?.name || category?.name || product.tag
+          primaryImageOfPage: imageSchema(
+            availableImages([product.ogImage, product.image])[0],
+            product.name,
+            product.ogDescription || product.description
+          ),
+          mainEntity: {
+            '@type': 'Thing',
+            '@id': `${productUrl}#item`,
+            name: product.name,
+            url: productUrl,
+            description: product.description,
+            image: availableImages([product.ogImage, product.image])
+              .map(value => imageSchema(value, product.name, product.ogDescription || product.description))
+          }
         },
         breadcrumbSchema(route, product.name, category, subCategory, product)
       ]
@@ -264,6 +309,7 @@ function pageData(route) {
           name: title,
           url: pageUrl(route),
           description,
+          image: imageSchema(category.ogImage || category.image, category.name, category.description),
           mainEntity: {
             '@type': 'ItemList',
             itemListElement: subCategories.map((subCategory, index) => ({
@@ -308,10 +354,14 @@ function pageData(route) {
               '@type': 'ListItem',
               position: index + 1,
               item: {
-                '@type': 'Product',
+                '@type': 'Thing',
                 name: product.name,
                 url: pageUrl(`/product/${product.id}`),
-                image: absoluteUrl(product.ogImage || product.image),
+                image: imageSchema(
+                  product.ogImage || product.image,
+                  product.name,
+                  product.ogDescription || product.description
+                ),
                 description: product.description.slice(0, 160)
               }
             }))
@@ -357,12 +407,14 @@ function renderPage(template, route, data) {
     'og:title': data.title,
     'og:description': data.description,
     'og:image': absoluteUrl(data.image),
+    'og:image:alt': data.title,
     'og:site_name': BUSINESS_INFO.name,
     'og:locale': 'es_MX',
     'twitter:card': 'summary_large_image',
     'twitter:title': data.title,
     'twitter:description': data.description,
-    'twitter:image': absoluteUrl(data.image)
+    'twitter:image': absoluteUrl(data.image),
+    'twitter:image:alt': data.title
   };
 
   for (const [name, content] of Object.entries(metas)) {
@@ -377,6 +429,9 @@ function renderPage(template, route, data) {
     })}</script>`,
     '</head>'
   ].join('\n'));
+  if (data.noscriptContent) {
+    html = html.replace(/<\/body>/i, `  <noscript>${data.noscriptContent}</noscript>\n</body>`);
+  }
   return html;
 }
 

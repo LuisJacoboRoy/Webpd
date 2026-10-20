@@ -130,7 +130,7 @@ class MicroformatValidator {
    * Valida Product
    */
   private validateProduct(schema: any, result: SchemaValidationResult) {
-    const required = ['name', 'description', 'image', 'offers'];
+    const required = ['name', 'image'];
     required.forEach(field => {
       if (!schema[field]) {
         result.errors.push(`Falta ${field} (requerido)`);
@@ -147,8 +147,16 @@ class MicroformatValidator {
       }
     }
 
-    if (!schema.aggregateRating) {
-      result.warnings.push('Falta aggregateRating (reduce CTR potencial)');
+    const hasReviewData = Boolean(schema.review) || Boolean(schema.aggregateRating);
+    const hasOffer = Boolean(schema.offers);
+    if (!hasReviewData && !hasOffer) {
+      result.errors.push('Product rich results requiere offers, review o aggregateRating');
+      result.valid = false;
+    }
+
+    if (schema.offers && (schema.offers.price === undefined || !schema.offers.priceCurrency)) {
+      result.errors.push('offers requiere un precio real y priceCurrency');
+      result.valid = false;
     }
 
     if (!schema.brand) {
@@ -314,9 +322,9 @@ class MicroformatValidator {
     }
 
     if (hasProduct) {
-      console.log('✅ Product implementado (Rich Snippets activos)');
+      console.log('ℹ️ Product schema encontrado; validar offers, review o aggregateRating auténticos');
     } else {
-      console.warn('⚠️ Agregar Product Schema en páginas de productos');
+      console.log('ℹ️ No hay Product schema; los resultados enriquecidos de producto requieren datos comerciales o reseñas auténticas');
     }
 
     if (hasBreadcrumb) {

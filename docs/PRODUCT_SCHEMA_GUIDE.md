@@ -1,5 +1,7 @@
 # 🎯 Product Schema para Google Search Console
 
+> **Aviso vigente:** este documento contiene ejemplos históricos de ofertas, precios y reseñas. No copies esos datos de ejemplo. El sitio actualmente omite `@type: Product` en las páginas del catálogo porque no dispone de ofertas ni reseñas verificables; las fichas siguen usando `WebPage`, `Thing` y breadcrumbs. Google requiere datos comerciales o reseñas auténticas para habilitar resultados enriquecidos de producto. La marca **Diamante Pinturas** se declara en la entidad del negocio, no como fabricante de cada artículo.
+
 ## ✅ Lo que Está Implementado
 
 Tu proyecto ahora tiene **Product Schema completo y validado** para Google Rich Results:

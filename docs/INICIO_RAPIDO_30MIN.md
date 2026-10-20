@@ -1,5 +1,7 @@
 # ⚡ INTEGRACIÓN RÁPIDA 30 MINUTOS
 
+> **Aviso vigente:** esta guía es histórica. No copies precios, valoraciones o reseñas de ejemplo al JSON-LD; en producción no se emite `Product` sin datos comerciales o reseñas verificables. Los rich results y cambios de CTR no se pueden garantizar.
+
 Guía ultra-condensada para integrar microformatos en 30 minutos
 
 ---

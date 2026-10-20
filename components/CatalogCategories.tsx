@@ -58,7 +58,8 @@ const CatalogCategories: React.FC = () => {
             {cat.image && (
               <img 
                 src={cat.image}
-                alt={cat.name}
+                alt={`${cat.name} | Diamante Pinturas`}
+                title={`${cat.name} | Diamante Pinturas`}
                 className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity"
               />
             )}

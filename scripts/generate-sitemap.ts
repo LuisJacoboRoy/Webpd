@@ -4,10 +4,11 @@ import { fileURLToPath } from 'url';
 
 /**
  * Script para generar sitemaps dinámicos basados en los datos de productos
- * Genera 3 sitemaps:
+ * Genera sitemaps de páginas, productos, categorías e imágenes:
  * 1. sitemap.xml - Todas las URLs
- * 2. sitemap-products.xml - Solo productos con schema Product
+ * 2. sitemap-products.xml - URLs canónicas de fichas de producto
  * 3. sitemap-categories.xml - Categorías y subcategorías
+ * 4. sitemap-images.xml - Imágenes enlazadas a sus páginas de producto/categoría
  */
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,6 +20,13 @@ interface URLEntry {
   changefreq: string;
   priority: number;
   schemaType: string;
+  images?: ImageEntry[];
+}
+
+interface ImageEntry {
+  loc: string;
+  title: string;
+  caption: string;
 }
 
 function escapeXml(text: string): string {
@@ -43,6 +51,42 @@ function generateSitemapXML(urls: URLEntry[]): string {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urlEntries}
+</urlset>`;
+}
+
+function imageReferences(baseUrl: string, title: string, description: string, candidates: (string | undefined)[]): ImageEntry[] {
+  return [...new Set(candidates.filter((candidate): candidate is string => Boolean(candidate)))]
+    .filter(candidate => {
+      if (/^https?:\/\//i.test(candidate)) return true;
+      const localPath = path.join(__dirname, '..', 'public', candidate.replace(/^\/+/, ''));
+      return fs.existsSync(localPath);
+    })
+    .map(candidate => ({
+      loc: /^https?:\/\//i.test(candidate)
+        ? candidate
+        : `${baseUrl}${encodeURI(candidate.startsWith('/') ? candidate : `/${candidate}`)}`,
+      title,
+      caption: `${title}. Imagen de Diamante Pinturas. ${description}`.slice(0, 1000)
+    }));
+}
+
+function generateImageSitemapXML(urls: URLEntry[]): string {
+  const entries = urls
+    .filter(url => url.images?.length)
+    .map(url => `  <url>
+    <loc>${escapeXml(url.loc)}</loc>
+${url.images!.map(image => `    <image:image>
+      <image:loc>${escapeXml(image.loc)}</image:loc>
+      <image:title>${escapeXml(image.title)}</image:title>
+      <image:caption>${escapeXml(image.caption)}</image:caption>
+    </image:image>`).join('\n')}
+  </url>`)
+    .join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${entries}
 </urlset>`;
 }
 
@@ -151,7 +195,28 @@ async function generateSitemaps() {
         lastmod: today,
         changefreq: 'weekly',
         priority: 1.0,
-        schemaType: 'Organization'
+        schemaType: 'Organization',
+        images: [
+          ...imageReferences(baseUrl, 'Pinturas Diamante', 'Soluciones de pintura para automotriz, maderas y decoración.', [
+            '/img/heads/head.jpg',
+            '/img/heads/head (2).jpg',
+            '/img/heads/head (3).jpg',
+            '/img/heads/head (4).jpg',
+            '/img/logo.png',
+            '/img/catalog/LOGO-WEB-DIAMANTE-PNG.png'
+          ]),
+          ...imageReferences(baseUrl, 'Base Color Innova Plus', 'Acabados automotrices de Diamante Pinturas.', ['/img/car.jpeg']),
+          ...imageReferences(baseUrl, 'Poder Cubriente', 'Productos decorativos de Diamante Pinturas.', ['/img/rodillo.jpg']),
+          ...imageReferences(baseUrl, 'Color Intenso', 'Acabados para madera de Diamante Pinturas.', ['/img/wood.jpg']),
+          ...imageReferences(baseUrl, 'Diamacril 8 Años', 'Pintura decorativa de Diamante Pinturas.', ['/img/vinil.jpg']),
+          ...imageReferences(baseUrl, 'Cromato de Zinc', 'Recubrimientos automotrices de Diamante Pinturas.', ['/img/product/cromato.jpg']),
+          ...imageReferences(baseUrl, 'Esmalte Ureprix', 'Esmalte automotriz de Diamante Pinturas.', ['/img/product/urepix.jpg']),
+          ...imageReferences(baseUrl, 'Innova Plus Red', 'Acabados automotrices de Diamante Pinturas.', ['/img/product/red.jpg']),
+          ...imageReferences(baseUrl, 'D500 Anticorrosivo', 'Esmalte anticorrosivo de Diamante Pinturas.', ['/img/product/d500.jpg']),
+          ...imageReferences(baseUrl, 'DG Secado Rápido', 'Esmalte industrial de Diamante Pinturas.', ['/img/product/industrial.jpg'])
+        ].filter((image, index, images) =>
+          images.findIndex(candidate => candidate.loc === image.loc) === index
+        )
       },
       {
         loc: `${baseUrl}/catalog/`,
@@ -165,7 +230,10 @@ async function generateSitemaps() {
         lastmod: today,
         changefreq: 'monthly',
         priority: 0.8,
-        schemaType: 'ContactPage'
+        schemaType: 'ContactPage',
+        images: imageReferences(baseUrl, 'Sucursales de Pinturas Diamante', 'Visita nuestras sucursales en Oaxaca.', [
+          '/img/catalog/LOGO-WEB-DIAMANTE-PNG.png'
+        ])
       }
     ];
 
@@ -177,7 +245,8 @@ async function generateSitemaps() {
           lastmod: today,
           changefreq: 'weekly',
           priority: 0.85,
-          schemaType: 'CollectionPage'
+          schemaType: 'CollectionPage',
+          images: imageReferences(baseUrl, cat.name, cat.description, [cat.image, cat.ogImage])
         });
       });
     }
@@ -192,7 +261,14 @@ async function generateSitemaps() {
             lastmod: today,
             changefreq: 'weekly',
             priority: 0.80,
-            schemaType: 'CollectionPage'
+            schemaType: 'CollectionPage',
+            images: imageReferences(
+              baseUrl,
+              subCat.name,
+              subCat.description || `Productos de ${subCat.name} de Pinturas Diamante.`,
+              products.filter(product => product.subCategoryId === subCat.id)
+                .flatMap(product => [product.image, product.ogImage])
+            )
           });
         }
       });
@@ -206,7 +282,13 @@ async function generateSitemaps() {
           lastmod: today,
           changefreq: 'monthly',
           priority: 0.70,
-          schemaType: 'Product'
+          schemaType: 'ProductPage',
+          images: imageReferences(
+            baseUrl,
+            product.name,
+            product.ogDescription || product.description,
+            [product.image, product.ogImage]
+          )
         });
       });
     }
@@ -222,7 +304,7 @@ async function generateSitemaps() {
     // ============================================
     // 2. SITEMAP DE PRODUCTOS
     // ============================================
-    const productUrls = allUrls.filter(u => u.schemaType === 'Product');
+    const productUrls = allUrls.filter(u => u.schemaType === 'ProductPage');
     const productSitemap = generateSitemapXML(productUrls);
     const productPath = path.join(__dirname, '..', 'public', 'sitemap-products.xml');
     fs.writeFileSync(productPath, productSitemap);
@@ -240,11 +322,20 @@ async function generateSitemaps() {
     console.log(`✅ sitemap-categories.xml generado (${categoryUrls.length} URLs)`);
 
     // ============================================
-    // 4. METADATOS PARA GOOGLE SEARCH CONSOLE
+    // 4. SITEMAP DE IMÁGENES
+    // ============================================
+    const imageSitemapPath = path.join(__dirname, '..', 'public', 'sitemap-images.xml');
+    const imageSitemap = generateImageSitemapXML(allUrls);
+    fs.writeFileSync(imageSitemapPath, imageSitemap);
+    const indexedImageCount = allUrls.reduce((count, entry) => count + (entry.images?.length || 0), 0);
+    console.log(`✅ sitemap-images.xml generado (${indexedImageCount} imágenes enlazadas a sus páginas)`);
+
+    // ============================================
+    // 5. METADATOS PARA GOOGLE SEARCH CONSOLE
     // ============================================
     const schemaStats = {
       Organization: allUrls.filter(u => u.schemaType === 'Organization').length,
-      Product: allUrls.filter(u => u.schemaType === 'Product').length,
+      ProductPage: productUrls.length,
       CollectionPage: categoryUrls.length,
       ContactPage: allUrls.filter(u => u.schemaType === 'ContactPage').length
     };
@@ -255,7 +346,8 @@ async function generateSitemaps() {
       sitemaps: {
         general: 'sitemap.xml',
         products: 'sitemap-products.xml',
-        categories: 'sitemap-categories.xml'
+        categories: 'sitemap-categories.xml',
+        images: 'sitemap-images.xml'
       },
       statistics: {
         totalURLs: allUrls.length,
@@ -280,18 +372,15 @@ async function generateSitemaps() {
           urls: [
             'https://pinturasdiamante.com/sitemap.xml',
             'https://pinturasdiamante.com/sitemap-products.xml',
-            'https://pinturasdiamante.com/sitemap-categories.xml'
+            'https://pinturasdiamante.com/sitemap-categories.xml',
+            'https://pinturasdiamante.com/sitemap-images.xml'
           ]
         },
         step3: {
-          title: 'Ver Resultados Enriquecidos por Tipo de Esquema',
-          location: 'Menú izquierdo > Apariencia en búsqueda > Resultados enriquecidos',
+          title: 'Revisar datos estructurados',
+          location: 'Search Console > Mejoras (solo los tipos que Google reporte)',
+          note: 'No todos los esquemas generan un informe o un resultado enriquecido.',
           options: {
-            product: {
-              name: 'Product',
-              description: 'Muestra todas las páginas de productos indexadas',
-              expectedCount: products.length
-            },
             breadcrumb: {
               name: 'BreadcrumbList',
               description: 'Migas de pan para navegación',
@@ -329,12 +418,16 @@ async function generateSitemaps() {
         }
       },
       schemasTracking: {
-        products: {
-          schema: 'Product',
+        productPages: {
+          schema: 'WebPage / Thing',
           count: products.length,
-          documentation: 'https://developers.google.com/search/docs/appearance/structured-data/product',
-          howToMeasure: 'En "Resultados enriquecidos" > "Product", verás el número de productos indexados',
-          expectedMetrics: ['indexed', 'valid', 'invalid', 'excluded']
+          howToMeasure: 'En Search Console > Rendimiento, filtra por página; el sitemap no habilita resultados enriquecidos de producto',
+          expectedMetrics: ['clics', 'impresiones', 'CTR', 'posición']
+        },
+        images: {
+          sitemap: 'sitemap-images.xml',
+          count: indexedImageCount,
+          copyrightHolder: 'Diamante Pinturas'
         },
         categories: {
           schema: 'Category / BreadcrumbList',
@@ -347,8 +440,8 @@ async function generateSitemaps() {
           schema: 'Organization',
           count: schemaStats.Organization,
           documentation: 'https://developers.google.com/search/docs/appearance/structured-data/organization',
-          howToMeasure: 'En "Resultados enriquecidos" > "Organization"',
-          expectedMetrics: ['indexed', 'valid']
+          howToMeasure: 'Validar el JSON-LD con Rich Results Test; Search Console puede no mostrar un informe para este tipo',
+          expectedMetrics: ['datos estructurados detectados']
         }
       },
       analyticsIntegration: {
@@ -368,6 +461,11 @@ async function generateSitemaps() {
           howToTrack: 'Google Search Console te muestra automáticamente las impresiones por tipo de esquema',
           metricsAvailable: ['Clics', 'Impresiones', 'CTR', 'Posición promedio']
         }
+      },
+      imageIndexing: {
+        sitemap: 'sitemap-images.xml',
+        indexedImages: indexedImageCount,
+        copyrightHolder: 'Diamante Pinturas'
       },
       urls: {
         products: productUrls.slice(0, 10).map(u => ({ url: u.loc, lastmod: u.lastmod })),
@@ -402,16 +500,16 @@ async function generateSitemaps() {
     console.log(`\n   1️⃣  Ve a: https://search.google.com/search-console`);
     console.log(`   2️⃣  Selecciona tu propiedad: pinturasdiamante.com`);
     console.log(`   3️⃣  Menú izquierdo > Sitemaps`);
-    console.log(`   4️⃣  Agrega estas 3 URLs:`);
+    console.log(`   4️⃣  Agrega estos 4 sitemaps:`);
     console.log(`       • https://pinturasdiamante.com/sitemap.xml`);
     console.log(`       • https://pinturasdiamante.com/sitemap-products.xml`);
     console.log(`       • https://pinturasdiamante.com/sitemap-categories.xml`);
+    console.log(`       • https://pinturasdiamante.com/sitemap-images.xml`);
 
-    console.log(`\n📈 CÓMO MEDIR POR ESQUEMA:`);
-    console.log(`\n   Para ver el INDEXADO y PERFORMANCE por tipo de esquema:`);
-    console.log(`   • Ve a: Menú > Apariencia en búsqueda > Resultados enriquecidos`);
-    console.log(`   • Verás: Product, BreadcrumbList, LocalBusiness, Organization`);
-    console.log(`   • Cada uno mostrará: válidos, inválidos, excluidos`);
+    console.log(`\n📈 CÓMO REVISAR INDEXACIÓN Y RESULTADOS ENRIQUECIDOS:`);
+    console.log(`   • Usa "Inspección de URLs" y el informe de páginas para revisar la indexación.`);
+    console.log(`   • Consulta "Mejoras" para los tipos de datos estructurados que Google reporte.`);
+    console.log(`   • Las fichas no llevan schema Product ni garantizan resultados enriquecidos de producto.`);
     console.log(`\n   Para ver CLICS y IMPRESIONES por página:`);
     console.log(`   • Ve a: Menú > Rendimiento`);
     console.log(`   • Filtra por "Página" para ver qué productos/categorías generan tráfico`);
@@ -420,6 +518,7 @@ async function generateSitemaps() {
     console.log(`   ✓ public/sitemap.xml`);
     console.log(`   ✓ public/sitemap-products.xml`);
     console.log(`   ✓ public/sitemap-categories.xml`);
+    console.log(`   ✓ public/sitemap-images.xml`);
     console.log(`   ✓ public/sitemap-metadata.json (instrucciones detalladas)`);
 
   } catch (error) {

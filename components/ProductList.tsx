@@ -19,7 +19,9 @@ const ProductCard: React.FC<{ product: Product, subCategoryId: string | undefine
           {p.image ? (
             <img 
               src={p.image} 
-              alt={p.name}
+              alt={`${p.name} | Diamante Pinturas`}
+              title={`${p.name} | Diamante Pinturas`}
+              loading="lazy"
               className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 p-4"
             />
           ) : (
@@ -111,7 +113,7 @@ const ProductList: React.FC = () => {
       '@type': 'ListItem',
       'position': idx + 1,
       'item': {
-        '@type': 'Product',
+        '@type': 'Thing',
         'name': p.name,
         'url': `${BUSINESS_INFO.url}/product/${p.id}`,
         'image': p.ogImage || p.image,

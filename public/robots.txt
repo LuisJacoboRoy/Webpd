@@ -8,3 +8,4 @@ Disallow: /admin/
 Sitemap: https://pinturasdiamante.com/sitemap.xml
 Sitemap: https://pinturasdiamante.com/sitemap-products.xml
 Sitemap: https://pinturasdiamante.com/sitemap-categories.xml
+Sitemap: https://pinturasdiamante.com/sitemap-images.xml

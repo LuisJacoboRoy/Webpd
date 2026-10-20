@@ -7,21 +7,13 @@ import { useHelmetJsonLd } from '../hooks/useHelmet';
 import { BUSINESS_INFO } from '../data/seo';
 import { TwitterPicker, SliderPicker } from 'react-color';
 import { 
-  generateEnhancedProductSchema,
   generateLocalBusinessSchemaForProduct,
-  generateProductPageSchema,
-  validateProductSchema
+  generateProductPageSchema
 } from '../utils/productSchemaGenerator';
 
 /**
- * ProductDetail Component - SEO Optimizado para Google Rich Results
- * 
- * Mejoras implementadas:
- * 1. Schema Product completo según Google (requerimientos para Rich Results)
- * 2. LocalBusiness schema para presencia local
- * 3. Validación automática de schema
- * 4. Todos los campos recomendados por Google incluidos
- * 5. Optimizado para Search Console indexing
+ * ProductDetail renders descriptive page and business structured data.
+ * Product rich results are omitted until genuine offer or review data exists.
  */
 const ProductDetailComponent: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -66,23 +58,12 @@ const ProductDetailComponent: React.FC = () => {
     return `${BUSINESS_INFO.url}${src.startsWith('/') ? '' : '/'}${src}`;
   }, [product]);
 
-  // Schema Product mejorado optimizado para Google Rich Results
-  const productSchema = useMemo(() => {
-    const schema = generateEnhancedProductSchema(product, category, subCat, true);
-    // Validar schema
-    const validationErrors = validateProductSchema(schema);
-    if (validationErrors.length > 0) {
-      console.warn('⚠️ Product Schema Validation Warnings:', validationErrors);
-    }
-    return schema;
-  }, [product, category, subCat]);
-
   // Schema de LocalBusiness para presencia local
   const localBusinessSchema = useMemo(() => 
     generateLocalBusinessSchemaForProduct()
   , []);
 
-  // Schema de WebPage conectando con el producto como mainEntity
+  // Schema de WebPage con información descriptiva, sin elegibilidad de Product rich result.
   const webPageSchema = useMemo(() =>
     generateProductPageSchema(product, category, subCat)
   , [product, category, subCat]);
@@ -126,7 +107,6 @@ const ProductDetailComponent: React.FC = () => {
   }), [product, category, subCat, canonicalUrl]);
 
   // Inyectar JSON-LD schemas con Hook
-  useHelmetJsonLd(productSchema);
   useHelmetJsonLd(breadcrumbSchema);
   useHelmetJsonLd(localBusinessSchema);
   useHelmetJsonLd(webPageSchema);
@@ -142,6 +122,7 @@ const ProductDetailComponent: React.FC = () => {
         <meta property="og:title" content={product.ogTitle || `${product.name} - Pinturas Diamante`} />
         <meta property="og:description" content={product.ogDescription || product.description} />
         <meta property="og:image" content={imageUrl} />
+        <meta property="og:image:alt" content={`${product.name} | Diamante Pinturas`} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:type" content="product" />
 
@@ -150,13 +131,11 @@ const ProductDetailComponent: React.FC = () => {
         <meta name="twitter:title" content={product.ogTitle || product.name} />
         <meta name="twitter:description" content={product.ogDescription || product.description.substring(0, 160)} />
         <meta name="twitter:image" content={imageUrl} />
+        <meta name="twitter:image:alt" content={`${product.name} | Diamante Pinturas`} />
 
         {/* Canonical URL */}
         <link rel="canonical" href={canonicalUrl} />
 
-        {/* Esquema de precios - Sin publicar precio */}
-        <meta name="price" content="Consultar" />
-        <meta name="priceCurrency" content="MXN" />
       </Helmet>
 
 
@@ -177,10 +156,11 @@ const ProductDetailComponent: React.FC = () => {
             {product.image ? (
               <img
                 src={product.image}
-                alt={product.name}
+                alt={`${product.name} | Diamante Pinturas`}
                 className="w-full h-auto max-h-96 object-contain"
-                title={`${product.name} - Pinturas Diamante Oaxaca`}
-                loading="lazy"
+                title={`${product.name} | Diamante Pinturas`}
+                loading="eager"
+                fetchPriority="high"
               />
             ) : (
               <span className="text-slate-400 font-bold uppercase tracking-widest text-sm text-center px-6 py-20">Espacio para Fotografía del Producto</span>

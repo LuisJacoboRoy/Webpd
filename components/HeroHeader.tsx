@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 const HEAD_IMAGES = [
-  '/img/heads/head (1).jpg',
+  '/img/heads/head.jpg',
   '/img/heads/head (2).jpg',
   '/img/heads/head (3).jpg',
   '/img/heads/head (4).jpg',
@@ -41,7 +41,12 @@ const HeroHeader: React.FC = () => {
         className="relative z-10 flex flex-col items-center transition-transform duration-300 ease-out"
         style={{ transform: `translateY(${offsetY * -0.05}px)` }}
       >
-        <img src="https://pinturasdiamante.com/img/logo.png" alt="Pinturas Diamante Logo" className="w-64 h-64 object-contain" />
+        <img
+          src="/img/logo.png"
+          alt="Logotipo de Pinturas Diamante"
+          title="Pinturas Diamante"
+          className="w-64 h-64 object-contain"
+        />
         <p className="mt-6 text-black font-black tracking-widest uppercase text-lg">
           Oaxaca: Bienvenido
         </p>

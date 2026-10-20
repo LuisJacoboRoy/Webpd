@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://pinturasdiamante.com/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/heads/head.jpg</image:loc>
+      <image:title>Pinturas Diamante</image:title>
+      <image:caption>Pinturas Diamante. Imagen de Diamante Pinturas. Soluciones de pintura para automotriz, maderas y decoración.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/heads/head%20(2).jpg</image:loc>
+      <image:title>Pinturas Diamante</image:title>
+      <image:caption>Pinturas Diamante. Imagen de Diamante Pinturas. Soluciones de pintura para automotriz, maderas y decoración.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/heads/head%20(3).jpg</image:loc>
+      <image:title>Pinturas Diamante</image:title>
+      <image:caption>Pinturas Diamante. Imagen de Diamante Pinturas. Soluciones de pintura para automotriz, maderas y decoración.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/heads/head%20(4).jpg</image:loc>
+      <image:title>Pinturas Diamante</image:title>
+      <image:caption>Pinturas Diamante. Imagen de Diamante Pinturas. Soluciones de pintura para automotriz, maderas y decoración.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/logo.png</image:loc>
+      <image:title>Pinturas Diamante</image:title>
+      <image:caption>Pinturas Diamante. Imagen de Diamante Pinturas. Soluciones de pintura para automotriz, maderas y decoración.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png</image:loc>
+      <image:title>Pinturas Diamante</image:title>
+      <image:caption>Pinturas Diamante. Imagen de Diamante Pinturas. Soluciones de pintura para automotriz, maderas y decoración.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/car.jpeg</image:loc>
+      <image:title>Base Color Innova Plus</image:title>
+      <image:caption>Base Color Innova Plus. Imagen de Diamante Pinturas. Acabados automotrices de Diamante Pinturas.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/rodillo.jpg</image:loc>
+      <image:title>Poder Cubriente</image:title>
+      <image:caption>Poder Cubriente. Imagen de Diamante Pinturas. Productos decorativos de Diamante Pinturas.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/wood.jpg</image:loc>
+      <image:title>Color Intenso</image:title>
+      <image:caption>Color Intenso. Imagen de Diamante Pinturas. Acabados para madera de Diamante Pinturas.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/vinil.jpg</image:loc>
+      <image:title>Diamacril 8 Años</image:title>
+      <image:caption>Diamacril 8 Años. Imagen de Diamante Pinturas. Pintura decorativa de Diamante Pinturas.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/product/cromato.jpg</image:loc>
+      <image:title>Cromato de Zinc</image:title>
+      <image:caption>Cromato de Zinc. Imagen de Diamante Pinturas. Recubrimientos automotrices de Diamante Pinturas.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/product/urepix.jpg</image:loc>
+      <image:title>Esmalte Ureprix</image:title>
+      <image:caption>Esmalte Ureprix. Imagen de Diamante Pinturas. Esmalte automotriz de Diamante Pinturas.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/product/red.jpg</image:loc>
+      <image:title>Innova Plus Red</image:title>
+      <image:caption>Innova Plus Red. Imagen de Diamante Pinturas. Acabados automotrices de Diamante Pinturas.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/product/d500.jpg</image:loc>
+      <image:title>D500 Anticorrosivo</image:title>
+      <image:caption>D500 Anticorrosivo. Imagen de Diamante Pinturas. Esmalte anticorrosivo de Diamante Pinturas.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/product/industrial.jpg</image:loc>
+      <image:title>DG Secado Rápido</image:title>
+      <image:caption>DG Secado Rápido. Imagen de Diamante Pinturas. Esmalte industrial de Diamante Pinturas.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/contact/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png</image:loc>
+      <image:title>Sucursales de Pinturas Diamante</image:title>
+      <image:caption>Sucursales de Pinturas Diamante. Imagen de Diamante Pinturas. Visita nuestras sucursales en Oaxaca.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/automotriz/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
+      <image:title>AUTOMOTRIZ</image:title>
+      <image:caption>AUTOMOTRIZ. Imagen de Diamante Pinturas. Soluciones de alta gama para el repintado y protección vehicular.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMACRIL-WEB.png</image:loc>
+      <image:title>AUTOMOTRIZ</image:title>
+      <image:caption>AUTOMOTRIZ. Imagen de Diamante Pinturas. Soluciones de alta gama para el repintado y protección vehicular.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/maderas/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2.png</image:loc>
+      <image:title>MADERAS</image:title>
+      <image:caption>MADERAS. Imagen de Diamante Pinturas. Protección y embellecimiento para todo tipo de superficies de madera.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMALUXE-WEB.png</image:loc>
+      <image:title>MADERAS</image:title>
+      <image:caption>MADERAS. Imagen de Diamante Pinturas. Protección y embellecimiento para todo tipo de superficies de madera.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/decorativo/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2-300x300.png</image:loc>
+      <image:title>DECORATIVO</image:title>
+      <image:caption>DECORATIVO. Imagen de Diamante Pinturas. Pinturas y acabados para transformar hogares y espacios comerciales.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMACOLOR-1.png</image:loc>
+      <image:title>DECORATIVO</image:title>
+      <image:caption>DECORATIVO. Imagen de Diamante Pinturas. Pinturas y acabados para transformar hogares y espacios comerciales.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/automotriz/complementos-auto/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/acondicionador-de-metales-web-300x300.png</image:loc>
+      <image:title>Complementos</image:title>
+      <image:caption>Complementos. Imagen de Diamante Pinturas. Productos de Complementos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/product/487928157_996602669284010_7701561790680972083_n.jpg</image:loc>
+      <image:title>Complementos</image:title>
+      <image:caption>Complementos. Imagen de Diamante Pinturas. Productos de Complementos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/blender-web-300x300.png</image:loc>
+      <image:title>Complementos</image:title>
+      <image:caption>Complementos. Imagen de Diamante Pinturas. Productos de Complementos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/body-web-300x300.png</image:loc>
+      <image:title>Complementos</image:title>
+      <image:caption>Complementos. Imagen de Diamante Pinturas. Productos de Complementos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+      <image:title>Complementos</image:title>
+      <image:caption>Complementos. Imagen de Diamante Pinturas. Productos de Complementos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/product/531490493_1093616386249304_305369217444697791_n.jpg</image:loc>
+      <image:title>Complementos</image:title>
+      <image:caption>Complementos. Imagen de Diamante Pinturas. Productos de Complementos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/perlas-universales-web-300x300.png</image:loc>
+      <image:title>Complementos</image:title>
+      <image:caption>Complementos. Imagen de Diamante Pinturas. Productos de Complementos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/product/534850764_1097529489191327_9054814714848497074_n.jpg</image:loc>
+      <image:title>Complementos</image:title>
+      <image:caption>Complementos. Imagen de Diamante Pinturas. Productos de Complementos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/plaste-web-300x300.png</image:loc>
+      <image:title>Complementos</image:title>
+      <image:caption>Complementos. Imagen de Diamante Pinturas. Productos de Complementos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/promotor-adherente-aerosl-300x300.png</image:loc>
+      <image:title>Complementos</image:title>
+      <image:caption>Complementos. Imagen de Diamante Pinturas. Productos de Complementos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/removedor-amarillo-web-300x300.png</image:loc>
+      <image:title>Complementos</image:title>
+      <image:caption>Complementos. Imagen de Diamante Pinturas. Productos de Complementos de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/automotriz/poliuretano-auto/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
+      <image:title>Esmalte Poliuretano</image:title>
+      <image:caption>Esmalte Poliuretano. Imagen de Diamante Pinturas. Productos de Esmalte Poliuretano de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/automotriz/secado-rapido-auto/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/turboprix-300x300.png</image:loc>
+      <image:title>Esmalte Secado Rápido</image:title>
+      <image:caption>Esmalte Secado Rápido. Imagen de Diamante Pinturas. Productos de Esmalte Secado Rápido de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/automotriz/acrilicos-auto/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/ultraprix-web-300x300.png</image:loc>
+      <image:title>Esmaltes Acrílicos</image:title>
+      <image:caption>Esmaltes Acrílicos. Imagen de Diamante Pinturas. Productos de Esmaltes Acrílicos de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/automotriz/primarios-auto/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/maxiprimer-web-300x300.png</image:loc>
+      <image:title>Primarios</image:title>
+      <image:caption>Primarios. Imagen de Diamante Pinturas. Productos de Primarios de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/primario-universal-300x300.png</image:loc>
+      <image:title>Primarios</image:title>
+      <image:caption>Primarios. Imagen de Diamante Pinturas. Productos de Primarios de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/primario-de-aparejo-2k-web-300x300.png</image:loc>
+      <image:title>Primarios</image:title>
+      <image:caption>Primarios. Imagen de Diamante Pinturas. Productos de Primarios de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/automotriz/resanadores-auto/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/light-fill-pro-web-300x300.png</image:loc>
+      <image:title>Resanadores</image:title>
+      <image:caption>Resanadores. Imagen de Diamante Pinturas. Productos de Resanadores de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/automotriz/transparentes-auto/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/dprix-web-300x300.png</image:loc>
+      <image:title>Transparentes</image:title>
+      <image:caption>Transparentes. Imagen de Diamante Pinturas. Productos de Transparentes de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/clara-gloss-300x300.png</image:loc>
+      <image:title>Transparentes</image:title>
+      <image:caption>Transparentes. Imagen de Diamante Pinturas. Productos de Transparentes de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/PRIMER-WEB-300x300.png</image:loc>
+      <image:title>Transparentes</image:title>
+      <image:caption>Transparentes. Imagen de Diamante Pinturas. Productos de Transparentes de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/lca-300x300.png</image:loc>
+      <image:title>Transparentes</image:title>
+      <image:caption>Transparentes. Imagen de Diamante Pinturas. Productos de Transparentes de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/automotriz/base-color-auto/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/base-color-innovaprix-300x300.png</image:loc>
+      <image:title>Base Color</image:title>
+      <image:caption>Base Color. Imagen de Diamante Pinturas. Productos de Base Color de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/maderas/poliuretanos-madera/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
+      <image:title>Poliuretanos</image:title>
+      <image:caption>Poliuretanos. Imagen de Diamante Pinturas. Productos de Poliuretanos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMACRIL-WEB.png</image:loc>
+      <image:title>Poliuretanos</image:title>
+      <image:caption>Poliuretanos. Imagen de Diamante Pinturas. Productos de Poliuretanos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMALUXE-WEB.png</image:loc>
+      <image:title>Poliuretanos</image:title>
+      <image:caption>Poliuretanos. Imagen de Diamante Pinturas. Productos de Poliuretanos de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2.png</image:loc>
+      <image:title>Poliuretanos</image:title>
+      <image:caption>Poliuretanos. Imagen de Diamante Pinturas. Productos de Poliuretanos de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/maderas/nitrocelulosa-madera/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/acril-d-web-300x300.png</image:loc>
+      <image:title>Nitrocelulosa</image:title>
+      <image:caption>Nitrocelulosa. Imagen de Diamante Pinturas. Productos de Nitrocelulosa de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/d1000-web-300x300.png</image:loc>
+      <image:title>Nitrocelulosa</image:title>
+      <image:caption>Nitrocelulosa. Imagen de Diamante Pinturas. Productos de Nitrocelulosa de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D50-WEB-300x300.png</image:loc>
+      <image:title>Nitrocelulosa</image:title>
+      <image:caption>Nitrocelulosa. Imagen de Diamante Pinturas. Productos de Nitrocelulosa de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/nitrocelulosa-300x300.png</image:loc>
+      <image:title>Nitrocelulosa</image:title>
+      <image:caption>Nitrocelulosa. Imagen de Diamante Pinturas. Productos de Nitrocelulosa de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/maderas/entintados-madera/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/barniz-entintado-300x300.png</image:loc>
+      <image:title>Barnices Entintados</image:title>
+      <image:caption>Barnices Entintados. Imagen de Diamante Pinturas. Productos de Barnices Entintados de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/entintado-sr-300x300.png</image:loc>
+      <image:title>Barnices Entintados</image:title>
+      <image:caption>Barnices Entintados. Imagen de Diamante Pinturas. Productos de Barnices Entintados de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/maderas/complementos-madera/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/mata-polilla-300x300.png</image:loc>
+      <image:title>Complementos Maderas</image:title>
+      <image:caption>Complementos Maderas. Imagen de Diamante Pinturas. Productos de Complementos Maderas de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+      <image:title>Complementos Maderas</image:title>
+      <image:caption>Complementos Maderas. Imagen de Diamante Pinturas. Productos de Complementos Maderas de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/decorativo/vinilicas-deco/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2-300x300.png</image:loc>
+      <image:title>Vinílicas</image:title>
+      <image:caption>Vinílicas. Imagen de Diamante Pinturas. Productos de Vinílicas de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMAFLEX-300x300.png</image:loc>
+      <image:title>Vinílicas</image:title>
+      <image:caption>Vinílicas. Imagen de Diamante Pinturas. Productos de Vinílicas de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMACRIL_1.png</image:loc>
+      <image:title>Vinílicas</image:title>
+      <image:caption>Vinílicas. Imagen de Diamante Pinturas. Productos de Vinílicas de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMACOLOR-1-300x300.png</image:loc>
+      <image:title>Vinílicas</image:title>
+      <image:caption>Vinílicas. Imagen de Diamante Pinturas. Productos de Vinílicas de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/decorativo/esmaltes-deco/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D500-WEB-300x300.png</image:loc>
+      <image:title>Esmaltes</image:title>
+      <image:caption>Esmaltes. Imagen de Diamante Pinturas. Productos de Esmaltes de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D50-WEB-300x300.png</image:loc>
+      <image:title>Esmaltes</image:title>
+      <image:caption>Esmaltes. Imagen de Diamante Pinturas. Productos de Esmaltes de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DG-WEB-300x300.png</image:loc>
+      <image:title>Esmaltes</image:title>
+      <image:caption>Esmaltes. Imagen de Diamante Pinturas. Productos de Esmaltes de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/d1000-web-300x300.png</image:loc>
+      <image:title>Esmaltes</image:title>
+      <image:caption>Esmaltes. Imagen de Diamante Pinturas. Productos de Esmaltes de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/decorativo/imper-deco/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/fibratado-300x300.png</image:loc>
+      <image:title>Impermeabilizantes</image:title>
+      <image:caption>Impermeabilizantes. Imagen de Diamante Pinturas. Productos de Impermeabilizantes de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/imperecologico-300x300.png</image:loc>
+      <image:title>Impermeabilizantes</image:title>
+      <image:caption>Impermeabilizantes. Imagen de Diamante Pinturas. Productos de Impermeabilizantes de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/decorativo/aerosoles-deco/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+      <image:title>Aerosoles</image:title>
+      <image:caption>Aerosoles. Imagen de Diamante Pinturas. Productos de Aerosoles de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/decorativo/selladores-deco/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sellador-vinilico-web-300x300.png</image:loc>
+      <image:title>Selladores</image:title>
+      <image:caption>Selladores. Imagen de Diamante Pinturas. Productos de Selladores de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/catalog/decorativo/especiales-deco/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+      <image:title>Especiales</image:title>
+      <image:caption>Especiales. Imagen de Diamante Pinturas. Productos de Especiales de Pinturas Diamante.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/diamaluz-esmaltes-300x300.png</image:loc>
+      <image:title>Especiales</image:title>
+      <image:caption>Especiales. Imagen de Diamante Pinturas. Productos de Especiales de Pinturas Diamante.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-1/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/acondicionador-de-metales-web-300x300.png</image:loc>
+      <image:title>Acondicionador de metales</image:title>
+      <image:caption>Acondicionador de metales. Imagen de Diamante Pinturas. Acondicionador de metales para eliminar óxido y proteger superficies ferrosas.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/product/487928157_996602669284010_7701561790680972083_n.jpg</image:loc>
+      <image:title>Acondicionador de metales</image:title>
+      <image:caption>Acondicionador de metales. Imagen de Diamante Pinturas. Acondicionador de metales para eliminar óxido y proteger superficies ferrosas.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-2/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/blender-web-300x300.png</image:loc>
+      <image:title>Blender Clear Esfumador</image:title>
+      <image:caption>Blender Clear Esfumador. Imagen de Diamante Pinturas. Blender para difuminar recubrimientos y lograr acabados sin bordes visibles.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-3/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/body-web-300x300.png</image:loc>
+      <image:title>Body Plus Recubrimiento</image:title>
+      <image:caption>Body Plus Recubrimiento. Imagen de Diamante Pinturas. Anticorrosivo base agua con protección contra abrasión y altas temperaturas.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-4/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+      <image:title>Desengrasante automotriz</image:title>
+      <image:caption>Desengrasante automotriz. Imagen de Diamante Pinturas. Limpiador potente que elimina grasas y contaminantes de superficies metálicas.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/product/531490493_1093616386249304_305369217444697791_n.jpg</image:loc>
+      <image:title>Desengrasante automotriz</image:title>
+      <image:caption>Desengrasante automotriz. Imagen de Diamante Pinturas. Limpiador potente que elimina grasas y contaminantes de superficies metálicas.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-5/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/perlas-universales-web-300x300.png</image:loc>
+      <image:title>Perla Universal Automotriz</image:title>
+      <image:caption>Perla Universal Automotriz. Imagen de Diamante Pinturas. Aditivo perlado que proporciona efectos metalizados y cambio de tono.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/product/534850764_1097529489191327_9054814714848497074_n.jpg</image:loc>
+      <image:title>Perla Universal Automotriz</image:title>
+      <image:caption>Perla Universal Automotriz. Imagen de Diamante Pinturas. Aditivo perlado que proporciona efectos metalizados y cambio de tono.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-6/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/plaste-web-300x300.png</image:loc>
+      <image:title>Plaste automotriz</image:title>
+      <image:caption>Plaste automotriz. Imagen de Diamante Pinturas. Masilla de corrección para imperfecciones y rayones de fácil lijado.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-7/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/promotor-adherente-aerosl-300x300.png</image:loc>
+      <image:title>Promotor de adherencia</image:title>
+      <image:caption>Promotor de adherencia. Imagen de Diamante Pinturas. Promotor químico para adhesión de pinturas en plásticos automotrices.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-8/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/removedor-amarillo-web-300x300.png</image:loc>
+      <image:title>Removedor amarillo</image:title>
+      <image:caption>Removedor amarillo. Imagen de Diamante Pinturas. Removedor químico potente para levantar pintura vieja sin dañar el metal.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-9/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
+      <image:title>Esmalte Ureprix</image:title>
+      <image:caption>Esmalte Ureprix. Imagen de Diamante Pinturas. Esmalte de poliuretano 2K con máxima resistencia química y brillo profundo.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-10/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/turboprix-300x300.png</image:loc>
+      <image:title>Esmalte Turboprix</image:title>
+      <image:caption>Esmalte Turboprix. Imagen de Diamante Pinturas. Esmalte de secado rápido para reparaciones económicas y eficientes.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-11/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/ultraprix-web-300x300.png</image:loc>
+      <image:title>Esmalte Ultraprix</image:title>
+      <image:caption>Esmalte Ultraprix. Imagen de Diamante Pinturas. Esmalte acrílico de alta calidad con excelente retención de brillo y color.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-12/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/maxiprimer-web-300x300.png</image:loc>
+      <image:title>Maxiprimer anticorrosivo</image:title>
+      <image:caption>Maxiprimer anticorrosivo. Imagen de Diamante Pinturas. Primario de alto desempeño con pigmentos inhibidores de corrosión.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-13/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/primario-universal-300x300.png</image:loc>
+      <image:title>Primario Universal</image:title>
+      <image:caption>Primario Universal. Imagen de Diamante Pinturas. Primario universal con excelente capacidad de relleno y lijado.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-14/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/primario-de-aparejo-2k-web-300x300.png</image:loc>
+      <image:title>Primer Filler Plus 2k</image:title>
+      <image:caption>Primer Filler Plus 2k. Imagen de Diamante Pinturas. Aparejo 2K de alto espesor para superficies irregulares.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-15/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/light-fill-pro-web-300x300.png</image:loc>
+      <image:title>Resanador Light Fill Pro</image:title>
+      <image:caption>Resanador Light Fill Pro. Imagen de Diamante Pinturas. Masilla ultra ligera para rellenar abolladuras grandes con lijado suave.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-16/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/dprix-web-300x300.png</image:loc>
+      <image:title>Transparente D-Prix</image:title>
+      <image:caption>Transparente D-Prix. Imagen de Diamante Pinturas. Barniz transparente de poliuretano con excelente balance de brillo.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-17/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/clara-gloss-300x300.png</image:loc>
+      <image:title>Transparente Clara Gloss</image:title>
+      <image:caption>Transparente Clara Gloss. Imagen de Diamante Pinturas. Transparente HS 3K con brillo profundo y máxima protección UV.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-18/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/PRIMER-WEB-300x300.png</image:loc>
+      <image:title>Transparente Elite Plus Hs</image:title>
+      <image:caption>Transparente Elite Plus Hs. Imagen de Diamante Pinturas. Barniz HS para alta productividad con acabado espejo duradero.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-19/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/lca-300x300.png</image:loc>
+      <image:title>Transparente L.C.A</image:title>
+      <image:caption>Transparente L.C.A. Imagen de Diamante Pinturas. Transparente 2K con excelente nivelación y brillo profesional.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/auto-20/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/base-color-innovaprix-300x300.png</image:loc>
+      <image:title>Base Color Innovaplus</image:title>
+      <image:caption>Base Color Innovaplus. Imagen de Diamante Pinturas. Sistema bicapa con color intenso y alto poder cubriente.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-1/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
+      <image:title>Barniz PU Transparente</image:title>
+      <image:caption>Barniz PU Transparente. Imagen de Diamante Pinturas. Barniz de poliuretano 2K con alta dureza y resistencia.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-2/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMACRIL-WEB.png</image:loc>
+      <image:title>Fondo PU para Madera</image:title>
+      <image:caption>Fondo PU para Madera. Imagen de Diamante Pinturas. Fondo de poliuretano para sellar poro de madera con altos sólidos.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-3/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMALUXE-WEB.png</image:loc>
+      <image:title>Barniz PU Blanco/Chocolate</image:title>
+      <image:caption>Barniz PU Blanco/Chocolate. Imagen de Diamante Pinturas. Acabado de poliuretano pigmentado resistente a humedad.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-4/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2.png</image:loc>
+      <image:title>Brillo Directo PU AS-100</image:title>
+      <image:caption>Brillo Directo PU AS-100. Imagen de Diamante Pinturas. Barniz PU HS con baja viscosidad para acabados de calidad insuperable.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-5/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/acril-d-web-300x300.png</image:loc>
+      <image:title>Laca Acrílica Acril-D</image:title>
+      <image:caption>Laca Acrílica Acril-D. Imagen de Diamante Pinturas. Laca acrílica de secado rápido y no amarillenta.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-6/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/d1000-web-300x300.png</image:loc>
+      <image:title>Sellador Nitro 1000</image:title>
+      <image:caption>Sellador Nitro 1000. Imagen de Diamante Pinturas. Sellador de nitrocelulosa de alta concentración para madera virgen.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-7/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D50-WEB-300x300.png</image:loc>
+      <image:title>Sellador Alta Dilución</image:title>
+      <image:caption>Sellador Alta Dilución. Imagen de Diamante Pinturas. Sellador económico formulado para alta dilución.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-8/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/nitrocelulosa-300x300.png</image:loc>
+      <image:title>Laca Industrial</image:title>
+      <image:caption>Laca Industrial. Imagen de Diamante Pinturas. Laca de nitrocelulosa de secado rápido para producción en serie.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-9/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/barniz-entintado-300x300.png</image:loc>
+      <image:title>Barniz Entintado Hogar</image:title>
+      <image:caption>Barniz Entintado Hogar. Imagen de Diamante Pinturas. Barniz que da color y brillo en un solo paso.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-10/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/entintado-sr-300x300.png</image:loc>
+      <image:title>Tinta al Alcohol</image:title>
+      <image:caption>Tinta al Alcohol. Imagen de Diamante Pinturas. Tinta penetrante de secado rápido para madera cruda.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-11/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/mata-polilla-300x300.png</image:loc>
+      <image:title>Mata Polilla</image:title>
+      <image:caption>Mata Polilla. Imagen de Diamante Pinturas. Preservador que protege la madera contra termitas y polillas.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/mad-12/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+      <image:title>Removedor para madera</image:title>
+      <image:caption>Removedor para madera. Imagen de Diamante Pinturas. Gel removedor para lacas y barnices sin dañar la madera.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-1/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2-300x300.png</image:loc>
+      <image:title>Diamaluxe</image:title>
+      <image:caption>Diamaluxe. Imagen de Diamante Pinturas. Pintura Premium Vinil-Acrílica con garantía de 12 años.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-2/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMAFLEX-300x300.png</image:loc>
+      <image:title>Diamaflex</image:title>
+      <image:caption>Diamaflex. Imagen de Diamante Pinturas. Pintura vinílica semi-satinada resistente a interiores y exteriores.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-3/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMACRIL_1.png</image:loc>
+      <image:title>Diamacril</image:title>
+      <image:caption>Diamacril. Imagen de Diamante Pinturas. Pintura vinílica para mantenimiento general de muros.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-4/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DIAMACOLOR-1-300x300.png</image:loc>
+      <image:title>Diamacolor</image:title>
+      <image:caption>Diamacolor. Imagen de Diamante Pinturas. Pintura económica para interiores de gran volumen.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-5/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D500-WEB-300x300.png</image:loc>
+      <image:title>Esmalte D500</image:title>
+      <image:caption>Esmalte D500. Imagen de Diamante Pinturas. Esmalte anticorrosivo premium para todo clima.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-6/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/D50-WEB-300x300.png</image:loc>
+      <image:title>Esmalte D50</image:title>
+      <image:caption>Esmalte D50. Imagen de Diamante Pinturas. Esmalte alquídico para regiones tropicales y herrería.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-7/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/DG-WEB-300x300.png</image:loc>
+      <image:title>Esmalte DG Secado Rápido</image:title>
+      <image:caption>Esmalte DG Secado Rápido. Imagen de Diamante Pinturas. Esmalte industrial de secado rápido con protección anticorrosiva.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-8/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/d1000-web-300x300.png</image:loc>
+      <image:title>Esmalte Base Agua D1000</image:title>
+      <image:caption>Esmalte Base Agua D1000. Imagen de Diamante Pinturas. Esmalte ecológico base agua para interiores.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-9/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/fibratado-300x300.png</image:loc>
+      <image:title>Imperdiamante Fibratado</image:title>
+      <image:caption>Imperdiamante Fibratado. Imagen de Diamante Pinturas. Impermeabilizante acrílico reforzado con fibras para grietas.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-10/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/imperecologico-300x300.png</image:loc>
+      <image:title>Imperdiamante Ecológico</image:title>
+      <image:caption>Imperdiamante Ecológico. Imagen de Diamante Pinturas. Impermeabilizante ecológico con resinas de alto desempeño.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-11/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+      <image:title>Aerosol Esmalte Acrílico</image:title>
+      <image:caption>Aerosol Esmalte Acrílico. Imagen de Diamante Pinturas. Esmalte acrílico en aerosol de secado rápido.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-12/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/sellador-vinilico-web-300x300.png</image:loc>
+      <image:title>Sellador Vinílico 5x1</image:title>
+      <image:caption>Sellador Vinílico 5x1. Imagen de Diamante Pinturas. Sellador concentrado para muros que mejora el rendimiento de pintura.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-13/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
+      <image:title>Pintura para Tráfico</image:title>
+      <image:caption>Pintura para Tráfico. Imagen de Diamante Pinturas. Pintura de tráfico de alta resistencia a la abrasión.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/product/dec-14/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/diamaluz-esmaltes-300x300.png</image:loc>
+      <image:title>Pintura para Albercas</image:title>
+      <image:caption>Pintura para Albercas. Imagen de Diamante Pinturas. Recubrimiento para albercas resistente a químicos.</image:caption>
+    </image:image>
+  </url>
+</urlset>

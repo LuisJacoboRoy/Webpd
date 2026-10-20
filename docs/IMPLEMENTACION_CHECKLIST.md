@@ -1,5 +1,7 @@
 # ✅ CHECKLIST DE IMPLEMENTACIÓN DE MICROFORMATOS
 
+> **Aviso vigente:** este checklist es histórico. No implementes sus ratings, reseñas o precios de ejemplo ni sus porcentajes de mejora como datos del sitio. El marcado `Product` se mantiene fuera de producción hasta disponer de ofertas o reseñas verificables.
+
 ## 🎯 Objetivo
 Aumentar CTR (Click-Through Rate) 15-40% y mejorar indexación con microformatos JSON-LD
 

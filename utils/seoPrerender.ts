@@ -7,7 +7,7 @@
  * - Open Graph & Twitter Cards
  * - Meta tags canónicos
  * - Breadcrumb navigation
- * - Product schema para e-commerce
+ * - Descriptive WebPage and catalog-item structured data
  * - Mobile-friendly markup
  */
 
@@ -44,6 +44,11 @@ export const generateOrganizationSchema = () => ({
   '@type': 'Organization',
   '@id': `${DOMAIN}/#organization`,
   name: 'Pinturas Diamante',
+  brand: {
+    '@type': 'Brand',
+    '@id': `${DOMAIN}/#brand`,
+    name: 'Diamante Pinturas'
+  },
   url: DOMAIN,
   logo: `${DOMAIN}/img/catalog/LOGO-WEB-DIAMANTE-PNG.png`,
   image: `${DOMAIN}/img/catalog/LOGO-WEB-DIAMANTE-PNG.png`,
@@ -115,97 +120,31 @@ export const generateBreadcrumbSchema = (
 });
 
 /**
- * Genera Schema.org Product con soporte para e-commerce y Rich Results
- * Mejores prácticas: https://developers.google.com/search/docs/appearance/structured-data/product
- * Valida el schema en: https://schema.org/Product
- * 
- * Campos incluidos:
- * - name, description, image (REQUERIDOS)
- * - sku, brand, manufacturer
- * - category, color, material
- * - offers (availability, price)
- * - aggregateRating (si aplica)
- * - reviews (si aplica)
+ * Describe the catalog item without declaring Product rich-result eligibility.
  */
 export const generateProductSchema = (product: Product) => {
   const productUrl = pageUrl(`/product/${product.id}`);
-  const baseSchema = {
+  return {
     '@context': 'https://schema.org/',
-    '@type': 'Product',
-    '@id': `${productUrl}#product`,
+    '@type': 'Thing',
+    '@id': `${productUrl}#item`,
     name: product.name,
     description: product.description,
-    // REQUERIDO: Al menos una imagen
     image: [
       product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`,
       product.image ? `${DOMAIN}${product.image}` : null
     ].filter(Boolean),
-    // SKU para identificación única
-    sku: product.id,
-    // URL canónica del producto
-    url: productUrl,
-    // Brand y manufacturer (importante para Rich Results)
-    brand: {
-      '@type': 'Brand',
-      name: 'Pinturas Diamante',
-      url: DOMAIN,
-      logo: `${DOMAIN}/img/catalog/LOGO-WEB-DIAMANTE-PNG.png`
-    },
-    manufacturer: {
-      '@type': 'Organization',
-      name: 'Pinturas Diamante',
-      url: DOMAIN,
-      email: 'info@pinturasdiamantemx.com',
-      telephone: '+52-951-143-3467'
-    },
-    // Categoría del producto (mejora relevancia)
-    category: product.tag || 'Pintura',
-    // Keywords/etiquetas adicionales
-    keywords: [product.tag, product.name, 'Pinturas', 'Oaxaca'].filter(Boolean),
-    // Información de oferta (REQUERIDA para mostrar en Rich Results con precio)
-    offers: {
-      '@type': 'Offer',
-      url: productUrl,
-      // Disponibilidad (InStock es ideal para Rich Results)
-      availability: 'https://schema.org/InStock',
-      // Divisa (MXN por defecto en México)
-      priceCurrency: 'MXN',
-      // NOTA: Se puede agregar price aquí si está disponible en el producto
-      // price: product.price || '0',
-      seller: {
-        '@type': 'Organization',
-        name: 'Pinturas Diamante',
-        url: DOMAIN
-      },
-      // Validez de la oferta (30 días)
-      priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-        .toISOString()
-        .split('T')[0]
-    },
-    // Información de identificación del producto
-    mpn: product.id,
-    // Agregación de calificaciones (si está disponible)
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.8',
-      ratingCount: '32',
-      bestRating: '5',
-      worstRating: '1',
-      reviewCount: '32'
-    }
+    url: productUrl
   };
-
-  return baseSchema;
 };
 
 /**
- * Genera data para schema WebPage con Product como mainEntity
- * Conecta la página con el producto estructurado
+ * Generates WebPage data with a descriptive catalog item as mainEntity.
  */
 export const generateWebPageSchema = (
   product: Product,
-  category: Category,
-  subCategory: SubCategory
+  _category: Category,
+  _subCategory: SubCategory
 ) => {
   const productSchema = generateProductSchema(product);
 
@@ -224,7 +163,7 @@ export const generateWebPageSchema = (
       '@type': 'WebSite',
       name: 'Pinturas Diamante'
     },
-    // mainEntity apunta al Product schema (Google utiliza esto para Rich Results)
+    // Product rich results require genuine offer or review data that is not provided.
     mainEntity: productSchema,
     breadcrumb: {
       '@id': `${pageUrl(`/product/${product.id}`)}#breadcrumb`
@@ -272,7 +211,7 @@ export const generateCanonicalAndRobotsMetaTags = (productId: string): Record<st
 });
 
 /**
- * Datos SEO completos para un producto con Rich Results optimizados
+ * Complete SEO data for a product page without unsupported Product rich-result markup
  */
 export const generateProductSEOData = (productId: string): ProductSEOData | null => {
   const product = PRODUCTS.find(p => p.id === productId);
@@ -288,24 +227,20 @@ export const generateProductSEOData = (productId: string): ProductSEOData | null
     title: product.ogTitle || `${product.name} - Pinturas Diamante`,
     description: product.ogDescription || product.description,
     ogImage: product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`,
-    // Structured Data OPTIMIZADA para Rich Results
-    // Incluye @graph con todos los schemas necesarios
+    // Product rich-result markup is omitted until genuine commercial or review data exists.
     structuredData: {
       '@context': 'https://schema.org',
       '@graph': [
         // 1. Organization Schema (identidad del negocio)
         generateOrganizationSchema(),
 
-        // 2. Product Schema (item principal - REQUERIDO para Rich Results)
-        generateProductSchema(product),
-
-        // 3. WebPage Schema (contexto de la página)
+        // 2. WebPage with a descriptive item; no unsupported Product markup
         generateWebPageSchema(product, category, subCategory),
 
-        // 4. BreadcrumbList (navegación - mejora UX y SEO)
+        // 3. BreadcrumbList
         generateBreadcrumbSchema(product, category, subCategory),
 
-        // 5. LocalBusiness (presencia local en Google)
+        // 4. LocalBusiness
         generateLocalBusinessSchema()
       ]
     },
@@ -353,6 +288,11 @@ export const generateLocalBusinessSchema = () => ({
   '@type': 'LocalBusiness',
   '@id': `${DOMAIN}/#local-business`,
   name: 'Pinturas Diamante',
+  brand: {
+    '@type': 'Brand',
+    '@id': `${DOMAIN}/#brand`,
+    name: 'Diamante Pinturas'
+  },
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Avenida ferrocarril 805-D',
@@ -377,11 +317,9 @@ export const generateLocalBusinessSchema = () => ({
 });
 
 /**
- * Validador especializado para Rich Results de Google
- * https://search.google.com/test/rich-results
+ * Valida metadatos y estructura JSON-LD básicos.
  * 
  * Verifica que el schema cumpla con:
- * - Campos REQUERIDOS para Rich Results
  * - Longitud apropiada de texto
  * - URLs canónicas correctas
  * - Imágenes válidas
@@ -427,38 +365,12 @@ export const validateSEOData = (seoData: ProductSEOData): string[] => {
       errors.push('❌ Structured data debe incluir @graph');
     }
 
-    // Verificar Product schema
-    const hasProductSchema = seoData.structuredData['@graph']?.some(
-      (schema: any) => schema['@type'] === 'Product'
-    );
-    if (!hasProductSchema) {
-      errors.push('❌ Falta Product schema (REQUERIDO para Rich Results)');
+    const graph = seoData.structuredData['@graph'] || [];
+    if (!graph.some((schema: any) => schema['@type'] === 'WebPage')) {
+      errors.push('❌ Falta WebPage en el JSON-LD');
     }
-
-    // Verificar campos requeridos en Product schema
-    const productSchema = seoData.structuredData['@graph']?.find(
-      (schema: any) => schema['@type'] === 'Product'
-    );
-
-    if (productSchema) {
-      if (!productSchema.name) {
-        errors.push('❌ Product schema: falta "name"');
-      }
-      if (!productSchema.description) {
-        errors.push('❌ Product schema: falta "description"');
-      }
-      if (!productSchema.image || productSchema.image.length === 0) {
-        errors.push('❌ Product schema: falta "image" (requerida para Rich Results)');
-      }
-      if (!productSchema.offers || !productSchema.offers.availability) {
-        errors.push('❌ Product schema: falta "offers.availability"');
-      }
-      if (!productSchema.brand) {
-        warnings.push('⚠️ Product schema: recomendable incluir "brand"');
-      }
-      if (!productSchema.aggregateRating) {
-        warnings.push('⚠️ Product schema: agregar "aggregateRating" mejora CTR en SERPs');
-      }
+    if (!graph.some((schema: any) => schema['@type'] === 'BreadcrumbList')) {
+      errors.push('❌ Falta BreadcrumbList en el JSON-LD');
     }
   }
 
@@ -472,8 +384,7 @@ export const validateSEOData = (seoData: ProductSEOData): string[] => {
 };
 
 /**
- * Función de validación alternativa para verificar todos los productos
- * Genera un reporte de cumplimiento con Rich Results
+ * Validates metadata and descriptive structured data for all product pages.
  */
 export const validateAllProductsSEO = (): Record<string, string[]> => {
   const report: Record<string, string[]> = {};
@@ -564,6 +475,7 @@ Disallow: /admin/
 Sitemap: https://pinturasdiamante.com/sitemap.xml
 Sitemap: https://pinturasdiamante.com/sitemap-products.xml
 Sitemap: https://pinturasdiamante.com/sitemap-categories.xml
+Sitemap: https://pinturasdiamante.com/sitemap-images.xml
 `;
 };
 

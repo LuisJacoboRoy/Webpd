@@ -1,5 +1,7 @@
 # Mejoras Avanzadas de SEO - Guía Completa de Integración
 
+> **Aviso vigente:** esta guía es histórica y describe esquemas de producto con precios, disponibilidad y ratings de ejemplo que no deben publicarse. El sitio actual los omite hasta contar con información comercial o reseñas reales. Los llamados “boosts” y porcentajes de CTR/indexación indicados aquí no son garantías de Google.
+
 ## Resumen Ejecutivo
 
 Se han implementado **4 mejoras críticas de SEO** para aumentar la indexación de productos y mejorar la apariencia en búsquedas:

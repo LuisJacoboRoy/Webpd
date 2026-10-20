@@ -1,5 +1,7 @@
 # 🎯 MICROFORMATOS JSON-LD: RESUMEN EJECUTIVO
 
+> **Aviso vigente:** este resumen contiene afirmaciones históricas de indexación y CTR que no están garantizadas. No uses datos de calificaciones, ofertas o reseñas de ejemplo. El sitio omite el marcado `Product` mientras no haya información verificable.
+
 **Fecha:** 7 de abril de 2026  
 **Versión:** 1.0  
 **Estado:** ✅ COMPLETADO Y LISTO PARA IMPLEMENTACIÓN

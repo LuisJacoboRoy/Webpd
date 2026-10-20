@@ -43,6 +43,11 @@ const AppContent: React.FC = () => {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     'name': BUSINESS_INFO.name,
+    'brand': {
+      '@type': 'Brand',
+      '@id': `${BUSINESS_INFO.url}/#brand`,
+      'name': 'Diamante Pinturas'
+    },
     'description': BUSINESS_INFO.description,
     'url': `${BUSINESS_INFO.url}/`,
     'logo': BUSINESS_INFO.logo,
@@ -58,6 +63,11 @@ const AppContent: React.FC = () => {
     'location': BUSINESS_LOCATIONS.map(loc => ({
       '@type': 'LocalBusiness',
       'name': loc.name,
+      'brand': {
+        '@type': 'Brand',
+        '@id': `${BUSINESS_INFO.url}/#brand`,
+        'name': 'Diamante Pinturas'
+      },
       'url': `${BUSINESS_INFO.url}/`,
       'address': {
         '@type': 'PostalAddress',

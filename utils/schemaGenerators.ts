@@ -59,7 +59,7 @@ export const generateOrganizationSchema = () => ({
   },
   'brand': {
     '@type': 'Brand',
-    'name': SEO_CONFIG.business.name,
+    'name': 'Diamante Pinturas',
     'logo': `${SEO_CONFIG.domain}${SEO_CONFIG.business.logo}`
   },
   'image': {
@@ -117,14 +117,6 @@ export const generateOrganizationSchema = () => ({
     }
   ],
   'sameAs': Object.values(SEO_CONFIG.social).filter(url => typeof url === 'string' && url.startsWith('http')),
-  'aggregateRating': {
-    '@type': 'AggregateRating',
-    'ratingValue': '4.9',
-    'bestRating': '5',
-    'worstRating': '1',
-    'ratingCount': 1247,
-    'reviewCount': 356
-  },
 });
 
 /**
@@ -143,11 +135,25 @@ export const generateBreadcrumbSchema = (items: BreadcrumbItem[]) => ({
 });
 
 /**
- * Schema Product
- * Versión mejorada con: AggregateRating, Offers ampliado, Brand, etc.
- * Crucial para CTR en Google Shopping y resultados enriquecidos
+ * Generates Product only when real offer or rating data can make it eligible.
+ * Returns null otherwise; do not publish incomplete Product markup.
  */
 export const generateProductSchema = (product: ProductDataForSchema, baseUrl: string = SEO_CONFIG.domain) => {
+  const rawPrice = typeof product.price === 'string' ? product.price.trim() : product.price;
+  const numericPrice = rawPrice === undefined || rawPrice === ''
+    ? undefined
+    : Number(rawPrice);
+  const hasPrice = numericPrice !== undefined && Number.isFinite(numericPrice) && numericPrice >= 0;
+  const hasRating = typeof product.rating === 'number' &&
+    Number.isFinite(product.rating) &&
+    product.rating >= 1 &&
+    product.rating <= 5 &&
+    typeof product.reviewCount === 'number' &&
+    Number.isInteger(product.reviewCount) &&
+    product.reviewCount > 0;
+
+  if (!hasPrice && !hasRating) return null;
+
   const imageUrl = product.image.startsWith('http') 
     ? product.image 
     : `${baseUrl}${product.image.startsWith('/') ? '' : '/'}${product.image}`;
@@ -167,34 +173,31 @@ export const generateProductSchema = (product: ProductDataForSchema, baseUrl: st
     'category': product.category,
     'brand': {
       '@type': 'Brand',
-      'name': SEO_CONFIG.business.name,
+      'name': 'Diamante Pinturas',
       'logo': `${baseUrl}${SEO_CONFIG.business.logo}`
     },
-    'manufacturer': {
-      '@type': 'Organization',
-      'name': SEO_CONFIG.business.name,
-      'url': baseUrl,
-      'logo': `${baseUrl}${SEO_CONFIG.business.logo}`
-    },
-    'offers': {
-      '@type': 'Offer',
-      'url': `${baseUrl.replace(/\/+$/, '')}/product/${product.id}/`,
-      'priceCurrency': 'MXN',
-      'price': product.price || 'Consultar',
-      'priceValidUntil': new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-      'availability': `https://schema.org/${product.availability || 'InStock'}`,
-      'seller': {
-        '@type': 'Organization',
-        'name': SEO_CONFIG.business.name,
-        'url': baseUrl,
-        'telephone': SEO_CONFIG.business.phone
+    ...(hasPrice && {
+      'offers': {
+        '@type': 'Offer',
+        'url': `${baseUrl.replace(/\/+$/, '')}/product/${product.id}/`,
+        'priceCurrency': 'MXN',
+        'price': numericPrice,
+        ...(product.availability && {
+          'availability': `https://schema.org/${product.availability}`
+        }),
+        'seller': {
+          '@type': 'Organization',
+          'name': SEO_CONFIG.business.name,
+          'url': baseUrl,
+          'telephone': SEO_CONFIG.business.phone
+        }
       }
-    },
+    }),
     ...(product.sku && { 'sku': product.sku }),
-    ...(product.reviewCount && product.rating && {
+    ...(hasRating && {
       'aggregateRating': {
         '@type': 'AggregateRating',
-        'ratingValue': Math.min(5, Math.max(1, product.rating)),
+        'ratingValue': product.rating,
         'reviewCount': product.reviewCount,
         'bestRating': '5',
         'worstRating': '1'

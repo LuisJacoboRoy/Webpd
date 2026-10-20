@@ -1,16 +1,17 @@
 {
-  "generatedAt": "2026-10-20T16:06:47.178Z",
+  "generatedAt": "2026-10-20T18:01:00.559Z",
   "baseUrl": "https://pinturasdiamante.com",
   "sitemaps": {
     "general": "sitemap.xml",
     "products": "sitemap-products.xml",
-    "categories": "sitemap-categories.xml"
+    "categories": "sitemap-categories.xml",
+    "images": "sitemap-images.xml"
   },
   "statistics": {
     "totalURLs": 70,
     "bySchema": {
       "Organization": 1,
-      "Product": 46,
+      "ProductPage": 46,
       "CollectionPage": 22,
       "ContactPage": 1
     },
@@ -34,18 +35,15 @@
       "urls": [
         "https://pinturasdiamante.com/sitemap.xml",
         "https://pinturasdiamante.com/sitemap-products.xml",
-        "https://pinturasdiamante.com/sitemap-categories.xml"
+        "https://pinturasdiamante.com/sitemap-categories.xml",
+        "https://pinturasdiamante.com/sitemap-images.xml"
       ]
     },
     "step3": {
-      "title": "Ver Resultados Enriquecidos por Tipo de Esquema",
-      "location": "Menú izquierdo > Apariencia en búsqueda > Resultados enriquecidos",
+      "title": "Revisar datos estructurados",
+      "location": "Search Console > Mejoras (solo los tipos que Google reporte)",
+      "note": "No todos los esquemas generan un informe o un resultado enriquecido.",
       "options": {
-        "product": {
-          "name": "Product",
-          "description": "Muestra todas las páginas de productos indexadas",
-          "expectedCount": 46
-        },
         "breadcrumb": {
           "name": "BreadcrumbList",
           "description": "Migas de pan para navegación",
@@ -83,17 +81,21 @@
     }
   },
   "schemasTracking": {
-    "products": {
-      "schema": "Product",
+    "productPages": {
+      "schema": "WebPage / Thing",
       "count": 46,
-      "documentation": "https://developers.google.com/search/docs/appearance/structured-data/product",
-      "howToMeasure": "En \"Resultados enriquecidos\" > \"Product\", verás el número de productos indexados",
+      "howToMeasure": "En Search Console > Rendimiento, filtra por página; el sitemap no habilita resultados enriquecidos de producto",
       "expectedMetrics": [
-        "indexed",
-        "valid",
-        "invalid",
-        "excluded"
+        "clics",
+        "impresiones",
+        "CTR",
+        "posición"
       ]
+    },
+    "images": {
+      "sitemap": "sitemap-images.xml",
+      "count": 120,
+      "copyrightHolder": "Diamante Pinturas"
     },
     "categories": {
       "schema": "Category / BreadcrumbList",
@@ -110,10 +112,9 @@
       "schema": "Organization",
       "count": 1,
       "documentation": "https://developers.google.com/search/docs/appearance/structured-data/organization",
-      "howToMeasure": "En \"Resultados enriquecidos\" > \"Organization\"",
+      "howToMeasure": "Validar el JSON-LD con Rich Results Test; Search Console puede no mostrar un informe para este tipo",
       "expectedMetrics": [
-        "indexed",
-        "valid"
+        "datos estructurados detectados"
       ]
     }
   },
@@ -139,6 +140,11 @@
         "Posición promedio"
       ]
     }
+  },
+  "imageIndexing": {
+    "sitemap": "sitemap-images.xml",
+    "indexedImages": 120,
+    "copyrightHolder": "Diamante Pinturas"
   },
   "urls": {
     "products": [

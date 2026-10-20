@@ -2,7 +2,7 @@
  * EJEMPLOS PRÁCTICOS DE INTEGRACIÓN DE MICROFORMATOS
  * 
  * Copiar y adaptar estos ejemplos en tus componentes
- * para activar rich snippets y mejorar CTR
+ * para publicar datos estructurados descriptivos sin inventar precios o reseñas.
  */
 
 // ============================================
@@ -16,7 +16,7 @@ import { generateOrganizationSchema, generateBreadcrumbSchema } from '../utils/s
 export const AppExample = () => {
   const organizationSchema = generateOrganizationSchema();
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { position: 1, name: 'Inicio', url: 'https://pinturasdiamante.com/#/' }
+    { position: 1, name: 'Inicio', url: 'https://pinturasdiamante.com/' }
   ]);
 
   return (
@@ -45,38 +45,43 @@ export const AppExample = () => {
 // 2. EXAMPLE: ProductDetail.tsx - Mejorado
 // ============================================
 
-import { generateProductSchema, generateBreadcrumbSchema } from '../utils/schemaGenerators';
+import { generateBreadcrumbSchema } from '../utils/schemaGenerators';
 
 export const ProductDetailExample = ({ product }: any) => {
-  const productSchema = generateProductSchema({
-    id: product.id,
-    name: product.name,
-    description: product.description,
-    image: product.image,
-    category: product.categoryName,
-    subCategory: product.subCategoryName,
-    rating: 4.8,
-    reviewCount: 127,
-    price: 'Consultar', // O el precio si lo tienes
-    availability: 'InStock',
-    sku: product.sku || `DIAMANTE-${product.id.toUpperCase()}`
-  });
+  const productUrl = `https://pinturasdiamante.com/product/${product.id}/`;
+  const productImage = product.image.startsWith('http')
+    ? product.image
+    : `https://pinturasdiamante.com${product.image.startsWith('/') ? '' : '/'}${product.image}`;
+  const pageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    'url': productUrl,
+    'name': product.name,
+    'description': product.description,
+    'mainEntity': {
+      '@type': 'Thing',
+      'name': product.name,
+      'description': product.description,
+      'image': productImage,
+      'url': productUrl
+    }
+  };
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { position: 1, name: 'Inicio', url: 'https://pinturasdiamante.com/#/' },
-    { position: 2, name: 'Catálogo', url: 'https://pinturasdiamante.com/#/catalog' },
-    { position: 3, name: product.categoryName, url: `https://pinturasdiamante.com/#/catalog/${product.categoryId}` },
-    { position: 4, name: product.subCategoryName, url: `https://pinturasdiamante.com/#/catalog/${product.categoryId}/${product.subCategoryId}` },
-    { position: 5, name: product.name, url: `https://pinturasdiamante.com/#/product/${product.id}` }
+    { position: 1, name: 'Inicio', url: 'https://pinturasdiamante.com/' },
+    { position: 2, name: 'Catálogo', url: 'https://pinturasdiamante.com/catalog/' },
+    { position: 3, name: product.categoryName, url: `https://pinturasdiamante.com/catalog/${product.categoryId}/` },
+    { position: 4, name: product.subCategoryName, url: `https://pinturasdiamante.com/catalog/${product.categoryId}/${product.subCategoryId}/` },
+    { position: 5, name: product.name, url: productUrl }
   ]);
 
   return (
     <>
       <Helmet>
-        {/* Product Schema */}
+        {/* Product rich-result markup is omitted until genuine offer or review data exists. */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(pageSchema) }}
         />
         
         {/* Breadcrumb Schema */}
@@ -89,7 +94,7 @@ export const ProductDetailExample = ({ product }: any) => {
         <title>{product.name} - Pinturas Diamante</title>
         <meta name="description" content={product.description.substring(0, 160)} />
         <meta property="og:image" content={product.image} />
-        <link rel="canonical" href={`https://pinturasdiamante.com/#/product/${product.id}`} />
+        <link rel="canonical" href={productUrl} />
       </Helmet>
 
       <div>
@@ -117,9 +122,9 @@ export const CatalogCategoriesExample = ({ category }: any) => {
   );
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { position: 1, name: 'Inicio', url: 'https://pinturasdiamante.com/#/' },
-    { position: 2, name: 'Catálogo', url: 'https://pinturasdiamante.com/#/catalog' },
-    { position: 3, name: category.name, url: `https://pinturasdiamante.com/#/catalog/${category.id}` }
+    { position: 1, name: 'Inicio', url: 'https://pinturasdiamante.com/' },
+    { position: 2, name: 'Catálogo', url: 'https://pinturasdiamante.com/catalog/' },
+    { position: 3, name: category.name, url: `https://pinturasdiamante.com/catalog/${category.id}/` }
   ]);
 
   return (
@@ -139,7 +144,7 @@ export const CatalogCategoriesExample = ({ category }: any) => {
 
         <title>{category.name} - Catálogo - Pinturas Diamante</title>
         <meta name="description" content={category.description} />
-        <link rel="canonical" href={`https://pinturasdiamante.com/#/catalog/${category.id}`} />
+        <link rel="canonical" href={`https://pinturasdiamante.com/catalog/${category.id}/`} />
       </Helmet>
 
       <h1>{category.name}</h1>
@@ -260,33 +265,31 @@ export const FAQPageExample = () => {
 // 6. EXAMPLE: ProductList con múltiples productos
 // ============================================
 
-import { generateProductSchema } from '../utils/schemaGenerators';
-
 export const ProductListExample = ({ products }: any) => {
-  const productSchemas = products.map((product: any) =>
-    generateProductSchema({
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      image: product.image,
-      category: product.categoryName,
-      rating: 4.8,
-      reviewCount: 100,
-      availability: 'InStock'
-    })
-  );
+  const productListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'itemListElement': products.map((product: any, index: number) => ({
+      '@type': 'ListItem',
+      'position': index + 1,
+      'item': {
+        '@type': 'Thing',
+        'name': product.name,
+        'description': product.description,
+        'image': product.image,
+        'url': `https://pinturasdiamante.com/product/${product.id}/`
+      }
+    }))
+  };
 
   return (
     <>
       <Helmet>
-        {/* Inyectar todos los schemas de productos */}
-        {productSchemas.map((schema, idx) => (
-          <script
-            key={idx}
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-          />
-        ))}
+        {/* Descriptive item list; Product markup needs genuine offers or reviews. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productListSchema) }}
+        />
       </Helmet>
 
       <div className="product-grid">

@@ -8,61 +8,61 @@ const ImageSlider: React.FC = () => {
   const items = [
     { 
       id: 'auto-innova', 
-      img: 'img/car.jpg', 
+      img: '/img/car.jpeg',
       label: 'Base Color Innova Plus',
       link: '/catalog/automotriz' 
     },
     { 
       id: 'rodillo-cubriente', 
-      img: './img/rodillo.jpg', 
+      img: '/img/rodillo.jpg',
       label: 'Poder Cubriente',
       link: '/catalog/decorativo' 
     },
     { 
       id: 'brocha-intenso', 
-      img: 'img/wood.jpg', 
+      img: '/img/wood.jpg',
       label: 'Color Intenso',
       link: '/catalog/decorativo' 
     },
     { 
       id: 'diamacril-8', 
-      img: 'img/vinil.jpg', 
+      img: '/img/vinil.jpg',
       label: 'Diamacril 8 Años',
       link: '/catalog/decorativo' 
     },
     { 
       id: 'poliuretano-madera', 
-      img: 'img/wood.jpg', 
+      img: '/img/wood.jpg',
       label: 'Sistema de Poliuretano',
       link: '/catalog/maderas' 
     },
     { 
       id: 'cromato-zinc-ind', 
-      img: 'img/product/cromato.jpg', 
+      img: '/img/product/cromato.jpg',
       label: 'Cromato de Zinc',
       link: '/catalog/automotriz' 
     },
     { 
       id: 'ureprix-esmalte', 
-      img: 'img/product/urepix.jpg', 
+      img: '/img/product/urepix.jpg',
       label: 'Esmalte Ureprix',
       link: '/catalog/automotriz' 
     },
     { 
       id: 'innova-red-base', 
-      img: 'img/product/red.jpg', 
+      img: '/img/product/red.jpg',
       label: 'Innova Plus Red',
       link: '/catalog/automotriz' 
     },
     { 
       id: 'd500-premium-anti', 
-      img: 'img/product/d500.jpg', 
+      img: '/img/product/d500.jpg',
       label: 'D500 Anticorrosivo',
       link: '/catalog/decorativo' 
     },
     { 
       id: 'dg-rapido', 
-      img: 'img/product/industrial.jpg', 
+      img: '/img/product/industrial.jpg',
       label: 'DG Secado Rápido',
       link: '/catalog/decorativo' 
     },
@@ -84,6 +84,7 @@ const ImageSlider: React.FC = () => {
               <img
                 src={item.img}
                 alt={item.label}
+                title={`${item.label} | Diamante Pinturas`}
                 className="w-full h-full object-cover transition-all duration-500"
                 onError={(e) => {
                   // Fallback visual informativo

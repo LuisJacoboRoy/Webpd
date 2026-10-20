@@ -1,5 +1,7 @@
 # Guía de Microformatos JSON-LD para CTR y Indexación
 
+> **Aviso vigente:** las métricas de CTR y los ejemplos de ratings/ofertas de este documento no están garantizados ni deben copiarse como datos reales. En producción, las páginas de producto omiten `@type: Product` hasta disponer de ofertas o reseñas verificables; sí conservan datos descriptivos, negocio local y navegación.
+
 ## 📊 Microformatos Implementados
 
 Este documento explica cómo usar los microformatos JSON-LD generados en `utils/schemaGenerators.ts` para mejorar significativamente la indexación y CTR (Click-Through Rate) en Google, Bing y otros buscadores.

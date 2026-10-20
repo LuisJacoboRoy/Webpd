@@ -1,5 +1,7 @@
 # Product Schema para Rich Results de Google
 
+> **Aviso vigente:** esta guía es histórica y sus ejemplos de ratings, ofertas y cifras no representan datos reales del catálogo. La implementación actual omite `@type: Product` mientras no existan ofertas o reseñas verificables, por lo que no habrá mejoras de producto en Search Console por ahora. No inventes precios, calificaciones ni reseñas para eliminar errores.
+
 ## 📋 Descripción
 
 Se ha implementado un sistema completo de Schema.org para generar **Rich Results** en Google Search. Todos los 56 productos del catálogo incluyen estructuras de datos optimizadas.
