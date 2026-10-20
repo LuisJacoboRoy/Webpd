@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-06T21:40:41.273Z",
+  "generatedAt": "2026-10-20T16:06:47.178Z",
   "baseUrl": "https://pinturasdiamante.com",
   "sitemaps": {
     "general": "sitemap.xml",
@@ -7,17 +7,15 @@
     "categories": "sitemap-categories.xml"
   },
   "statistics": {
-    "totalURLs": 73,
+    "totalURLs": 70,
     "bySchema": {
-      "Organization": 2,
-      "LocalBusiness": 3,
-      "Category": 21,
+      "Organization": 1,
       "Product": 46,
-      "CollectionPage": 1
+      "CollectionPage": 22,
+      "ContactPage": 1
     },
     "breakdown": {
-      "staticPages": 4,
-      "locations": 2,
+      "staticPages": 3,
       "categories": 3,
       "subcategories": 18,
       "products": 46
@@ -78,8 +76,8 @@
       "title": "Monitorear Cobertura",
       "location": "Menú izquierdo > Cobertura",
       "whatToLook": {
-        "valid": "Debe mostrar 73 URLs válidas",
-        "excluded": "Verifica qué URLs están excluidas y por qué",
+        "valid": "Se enviaron 70 URLs; el envío no garantiza que Google las indexe",
+        "excluded": "Las URLs enviadas no garantizan indexación; revisa las exclusiones y sus motivos",
         "error": "Resuelve cualquier error de indexación"
       }
     }
@@ -108,20 +106,9 @@
         "invalid"
       ]
     },
-    "locations": {
-      "schema": "LocalBusiness",
-      "count": 3,
-      "documentation": "https://developers.google.com/search/docs/appearance/structured-data/local-business",
-      "howToMeasure": "En \"Resultados enriquecidos\" > \"LocalBusiness\" o mediante Google Business Profile",
-      "expectedMetrics": [
-        "indexed",
-        "valid",
-        "invalid"
-      ]
-    },
     "organization": {
       "schema": "Organization",
-      "count": 2,
+      "count": 1,
       "documentation": "https://developers.google.com/search/docs/appearance/structured-data/organization",
       "howToMeasure": "En \"Resultados enriquecidos\" > \"Organization\"",
       "expectedMetrics": [
@@ -156,100 +143,86 @@
   "urls": {
     "products": [
       {
-        "url": "https://pinturasdiamante.com/#/product/auto-1",
-        "lastmod": "2026-03-15"
+        "url": "https://pinturasdiamante.com/product/auto-1/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/product/auto-2",
-        "lastmod": "2026-03-15"
+        "url": "https://pinturasdiamante.com/product/auto-2/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/product/auto-3",
-        "lastmod": "2026-03-15"
+        "url": "https://pinturasdiamante.com/product/auto-3/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/product/auto-4",
-        "lastmod": "2026-03-15"
+        "url": "https://pinturasdiamante.com/product/auto-4/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/product/auto-5",
-        "lastmod": "2026-03-15"
+        "url": "https://pinturasdiamante.com/product/auto-5/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/product/auto-6",
-        "lastmod": "2026-03-15"
+        "url": "https://pinturasdiamante.com/product/auto-6/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/product/auto-7",
-        "lastmod": "2026-03-15"
+        "url": "https://pinturasdiamante.com/product/auto-7/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/product/auto-8",
-        "lastmod": "2026-03-15"
+        "url": "https://pinturasdiamante.com/product/auto-8/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/product/auto-9",
-        "lastmod": "2026-03-15"
+        "url": "https://pinturasdiamante.com/product/auto-9/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/product/auto-10",
-        "lastmod": "2026-03-15"
+        "url": "https://pinturasdiamante.com/product/auto-10/",
+        "lastmod": "2026-10-20"
       }
     ],
     "categories": [
       {
-        "url": "https://pinturasdiamante.com/#/catalog",
-        "lastmod": "2026-05-06"
+        "url": "https://pinturasdiamante.com/catalog/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/catalog/automotriz",
-        "lastmod": "2026-05-06"
+        "url": "https://pinturasdiamante.com/catalog/automotriz/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/catalog/maderas",
-        "lastmod": "2026-05-06"
+        "url": "https://pinturasdiamante.com/catalog/maderas/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/catalog/decorativo",
-        "lastmod": "2026-05-06"
+        "url": "https://pinturasdiamante.com/catalog/decorativo/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/catalog/automotriz/complementos-auto",
-        "lastmod": "2026-05-06"
+        "url": "https://pinturasdiamante.com/catalog/automotriz/complementos-auto/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/catalog/automotriz/poliuretano-auto",
-        "lastmod": "2026-05-06"
+        "url": "https://pinturasdiamante.com/catalog/automotriz/poliuretano-auto/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/catalog/automotriz/secado-rapido-auto",
-        "lastmod": "2026-05-06"
+        "url": "https://pinturasdiamante.com/catalog/automotriz/secado-rapido-auto/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/catalog/automotriz/acrilicos-auto",
-        "lastmod": "2026-05-06"
+        "url": "https://pinturasdiamante.com/catalog/automotriz/acrilicos-auto/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/catalog/automotriz/primarios-auto",
-        "lastmod": "2026-05-06"
+        "url": "https://pinturasdiamante.com/catalog/automotriz/primarios-auto/",
+        "lastmod": "2026-10-20"
       },
       {
-        "url": "https://pinturasdiamante.com/#/catalog/automotriz/resanadores-auto",
-        "lastmod": "2026-05-06"
-      }
-    ],
-    "locations": [
-      {
-        "url": "https://pinturasdiamante.com/#/contact",
-        "lastmod": "2026-05-06"
-      },
-      {
-        "url": "https://pinturasdiamante.com/#/location/ferrocarril",
-        "lastmod": "2026-05-06"
-      },
-      {
-        "url": "https://pinturasdiamante.com/#/location/culturas-xoxo",
-        "lastmod": "2026-05-06"
+        "url": "https://pinturasdiamante.com/catalog/automotriz/resanadores-auto/",
+        "lastmod": "2026-10-20"
       }
     ]
   }
