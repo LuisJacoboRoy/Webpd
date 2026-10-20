@@ -38,19 +38,19 @@ const SubCategorySelector: React.FC = () => {
         '@type': 'ListItem',
         'position': 1,
         'name': 'Inicio',
-        'item': `${BUSINESS_INFO.url}/#/`
+        'item': `${BUSINESS_INFO.url}/`
       },
       {
         '@type': 'ListItem',
         'position': 2,
         'name': 'Catálogo',
-        'item': `${BUSINESS_INFO.url}/#/catalog`
+        'item': `${BUSINESS_INFO.url}/catalog`
       },
       {
         '@type': 'ListItem',
         'position': 3,
         'name': category?.name,
-        'item': `${BUSINESS_INFO.url}/#/catalog/${categoryId}`
+        'item': `${BUSINESS_INFO.url}/catalog/${categoryId}`
       }
     ]
   });

@@ -16,6 +16,8 @@ import { useFavicon, useBeforeUnloadWarning } from './hooks/usePersistence';
 import { useScrollToTop } from './hooks/useScrollToTop';
 import { BUSINESS_INFO, BUSINESS_LOCATIONS } from './data/seo';
 
+declare const __BASE_URL__: string;
+
 // Lazy-loaded route components (code splitting)
 const About = lazy(() => import('./components/About'));
 const Contact = lazy(() => import('./components/Contact'));
@@ -117,7 +119,7 @@ const App: React.FC = () => {
   return (
     <HelmetProvider context={helmetContext}>
       <CartProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={__BASE_URL__}>
           <Helmet>
             <html lang="es" />
             <meta charSet="utf-8" />
@@ -128,23 +130,14 @@ const App: React.FC = () => {
             {/* Open Graph básico */}
             <meta property="og:site_name" content={BUSINESS_INFO.name} />
             <meta property="og:locale" content="es_MX" />
-            <meta property="og:type" content="website" />
 
             {/* Twitter Card */}
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:creator" content="@DiamantePinturas" />
 
-            {/* SEO básico */}
-            <meta name="description" content={BUSINESS_INFO.description} />
-            <meta name="keywords" content="pinturas, diamante, oaxaca, automotriz, maderas, decorativo" />
-            <meta name="author" content={BUSINESS_INFO.name} />
-
             {/* Preconnect para mejorar performance */}
             <link rel="preconnect" href="https://fonts.googleapis.com" />
             <link rel="preconnect" href="https://cdn.tailwindcss.com" />
-
-            {/* Canonical por defecto */}
-            <link rel="canonical" href={BUSINESS_INFO.url} />
 
             {/* Apple touch icon */}
             <link rel="apple-touch-icon" href={BUSINESS_INFO.logo} />

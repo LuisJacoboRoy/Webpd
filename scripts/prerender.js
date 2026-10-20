@@ -1,315 +1,405 @@
-/**
- * SSG Prerendering Script
- * Genera páginas estáticas HTML con SEO completo para todos los productos
- * Ejecutar: node scripts/prerender.js
- */
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import {
+  BUSINESS_INFO,
+  BUSINESS_LOCATIONS,
+  SEO_DESCRIPTIONS,
+  SEO_KEYWORDS
+} from '../data/seo.ts';
+import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from '../data/products.ts';
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
+const distDirectory = path.resolve(scriptDirectory, '../dist');
+const domain = BUSINESS_INFO.url.replace(/\/$/, '');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Determinar el dominio base según el entorno
-const isGitHubPages = process.env.GITHUB_PAGES === 'true';
-const DOMAIN = isGitHubPages ? 'https://luisjacoboroy.github.io/Webpd' : 'https://pinturasdiamante.com';
-const OUTPUT_DIR = path.join(__dirname, '../prerendered');
-
-/**
- * Crear directorio si no existe
- */
-function ensureDir(dir) {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
 }
 
-/**
- * Generar HTML base con meta tags SEO
- */
-function generateProductHTML(productId, seoData) {
-  const product = PRODUCTS.find(p => p.id === productId);
-  if (!product || !seoData) return null;
-
-  const structuredDataJSON = JSON.stringify(seoData.structuredData);
-  const openGraphJSON = JSON.stringify(seoData.openGraphTags);
-  const twitterJSON = JSON.stringify(seoData.twitterCard);
-
-  return `<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
-  
-  <!-- SEO Títulos y Descripciones -->
-  <title>${seoData.title}</title>
-  <meta name="description" content="${seoData.description}">
-  <meta name="keywords" content="${product.tag || 'pintura'}, ${product.name}, oaxaca, pinturas diamante">
-  <meta name="author" content="Pinturas Diamante">
-  <meta name="theme-color" content="#3b82f6">
-  
-  <!-- Canonical URL -->
-  <link rel="canonical" href="${seoData.canonical}">
-  
-  <!-- Preconexiones para performance -->
-  <link rel="preconnect" href="${DOMAIN}">
-  <link rel="dns-prefetch" href="${DOMAIN}">
-  
-  <!-- Favicons -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="manifest" href="/site.webmanifest">
-  
-  <!-- Open Graph Tags (Facebook, LinkedIn, etc) -->
-  <meta property="og:type" content="${seoData.openGraphTags['og:type']}">
-  <meta property="og:url" content="${seoData.openGraphTags['og:url']}">
-  <meta property="og:title" content="${seoData.openGraphTags['og:title']}">
-  <meta property="og:description" content="${seoData.openGraphTags['og:description']}">
-  <meta property="og:image" content="${seoData.openGraphTags['og:image']}">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="${seoData.openGraphTags['og:site_name']}">
-  <meta property="og:locale" content="${seoData.openGraphTags['og:locale']}">
-  
-  <!-- Twitter Card Tags -->
-  <meta name="twitter:card" content="${seoData.twitterCard['twitter:card']}">
-  <meta name="twitter:title" content="${seoData.twitterCard['twitter:title']}">
-  <meta name="twitter:description" content="${seoData.twitterCard['twitter:description']}">
-  <meta name="twitter:image" content="${seoData.twitterCard['twitter:image']}">
-  <meta name="twitter:creator" content="${seoData.twitterCard['twitter:creator']}">
-  
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
-${JSON.stringify(seoData.structuredData, null, 2)}
-  </script>
-  
-  <!-- Sitemap Reference -->
-  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
-  
-  <!-- Robots Meta Tags -->
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  
-  <!-- Google Search Console Verification (reemplazar con tu token) -->
-  <!-- <meta name="google-site-verification" content="TU_TOKEN_AQUI"> -->
-  
-  <!-- Performance & Security -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://esm.sh; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:;">
-  <meta name="format-detection" content="telephone=no">
-  
-  <!-- Preload críticos -->
-  <link rel="preload" as="style" href="/index.css">
-  <link rel="preload" as="script" href="/index.tsx">
-  
-  <!-- Stylesheet -->
-  <style>
-    [data-v-app] { display: none; }
-  </style>
-</head>
-<body>
-  <div id="app" data-v-app></div>
-  
-  <!-- Script de redirección a SPA -->
-  <script>
-    // Redirigir a la aplicación React con BrowserRouter
-    const productId = '${productId}';
-    window.location.replace('/product/' + productId);
-  </script>
-  
-  <!-- Script principal de la aplicación -->
-  <script type="module" src="/index.tsx"></script>
-</body>
-</html>`;
+function absoluteUrl(value) {
+  if (!value) return BUSINESS_INFO.logo;
+  return value.startsWith('http') ? value : `${domain}${value.startsWith('/') ? '' : '/'}${value}`;
 }
 
-/**
- * Generar HTML para categoría
- */
-function generateCategoryHTML(categoryId, seoData) {
-  if (!seoData) return null;
-
-  return `<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${seoData.title}</title>
-  <meta name="description" content="${seoData.description}">
-  <link rel="canonical" href="${seoData.canonical}">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="${seoData.canonical}">
-  <meta property="og:title" content="${seoData.title}">
-  <meta property="og:description" content="${seoData.description}">
-  <meta property="og:image" content="${seoData.ogImage}">
-  <script type="application/ld+json">
-${JSON.stringify(seoData.structuredData, null, 2)}
-  </script>
-</head>
-<body>
-  <div id="app" data-v-app></div>
-  <script>
-    window.location.replace('/catalog/${categoryId}');
-  </script>
-  <script type="module" src="/index.tsx"></script>
-</body>
-</html>`;
+function jsonForHtml(value) {
+  return JSON.stringify(value)
+    .replaceAll('<', '\\u003c')
+    .replaceAll('>', '\\u003e')
+    .replaceAll('&', '\\u0026')
+    .replaceAll('\u2028', '\\u2028')
+    .replaceAll('\u2029', '\\u2029');
 }
 
-/**
- * Renderizar todos los productos
- */
-function prerenderProducts() {
-  console.log('🔨 Iniciando prerendering de productos...\n');
+function getBusinessSchemas() {
+  const organizationId = `${domain}/#organization`;
+  const organization = {
+    '@type': 'Organization',
+    '@id': organizationId,
+    name: BUSINESS_INFO.name,
+    description: BUSINESS_INFO.description,
+    url: domain,
+    logo: absoluteUrl(BUSINESS_INFO.logo),
+    email: BUSINESS_INFO.email,
+    telephone: BUSINESS_INFO.phone,
+    sameAs: BUSINESS_INFO.sameAs,
+    location: BUSINESS_LOCATIONS.map(location => ({
+      '@id': `${domain}/#business-${location.id}`
+    }))
+  };
 
-  const seoDataList = exportAllProductsSEO();
-  let successCount = 0;
-  let errorCount = 0;
-
-  seoDataList.forEach(({ id, seoData, product }) => {
-    try {
-      const html = generateProductHTML(id, seoData);
-      if (html) {
-        const outputPath = path.join(OUTPUT_DIR, `product-${id}.html`);
-        fs.writeFileSync(outputPath, html);
-        successCount++;
-        console.log(`✅ Generado: product-${id}.html`);
+  const localBusinesses = BUSINESS_LOCATIONS.map(location => ({
+    '@type': 'LocalBusiness',
+    '@id': `${domain}/#business-${location.id}`,
+    name: location.name,
+    description: `${BUSINESS_INFO.name} - ${location.name}`,
+    url: domain,
+    image: absoluteUrl(BUSINESS_INFO.logo),
+    telephone: location.phone,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: location.address,
+      addressLocality: location.city,
+      addressRegion: 'Oaxaca',
+      postalCode: location.postalCode,
+      addressCountry: 'MX'
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: location.latitude,
+      longitude: location.longitude
+    },
+    areaServed: {
+      '@type': 'City',
+      name: location.city
+    },
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '08:30',
+        closes: location.id === 'culturas-xoxo' ? '18:00' : '18:30'
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Saturday',
+        opens: '08:30',
+        closes: '16:30'
       }
-    } catch (error) {
-      errorCount++;
-      console.error(`❌ Error en ${id}:`, error.message);
+    ]
+  }));
+
+  const website = {
+    '@type': 'WebSite',
+    '@id': `${domain}/#website`,
+    url: domain,
+    name: BUSINESS_INFO.name,
+    publisher: { '@id': organizationId },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${domain}/search?q={search_term_string}`
+      },
+      'query-input': 'required name=search_term_string'
     }
-  });
+  };
 
-  console.log(`\n✨ Productos prerenderizados: ${successCount}/${PRODUCTS.length}`);
-  if (errorCount > 0) console.warn(`⚠️ Errores: ${errorCount}`);
+  return [organization, ...localBusinesses, website];
 }
 
-/**
- * Renderizar categorías
- */
-function prerenderCategories() {
-  console.log('\n🔨 Iniciando prerendering de categorías...\n');
-
-  let successCount = 0;
-
-  CATEGORIES.forEach(category => {
-    try {
-      const seoData = generateCategorySEOData(category.id);
-      const html = generateCategoryHTML(category.id, seoData);
-      if (html) {
-        const outputPath = path.join(OUTPUT_DIR, `category-${category.id}.html`);
-        fs.writeFileSync(outputPath, html);
-        successCount++;
-        console.log(`✅ Generado: category-${category.id}.html`);
-      }
-    } catch (error) {
-      console.error(`❌ Error en ${category.id}:`, error.message);
-    }
-  });
-
-  console.log(`\n✨ Categorías prerenderizadas: ${successCount}/${CATEGORIES.length}`);
-}
-
-/**
- * Generar sitemap dinámico
- */
-function generateSitemap() {
-  console.log('\n🗺️  Generando sitemap dinámico...');
-
-  try {
-    const sitemap = generateDynamicSitemap();
-    const outputPath = path.join(__dirname, '../public/sitemap.xml');
-    fs.writeFileSync(outputPath, sitemap);
-    console.log('✅ Sitemap generado: public/sitemap.xml');
-  } catch (error) {
-    console.error('❌ Error generando sitemap:', error.message);
+function breadcrumbSchema(route, label, category, subCategory, product) {
+  const items = [{ name: 'Inicio', url: `${domain}/` }];
+  if (route === '/catalog' || route.startsWith('/catalog/') || route.startsWith('/product/')) {
+    items.push({ name: 'Catálogo', url: `${domain}/catalog` });
   }
+  if (category) items.push({ name: category.name, url: `${domain}/catalog/${category.id}` });
+  if (subCategory) items.push({
+    name: subCategory.name,
+    url: `${domain}/catalog/${category.id}/${subCategory.id}`
+  });
+  if (product) items.push({ name: product.name, url: `${domain}/product/${product.id}` });
+  else if (route === '/contact') items.push({ name: label, url: `${domain}${route}` });
+
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url
+    }))
+  };
 }
 
-/**
- * Generar robots.txt
- */
-function generateRobots() {
-  console.log('\n🤖 Generando robots.txt...');
-
-  try {
-    const robots = generateRobotsTxt();
-    const outputPath = path.join(__dirname, '../public/robots.txt');
-    fs.writeFileSync(outputPath, robots);
-    console.log('✅ robots.txt generado: public/robots.txt');
-  } catch (error) {
-    console.error('❌ Error generando robots.txt:', error.message);
-  }
-}
-
-/**
- * Generar Schema.org indexado
- */
-function generateSchemaIndex() {
-  console.log('\n📋 Generando índice de schemas...');
-
-  try {
-    const index = {
-      organization: generateOrganizationSchema(),
-      localBusiness: generateLocalBusinessSchema(),
-      generatedAt: new Date().toISOString(),
-      productCount: PRODUCTS.length,
-      categoryCount: CATEGORIES.length,
-      subCategoryCount: SUB_CATEGORIES.length
+function pageData(route) {
+  if (route === '/') {
+    const description = '30 años de experiencia en pinturas de calidad premium. Soluciones automotriz, maderas y decorativo. Presencia en Oaxaca, Puebla, Veracruz y más.';
+    return {
+      title: 'Pinturas Diamante | Líderes en Recubrimientos Mexicanos',
+      description,
+      keywords: SEO_KEYWORDS.home.join(', '),
+      image: BUSINESS_INFO.logo,
+      schemas: [{
+        '@type': 'WebPage',
+        '@id': `${domain}/#home`,
+        name: 'Pinturas Diamante Oaxaca',
+        url: `${domain}/`,
+        description,
+        inLanguage: 'es-MX'
+      }, breadcrumbSchema(route, 'Inicio')]
     };
-
-    const outputPath = path.join(OUTPUT_DIR, 'schema-index.json');
-    fs.writeFileSync(outputPath, JSON.stringify(index, null, 2));
-    console.log('✅ Índice de schemas generado');
-  } catch (error) {
-    console.error('❌ Error generando índice de schemas:', error.message);
   }
+
+  if (route === '/catalog') {
+    return {
+      title: 'Catálogo de Pinturas | Diamante Oaxaca',
+      description: 'Explora nuestro catálogo de pinturas especializadas: automotriz, maderas y decorativo. Soluciones de pintura de alta gama.',
+      keywords: SEO_KEYWORDS.catalog.join(', '),
+      image: BUSINESS_INFO.logo,
+      schemas: [
+        {
+          '@type': 'CollectionPage',
+          name: 'Catálogo de Pinturas',
+          url: `${domain}${route}`,
+          mainEntity: {
+            '@type': 'ItemList',
+            itemListElement: CATEGORIES.map((category, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              name: category.name,
+              url: `${domain}/catalog/${category.id}`
+            }))
+          }
+        },
+        breadcrumbSchema(route, 'Catálogo')
+      ]
+    };
+  }
+
+  if (route === '/contact') {
+    return {
+      title: 'Nuestras Sucursales | Contacto | Diamante Oaxaca',
+      description: 'Sucursales en Oaxaca con 8-10 km de cobertura de servicio. Ferrocarril y Las Culturas. Consulta horarios y ubicaciones.',
+      keywords: 'contacto, ubicación, Oaxaca, sucursales, pinturas',
+      image: BUSINESS_INFO.logo,
+      schemas: [{
+        '@type': 'ContactPage',
+        name: 'Nuestras Sucursales',
+        url: `${domain}${route}`,
+        description: 'Visítanos en cualquiera de nuestras sucursales en Oaxaca.'
+      }, breadcrumbSchema(route, 'Contacto')]
+    };
+  }
+
+  if (route === '/search') {
+    return {
+      title: 'Buscar productos | Pinturas Diamante',
+      description: 'Busca productos de pintura automotriz, para madera y decorativa en Pinturas Diamante.',
+      keywords: 'buscar productos, pinturas, Oaxaca',
+      image: BUSINESS_INFO.logo,
+      noIndex: true,
+      schemas: [{
+        '@type': 'WebPage',
+        name: 'Buscar productos',
+        url: `${domain}${route}`,
+        description: 'Búsqueda de productos de Pinturas Diamante.'
+      }]
+    };
+  }
+
+  const productMatch = route.match(/^\/product\/([^/]+)$/);
+  if (productMatch) {
+    const product = PRODUCTS.find(item => item.id === productMatch[1]);
+    if (!product) return null;
+    const category = CATEGORIES.find(item => item.id === product.categoryId);
+    const subCategory = SUB_CATEGORIES.find(item => item.id === product.subCategoryId);
+    const title = product.ogTitle || `${product.name} - Diamante Oaxaca`;
+    const description = product.ogDescription || product.description.slice(0, 160);
+    const productUrl = `${domain}${route}`;
+
+    return {
+      title,
+      description,
+      keywords: [product.tag, product.name, subCategory?.name, category?.name, 'Oaxaca'].filter(Boolean).join(', '),
+      image: product.ogImage || product.image,
+      schemas: [
+        {
+          '@type': 'Product',
+          '@id': `${productUrl}#product`,
+          name: product.name,
+          url: productUrl,
+          description: product.description,
+          image: [product.ogImage, product.image].filter(Boolean).map(absoluteUrl),
+          sku: product.id,
+          brand: { '@type': 'Brand', name: BUSINESS_INFO.name },
+          category: subCategory?.name || category?.name || product.tag
+        },
+        breadcrumbSchema(route, product.name, category, subCategory, product)
+      ]
+    };
+  }
+
+  const categoryMatch = route.match(/^\/catalog\/([^/]+)$/);
+  if (categoryMatch) {
+    const category = CATEGORIES.find(item => item.id === categoryMatch[1]);
+    if (!category) return null;
+    const title = `${category.name} | Pinturas Diamante Oaxaca`;
+    const description = SEO_DESCRIPTIONS[category.id] || category.description;
+    const subCategories = SUB_CATEGORIES.filter(item => item.categoryId === category.id);
+
+    return {
+      title,
+      description,
+      keywords: (SEO_KEYWORDS[category.id] || []).join(', '),
+      image: category.ogImage || category.image,
+      schemas: [
+        {
+          '@type': 'CollectionPage',
+          name: title,
+          url: `${domain}${route}`,
+          description,
+          mainEntity: {
+            '@type': 'ItemList',
+            itemListElement: subCategories.map((subCategory, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              name: subCategory.name,
+              url: `${domain}/catalog/${category.id}/${subCategory.id}`
+            }))
+          }
+        },
+        breadcrumbSchema(route, category.name, category)
+      ]
+    };
+  }
+
+  const subCategoryMatch = route.match(/^\/catalog\/([^/]+)\/([^/]+)$/);
+  if (subCategoryMatch) {
+    const category = CATEGORIES.find(item => item.id === subCategoryMatch[1]);
+    const subCategory = SUB_CATEGORIES.find(item =>
+      item.categoryId === subCategoryMatch[1] && item.id === subCategoryMatch[2]
+    );
+    if (!category || !subCategory) return null;
+    const products = PRODUCTS.filter(item => item.subCategoryId === subCategory.id);
+    const title = `${subCategory.name} | ${category.name} | Diamante`;
+    const description = `Explora nuestra línea de ${subCategory.name.toLowerCase()} ${category.name.toLowerCase()}. ${products.length} productos disponibles.`;
+
+    return {
+      title,
+      description,
+      keywords: `${subCategory.name}, ${category.name}, pinturas, Oaxaca`,
+      image: category.ogImage || category.image,
+      schemas: [
+        {
+          '@type': 'CollectionPage',
+          name: title,
+          url: `${domain}${route}`,
+          description,
+          mainEntity: {
+            '@type': 'ItemList',
+            numberOfItems: products.length,
+            itemListElement: products.map((product, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              item: {
+                '@type': 'Product',
+                name: product.name,
+                url: `${domain}/product/${product.id}`,
+                image: absoluteUrl(product.ogImage || product.image),
+                description: product.description.slice(0, 160)
+              }
+            }))
+          }
+        },
+        breadcrumbSchema(route, subCategory.name, category, subCategory)
+      ]
+    };
+  }
+
+  return null;
 }
 
-/**
- * Ejecutar prerendering completo
- */
-function runPrerender() {
-  console.log('═══════════════════════════════════════════════════════════');
-  console.log('   🚀 SEO Prerendering System - Static Site Generation');
-  console.log('═══════════════════════════════════════════════════════════\n');
-
-  // Crear directorio de salida
-  ensureDir(OUTPUT_DIR);
-
-  // Ejecutar tareas
-  prerenderProducts();
-  prerenderCategories();
-  generateSitemap();
-  generateRobots();
-  generateSchemaIndex();
-
-  console.log('\n═══════════════════════════════════════════════════════════');
-  console.log('✅ Prerendering completado exitosamente!');
-  console.log('═══════════════════════════════════════════════════════════\n');
-
-  console.log('📁 Archivos generados:');
-  console.log(`   • ${PRODUCTS.length} páginas de productos`);
-  console.log(`   • ${CATEGORIES.length} páginas de categorías`);
-  console.log('   • sitemap.xml (dinámico)');
-  console.log('   • robots.txt (optimizado)');
-  console.log('   • schema-index.json\n');
-
-  console.log('📍 Ubicaciones:');
-  console.log(`   • Prerendered HTML: ${OUTPUT_DIR}`);
-  console.log('   • Sitemaps & Robots: public/\n');
-
-  console.log('🔍 Próximos pasos:');
-  console.log('   1. Enviar sitemap.xml a Google Search Console');
-  console.log('   2. Enviar sitemap.xml a Bing Webmaster Tools');
-  console.log('   3. Validar robots.txt en Search Console');
-  console.log('   4. Implementar server-side rendering (opcional)\n');
+function setMeta(html, attribute, name, content) {
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const selector = new RegExp(`<meta\\b(?=[^>]*\\b${attribute}\\s*=\\s*["']${escapedName}["'])[^>]*>`, 'gi');
+  const tag = `<meta ${attribute}="${escapeHtml(name)}" content="${escapeHtml(content)}">`;
+  return html.replace(selector, '').replace(/<\/head>/i, `  ${tag}\n</head>`);
 }
 
-// Ejecutar si se llama directamente
-runPrerender();
+function setTitle(html, title) {
+  const escapedTitle = escapeHtml(title);
+  return /<title\b[^>]*>[\s\S]*?<\/title>/i.test(html)
+    ? html.replace(/<title\b[^>]*>[\s\S]*?<\/title>/i, `<title>${escapedTitle}</title>`)
+    : html.replace(/<\/head>/i, `  <title>${escapedTitle}</title>\n</head>`);
+}
+
+function renderPage(template, route, data) {
+  let html = template
+    .replace(/<script\b(?=[^>]*type=["']application\/ld\+json["'])[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<link\b(?=[^>]*rel=["']canonical["'])[^>]*>/gi, '')
+    .replace(/<meta\b[^>]*name=["']static-seo-route["'][^>]*>/gi, '');
+
+  html = setTitle(html, data.title);
+  const metas = {
+    description: data.description,
+    keywords: data.keywords,
+    robots: data.noIndex ? 'noindex, follow' : 'index, follow',
+    'og:type': route.startsWith('/product/') ? 'product' : 'website',
+    'og:url': `${domain}${route === '/' ? '/' : route}`,
+    'og:title': data.title,
+    'og:description': data.description,
+    'og:image': absoluteUrl(data.image),
+    'og:site_name': BUSINESS_INFO.name,
+    'og:locale': 'es_MX',
+    'twitter:card': 'summary_large_image',
+    'twitter:title': data.title,
+    'twitter:description': data.description,
+    'twitter:image': absoluteUrl(data.image)
+  };
+
+  for (const [name, content] of Object.entries(metas)) {
+    html = setMeta(html, name.startsWith('og:') ? 'property' : 'name', name, content);
+  }
+  html = html.replace(/<\/head>/i, [
+    `  <link rel="canonical" href="${escapeHtml(`${domain}${route === '/' ? '/' : route}`)}">`,
+    `  <meta name="static-seo-route" content="${escapeHtml(route)}">`,
+    `  <script type="application/ld+json" data-static-seo="true">${jsonForHtml({
+      '@context': 'https://schema.org',
+      '@graph': [...getBusinessSchemas(), ...data.schemas]
+    })}</script>`,
+    '</head>'
+  ].join('\n'));
+  return html;
+}
+
+function writeStaticPage(route, template) {
+  const data = pageData(route);
+  if (!data) throw new Error(`No hay datos SEO para la ruta ${route}`);
+  const relativePath = route === '/' ? 'index.html' : path.join(route.slice(1), 'index.html');
+  const outputPath = path.join(distDirectory, relativePath);
+  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+  fs.writeFileSync(outputPath, renderPage(template, route, data));
+}
+
+if (!fs.existsSync(path.join(distDirectory, 'index.html'))) {
+  throw new Error('No existe dist/index.html. Ejecuta vite build antes del prerender.');
+}
+
+const template = fs.readFileSync(path.join(distDirectory, 'index.html'), 'utf8');
+const routes = [
+  '/',
+  '/catalog',
+  '/contact',
+  '/search',
+  ...CATEGORIES.map(category => `/catalog/${category.id}`),
+  ...SUB_CATEGORIES.map(item => `/catalog/${item.categoryId}/${item.id}`),
+  ...PRODUCTS.map(product => `/product/${product.id}`)
+];
+
+for (const route of routes) writeStaticPage(route, template);
+console.log(`SEO estático generado para ${routes.length} rutas en dist/.`);

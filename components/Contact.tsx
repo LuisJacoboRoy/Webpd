@@ -55,13 +55,13 @@ const Contact: React.FC = () => {
         '@type': 'ListItem',
         'position': 1,
         'name': 'Inicio',
-        'item': `${BUSINESS_INFO.url}/#/`
+        'item': `${BUSINESS_INFO.url}/`
       },
       {
         '@type': 'ListItem',
         'position': 2,
         'name': 'Contacto',
-        'item': `${BUSINESS_INFO.url}/#/contact`
+        'item': `${BUSINESS_INFO.url}/contact`
       }
     ]
   });

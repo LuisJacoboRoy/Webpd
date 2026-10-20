@@ -91,6 +91,20 @@ export const useHelmetMeta = (props: HelmetMetaProps) => {
  */
 export const useHelmetJsonLd = (schema: any) => {
   useEffect(() => {
+    const staticRoute = document.querySelector('meta[name="static-seo-route"]')?.getAttribute('content');
+    const currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
+    const matchesStaticRoute = staticRoute && (
+      currentPath === staticRoute ||
+      currentPath.endsWith(staticRoute) ||
+      (staticRoute === '/' && currentPath.endsWith('/Webpd'))
+    );
+
+    if (matchesStaticRoute) return;
+    if (staticRoute) {
+      document.querySelectorAll('script[data-static-seo="true"]').forEach(script => script.remove());
+      document.querySelector('meta[name="static-seo-route"]')?.remove();
+    }
+
     // Generar ID único para el script
     const scriptId = `json-ld-${Date.now()}-${Math.random()}`;
     

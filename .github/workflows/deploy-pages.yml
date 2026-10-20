@@ -47,22 +47,8 @@ jobs:
           NODE_ENV: production
           GITHUB_PAGES: true
 
-      - name: Generate SSG content
-        run: npm run prerender
-        env:
-          GITHUB_PAGES: true
-
       - name: Create .nojekyll file
         run: touch ./dist/.nojekyll
-
-      - name: Copy prerendered files
-        run: |
-          cp -r ./prerendered/* ./dist/ 2>/dev/null || true
-          cp ./public/sitemap.xml ./dist/ 2>/dev/null || true
-          cp ./public/robots.txt ./dist/ 2>/dev/null || true
-          cp ./public/_redirects ./dist/ 2>/dev/null || true
-          echo "✅ Files copied to dist/"
-          ls -la ./dist/ | head -20
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

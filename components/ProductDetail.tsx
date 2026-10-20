@@ -54,7 +54,7 @@ const ProductDetailComponent: React.FC = () => {
   }, [product, category, subCat]);
 
   // Construir URLs con useMemo
-  const canonicalUrl = useMemo(() => `${BUSINESS_INFO.url}/#/product/${product.id}`, [product.id]);
+  const canonicalUrl = useMemo(() => `${BUSINESS_INFO.url}/product/${product.id}`, [product.id]);
 
   // og:image: usa la imagen real del producto con URL absoluta
   const imageUrl = useMemo(() => {
@@ -96,25 +96,25 @@ const ProductDetailComponent: React.FC = () => {
         '@type': 'ListItem',
         'position': 1,
         'name': 'Inicio',
-        'item': `${BUSINESS_INFO.url}/#/`
+        'item': `${BUSINESS_INFO.url}/`
       },
       {
         '@type': 'ListItem',
         'position': 2,
         'name': 'Catálogo',
-        'item': `${BUSINESS_INFO.url}/#/catalog`
+        'item': `${BUSINESS_INFO.url}/catalog`
       },
       {
         '@type': 'ListItem',
         'position': 3,
         'name': category?.name,
-        'item': `${BUSINESS_INFO.url}/#/catalog/${product.categoryId}`
+        'item': `${BUSINESS_INFO.url}/catalog/${product.categoryId}`
       },
       {
         '@type': 'ListItem',
         'position': 4,
         'name': subCat?.name,
-        'item': `${BUSINESS_INFO.url}/#/catalog/${product.categoryId}/${product.subCategoryId}`
+        'item': `${BUSINESS_INFO.url}/catalog/${product.categoryId}/${product.subCategoryId}`
       },
       {
         '@type': 'ListItem',

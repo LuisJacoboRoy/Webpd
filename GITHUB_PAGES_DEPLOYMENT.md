@@ -37,8 +37,7 @@ git push origin main
 
 El GitHub Action se ejecutará automáticamente:
 - Instala dependencias (`npm ci`)
-- Build con Vite (`npm run build`)
-- Genera SSG (`npm run prerender`)
+- Build con Vite y genera/valida SEO estático (`npm run build`)
 - Deploy a GitHub Pages
 
 **Tu sitio estará en:** https://luisjacoboroy.github.io/Webpd/
@@ -64,8 +63,9 @@ El GitHub Action se ejecutará automáticamente:
 ✅ **SEO** (prerendering)
 - Sitemap.xml dinámico
 - Robots.txt optimizado
-- Páginas prerenderizadas con HTML
-- Schema.org Structured Data
+- `dist/` incluye HTML por cada ruta de catálogo y producto
+- Cada HTML entrega metadatos y JSON-LD inline desde la primera respuesta
+- `npm run seo:verify:static` valida las rutas y sus schemas
 
 ✅ **SPA Routing** (`public/_redirects`)
 - Todas las rutas apuntan a index.html
@@ -75,9 +75,10 @@ El GitHub Action se ejecutará automáticamente:
 ✅ **Scripts Disponibles**
 ```bash
 npm run dev              # Desarrollo local
-npm run build            # Build solo
-npm run prerender        # Prerender solo
-npm run build:ssg        # Build + prerender
+npm run build            # Build + prerender SEO + validación
+npm run prerender        # Generar SEO en dist/ (requiere npm run build)
+npm run build:ssg        # Alias de npm run build
+npm run seo:verify:static # Validar HTML y JSON-LD generados
 npm run prepare:deploy   # Preparar y verificar LOCAL
 npm run validate:pages   # Validar configuración
 npm run seo:verify       # Verificar SEO

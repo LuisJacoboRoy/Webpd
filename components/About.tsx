@@ -68,7 +68,7 @@ const AboutComponent: React.FC = () => {
         '@type': 'ListItem',
         'position': 1,
         'name': 'Inicio',
-        'item': `${BUSINESS_INFO.url}/#/`
+        'item': `${BUSINESS_INFO.url}/`
       }
     ]
   }), []);
