@@ -341,6 +341,13 @@ function setTitle(html, title) {
 }
 
 function renderPage(template, route, data) {
+  const schemaGraph = [...getBusinessSchemas(), ...data.schemas];
+  for (const schema of schemaGraph) {
+    if (schema['@type'] === 'LocalBusiness') {
+      schema.priceRange = '$$';
+    }
+  }
+
   let html = template
     .replace(/<script\b(?=[^>]*type=["']application\/ld\+json["'])[^>]*>[\s\S]*?<\/script>/gi, '')
     .replace(/<link\b(?=[^>]*rel=["']canonical["'])[^>]*>/gi, '')
@@ -372,7 +379,7 @@ function renderPage(template, route, data) {
     `  <meta name="static-seo-route" content="${escapeHtml(route)}">`,
     `  <script type="application/ld+json" data-static-seo="true">${jsonForHtml({
       '@context': 'https://schema.org',
-      '@graph': [...getBusinessSchemas(), ...data.schemas]
+      '@graph': schemaGraph
     })}</script>`,
     '</head>'
   ].join('\n'));
