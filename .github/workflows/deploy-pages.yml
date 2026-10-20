@@ -45,7 +45,16 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
-          GITHUB_PAGES: true
+
+      - name: Verify root-domain asset paths
+        run: |
+          if grep -q '/Webpd/' dist/index.html; then
+            echo "Build still contains the GitHub project path /Webpd/"
+            exit 1
+          fi
+          test -f dist/site.webmanifest
+          grep -q 'src="/assets/' dist/index.html
+          grep -q 'href="/assets/' dist/index.html
 
       - name: Create .nojekyll file
         run: touch ./dist/.nojekyll
