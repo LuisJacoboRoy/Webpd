@@ -33,12 +33,15 @@ const Footer: React.FC = () => {
               <address className="text-slate-500 text-sm not-italic">
                 {location.address}, {location.city}, Oaxaca, C.P. {location.postalCode}
               </address>
-              <Link
-                to="/contact"
-                className="text-blue-600 text-sm hover:underline transition-colors"
-              >
-                Ver horarios y cómo llegar a {location.name}
-              </Link>
+              {[location.phone, location.mobile].map((phone, index) => (
+                <a
+                  key={phone}
+                  href={`tel:${phone.replace(/[^\d+]/g, '')}`}
+                  className="text-blue-600 text-sm hover:underline transition-colors"
+                >
+                  {index === 0 ? 'Teléfono' : 'Celular'}: {phone}
+                </a>
+              ))}
             </div>
           ))}
         </div>
