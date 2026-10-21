@@ -85,15 +85,6 @@ jobs:
           test -f public/sitemap-metadata.json && echo "✓ sitemap-metadata.json encontrado" || exit 1
           echo "🎉 Todos los sitemaps están listos para desplegar"
 
-      - name: 🔐 Deploy to Vercel Production
-        if: steps.verify_changed.outputs.changed == 'true'
-        run: |
-          echo "🚀 Iniciando despliegue en Vercel..."
-          npx vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --yes
-        env:
-          VITE_API_URL: 'https://api.pinturasdiamante.com'
-          VITE_ENVIRONMENT: 'production'
-
       - name: ✅ Verify SEO Headers & Robots
         if: steps.verify_changed.outputs.changed == 'true'
         run: |

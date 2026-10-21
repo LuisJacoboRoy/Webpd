@@ -82,7 +82,7 @@
 # ======================
 
 # Solo permitir ciertos tipos de archivo
-<FilesMatch "\.(php|phtml|php3|php4|php5|phps|pht|phar|pgif|shtml|xml|htaccess|fcgi|pl|sh|cgi)$">
+<FilesMatch "\.(php|phtml|php3|php4|php5|phps|pht|phar|pgif|shtml|htaccess|fcgi|pl|sh|cgi)$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>

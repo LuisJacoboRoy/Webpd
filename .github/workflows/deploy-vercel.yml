@@ -1,87 +1,72 @@
-name: Deploy to Vercel with HTTPS
+name: Build and deploy to Vercel
 
 on:
   push:
-    branches: ["main", "master", "production"]
+    branches: ["main"]
   pull_request:
     branches: ["main"]
 
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: write
+
+concurrency:
+  group: vercel-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
+  NODE_VERSION: '20'
   VITE_API_URL: 'https://api.pinturasdiamante.com'
   VITE_ENVIRONMENT: 'production'
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: 📥 Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: 🔐 Pre-deployment HTTPS Validation
-      run: |
-        echo "=== PRE-DEPLOYMENT CHECKS ===" 
-        
-        # Verificar HTTPS en vite.config.ts
-        echo "✓ Checking HTTPS configuration..."
-        grep -q "https:" vite.config.ts && echo "✓ HTTPS en vite.config.ts" || echo "❌ HTTPS falta"
-        
-        # Verificar CSP
-        echo "✓ Checking Content Security Policy..."
-        grep -q "upgrade-insecure-requests" index.html && echo "✓ CSP actualizada" || echo "❌ CSP incompleta"
-        
-        # Verificar dominio
-        echo "✓ Checking domain configuration..."
-        if grep -r "pinturasdiamanteapp\.com" . --include="*.ts" --include="*.tsx" --include="*.xml" 2>/dev/null | grep -v ".git" | grep -v "node_modules"; then
-          echo "❌ ERROR: Dominio incorrecto detectado"
-          exit 1
-        fi
-        echo "✓ Dominio: pinturasdiamante.com validado"
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
-    - name: 🔧 Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
 
-    - name: 📦 Install dependencies
-      run: npm ci
+      - name: Build and verify SEO output
+        run: npm run build
 
-    - name: 🏗️ Build project
-      run: npm run build
-      env:
-        VITE_API_URL: ${{ env.VITE_API_URL }}
-        VITE_ENVIRONMENT: ${{ env.VITE_ENVIRONMENT }}
+      - name: Validate Vercel secrets
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          for name in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Required repository secret $name is not configured"
+              exit 1
+            fi
+          done
 
-    - name: 🚀 Deploy to Vercel
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      uses: amondnet/vercel-action@v20
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        production: true
+      - name: Deploy production to Vercel
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          production: true
 
-    - name: 🔗 Preview Deploy (Pull Request)
-      if: github.event_name == 'pull_request'
-      uses: amondnet/vercel-action@v20
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        production: false
-
-    - name: ✅ Deployment Success
-      run: |
-        echo "=== DEPLOYMENT COMPLETE ===" 
-        echo "✅ Build: PASSED"
-        echo "✅ HTTPS: ENABLED"
-        echo "✅ Domain: pinturasdiamante.com"
-        echo "✅ HSTS Headers: CONFIGURED"
-        echo "✅ CSP: ACTIVE"
-        echo "🔐 Sitemap: https://pinturasdiamante.com/sitemap.xml"
-        echo "📊 Robots.txt: https://pinturasdiamante.com/robots.txt"
-
-emailjs.init('kGZA8SmhiaWwbM2Iq'); // Public Key
-
-emailjs.send('ServiceID', 'TemplateID', 'TemplateParams', 'Options')
+      - name: Deploy preview to Vercel
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          production: false
