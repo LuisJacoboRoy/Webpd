@@ -6,6 +6,12 @@ import { useMetaTags } from '../hooks/useMetaTags';
 import { useJsonLd } from '../hooks/useJsonLd';
 import { BUSINESS_INFO, SEO_KEYWORDS } from '../data/seo';
 
+const categoryImages: Record<string, string> = {
+  automotriz: '/img/categorias/vehicular.jpeg',
+  maderas: '/img/categorias/maderas.jpg',
+  decorativo: '/img/categorias/decorativo.png'
+};
+
 const CatalogCategories: React.FC = () => {
   // Meta tags SEO
   useMetaTags({
@@ -55,9 +61,9 @@ const CatalogCategories: React.FC = () => {
             className="group relative h-[400px] rounded-3xl overflow-hidden bg-slate-100 flex items-center justify-center border border-slate-200 hover:border-blue-300 transition-all hover:shadow-2xl"
             title={cat.description}
           >
-            {cat.image && (
+            {(categoryImages[cat.id] || cat.image) && (
               <img 
-                src={cat.image}
+                src={categoryImages[cat.id] || cat.image}
                 alt={`${cat.name} | Diamante Pinturas`}
                 title={`${cat.name} | Diamante Pinturas`}
                 className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity"
