@@ -4,6 +4,8 @@ import { Helmet } from '@dr.pogodin/react-helmet';
 import { useHelmetJsonLd } from '../hooks/useHelmet';
 import { BUSINESS_INFO, BUSINESS_LOCATIONS } from '../data/seo';
 import { useRandomProductImage } from '../hooks/useRandomProductImage';
+import SolutionsOverview from './SolutionsOverview';
+import ParallaxBanner from './ParallaxBanner';
 
 /**
  * About Component - Ejemplo de página de inicio con Helmet
@@ -164,17 +166,8 @@ const AboutComponent: React.FC = () => {
           </div>
         </div>
 
-        {/* Regional Presence */}
-        <div className="mb-24" data-scroll-animate>
-          <h2 className="text-4xl font-black text-slate-900 tracking-tighter mb-12">Presencia Regional</h2>
-          <div className="flex flex-wrap gap-4">
-            {regions.map((region, i) => (
-              <div key={i} className="px-6 py-3 bg-blue-100 text-blue-800 rounded-full font-bold text-sm">
-                {region}
-              </div>
-            ))}
-          </div>
-        </div>
+        <SolutionsOverview />
+        <ParallaxBanner />
 
         {/* Expertise Areas - MOVIDO AL FINAL (antes del CTA) */}
         <div className="mb-24" data-scroll-animate>
@@ -198,6 +191,12 @@ const AboutComponent: React.FC = () => {
             ))}
           </div>
         </div>
+
+        <ParallaxBanner
+          src="/img/banner%201.jpg"
+          alt="Soluciones de pintura para cada proyecto"
+          inverted={false}
+        />
 
         {/* CTA Section */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-3xl p-12 text-center" data-scroll-animate>
