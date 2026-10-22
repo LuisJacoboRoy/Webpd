@@ -87,7 +87,7 @@ const ImageSlider: React.FC = () => {
         id: product.id,
         img: product.image || product.ogImage || '',
         label: product.name,
-        link: `/product/${product.id}`
+        link: `/product/${product.id}/`
       }))
     : featuredItems;
 

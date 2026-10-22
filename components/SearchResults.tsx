@@ -89,7 +89,7 @@ const SearchResults: React.FC = () => {
                 {matchedProducts.map(product => (
                   <Link
                     key={product.id}
-                    to={`/product/${product.id}`}
+                    to={`/product/${product.id}/`}
                     className="group bg-white rounded-[2rem] border border-slate-100 p-4 hover:shadow-2xl transition-all overflow-hidden flex flex-col h-full"
                   >
                     <div className="bg-slate-50 rounded-[1.5rem] flex items-center justify-center overflow-hidden mb-4 h-56">

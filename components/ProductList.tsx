@@ -14,7 +14,7 @@ const ProductCard: React.FC<{ product: Product, subCategoryId: string | undefine
     <div className="bg-white rounded-[2rem] border border-slate-100 p-2 hover:shadow-2xl transition-all group overflow-hidden flex flex-col h-full relative">
 
 
-      <Link key={p.id} to={`/product/${p.id}`} className="block">
+      <Link key={p.id} to={`/product/${p.id}/`} className="block">
         <div className="bg-slate-50 rounded-[1.8rem] flex items-center justify-center overflow-hidden relative h-56">
           {p.image ? (
             <img 
@@ -36,14 +36,14 @@ const ProductCard: React.FC<{ product: Product, subCategoryId: string | undefine
           <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded">{p.tag}</span>
         </div>
         
-        <Link to={`/product/${p.id}`}>
+        <Link to={`/product/${p.id}/`}>
           <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{p.name}</h3>
         </Link>
         <p className="text-slate-500 text-sm mt-3 line-clamp-2 leading-relaxed flex-grow">{p.description}</p>
         
         <div className="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between">
           <span className="text-xs font-bold text-slate-400">Pinturas Diamante®</span>
-          <Link to={`/product/${p.id}`} className="text-blue-600 font-black text-xs uppercase group-hover:translate-x-1 transition-transform">Ver Detalles →</Link>
+          <Link to={`/product/${p.id}/`} className="text-blue-600 font-black text-xs uppercase group-hover:translate-x-1 transition-transform">Ver Detalles →</Link>
         </div>
       </div>
     </div>
@@ -115,7 +115,7 @@ const ProductList: React.FC = () => {
       'item': {
         '@type': 'Thing',
         'name': p.name,
-        'url': `${BUSINESS_INFO.url}/product/${p.id}`,
+        'url': `${BUSINESS_INFO.url}/product/${p.id}/`,
         'image': p.ogImage || p.image,
         'description': p.description.substring(0, 160)
       }
