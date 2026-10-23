@@ -16,9 +16,6 @@ const __dirname = path.dirname(__filename);
 
 interface URLEntry {
   loc: string;
-  lastmod: string;
-  changefreq: string;
-  priority: number;
   schemaType: string;
   images?: ImageEntry[];
 }
@@ -42,9 +39,6 @@ function generateSitemapXML(urls: URLEntry[]): string {
   const urlEntries = urls
     .map(url => `  <url>
     <loc>${escapeXml(url.loc)}</loc>
-    <lastmod>${url.lastmod}</lastmod>
-    <changefreq>${url.changefreq}</changefreq>
-    <priority>${url.priority}</priority>
   </url>`)
     .join('\n');
 
@@ -161,7 +155,6 @@ async function loadProductsData() {
 
 async function generateSitemaps() {
   const baseUrl = (process.env.SITE_URL || 'https://pinturasdiamante.com').replace(/\/+$/, '');
-  const today = new Date().toISOString().split('T')[0];
 
   try {
     // Leer datos de productos
@@ -192,9 +185,6 @@ async function generateSitemaps() {
     const allUrls: URLEntry[] = [
       {
         loc: `${baseUrl}/`,
-        lastmod: today,
-        changefreq: 'weekly',
-        priority: 1.0,
         schemaType: 'Organization',
         images: [
           ...imageReferences(baseUrl, 'Pinturas Diamante', 'Soluciones de pintura para automotriz, maderas y decoración.', [
@@ -220,16 +210,10 @@ async function generateSitemaps() {
       },
       {
         loc: `${baseUrl}/catalog/`,
-        lastmod: today,
-        changefreq: 'weekly',
-        priority: 0.9,
         schemaType: 'CollectionPage'
       },
       {
         loc: `${baseUrl}/contact/`,
-        lastmod: today,
-        changefreq: 'monthly',
-        priority: 0.8,
         schemaType: 'ContactPage',
         images: imageReferences(baseUrl, 'Sucursales de Pinturas Diamante', 'Visita nuestras sucursales en Oaxaca.', [
           '/img/catalog/LOGO-WEB-DIAMANTE-PNG.png'
@@ -242,9 +226,6 @@ async function generateSitemaps() {
       categories.forEach(cat => {
         allUrls.push({
           loc: `${baseUrl}/catalog/${cat.id}/`,
-          lastmod: today,
-          changefreq: 'weekly',
-          priority: 0.85,
           schemaType: 'CollectionPage',
           images: imageReferences(baseUrl, cat.name, cat.description, [cat.image, cat.ogImage])
         });
@@ -258,9 +239,6 @@ async function generateSitemaps() {
         if (category) {
           allUrls.push({
             loc: `${baseUrl}/catalog/${category.id}/${subCat.id}/`,
-            lastmod: today,
-            changefreq: 'weekly',
-            priority: 0.80,
             schemaType: 'CollectionPage',
             images: imageReferences(
               baseUrl,
@@ -279,9 +257,6 @@ async function generateSitemaps() {
       products.forEach(product => {
         allUrls.push({
           loc: `${baseUrl}/product/${product.id}/`,
-          lastmod: today,
-          changefreq: 'monthly',
-          priority: 0.70,
           schemaType: 'ProductPage',
           images: imageReferences(
             baseUrl,
@@ -468,8 +443,8 @@ async function generateSitemaps() {
         copyrightHolder: 'Diamante Pinturas'
       },
       urls: {
-        products: productUrls.slice(0, 10).map(u => ({ url: u.loc, lastmod: u.lastmod })),
-        categories: categoryUrls.slice(0, 10).map(u => ({ url: u.loc, lastmod: u.lastmod }))
+        products: productUrls.slice(0, 10).map(u => u.loc),
+        categories: categoryUrls.slice(0, 10).map(u => u.loc)
       }
     };
 

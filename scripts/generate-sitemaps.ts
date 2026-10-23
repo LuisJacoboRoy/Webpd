@@ -11,9 +11,6 @@ const PUBLIC_DIR = path.join(__dirname, '../public');
 
 interface SitemapEntry {
   loc: string;
-  lastmod: string;
-  changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
-  priority: number;
   schema?: string;
 }
 
@@ -24,51 +21,35 @@ function generateSitemapXML(entries: SitemapEntry[]): string {
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${entries.map(entry => `  <url>
     <loc>${entry.loc}</loc>
-    <lastmod>${entry.lastmod}</lastmod>
-    <changefreq>${entry.changefreq}</changefreq>
-    <priority>${entry.priority}</priority>
   </url>`).join('\n')}
 </urlset>`;
   return xml;
 }
 
 // Función para generar sitemap índice
-function generateSitemapIndex(sitemaps: Array<{ loc: string; lastmod: string }>): string {
+function generateSitemapIndex(sitemaps: Array<{ loc: string }>): string {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${sitemaps.map(sitemap => `  <sitemap>
     <loc>${sitemap.loc}</loc>
-    <lastmod>${sitemap.lastmod}</lastmod>
   </sitemap>`).join('\n')}
 </sitemapindex>`;
   return xml;
 }
-
-// Hoy (para lastmod)
-const today = new Date().toISOString().split('T')[0];
 
 // 1. SITEMAP DE PÁGINAS ESTÁTICAS
 function generatePagesSitemap(): SitemapEntry[] {
   const pages: SitemapEntry[] = [
     {
       loc: `${BASE_URL}/`,
-      lastmod: today,
-      changefreq: 'weekly',
-      priority: 1.0,
       schema: 'Organization'
     },
     {
       loc: `${BASE_URL}/contact/`,
-      lastmod: today,
-      changefreq: 'monthly',
-      priority: 0.8,
       schema: 'ContactPage'
     },
     {
       loc: `${BASE_URL}/catalog/`,
-      lastmod: today,
-      changefreq: 'weekly',
-      priority: 0.9,
       schema: 'CollectionPage'
     }
   ];
@@ -84,9 +65,6 @@ function generateCategoriesSitemap(): SitemapEntry[] {
   CATEGORIES.forEach(category => {
     categories.push({
       loc: `${BASE_URL}/catalog/${category.id}/`,
-      lastmod: today,
-      changefreq: 'weekly',
-      priority: 0.85,
       schema: 'Category'
     });
   });
@@ -95,9 +73,6 @@ function generateCategoriesSitemap(): SitemapEntry[] {
   SUB_CATEGORIES.forEach(subCategory => {
     categories.push({
       loc: `${BASE_URL}/catalog/${subCategory.categoryId}/${subCategory.id}/`,
-      lastmod: today,
-      changefreq: 'weekly',
-      priority: 0.80,
       schema: 'Category'
     });
   });
@@ -112,9 +87,6 @@ function generateProductsSitemap(): SitemapEntry[] {
   PRODUCTS.forEach(product => {
     products.push({
       loc: `${BASE_URL}/product/${product.id}/`,
-      lastmod: today,
-      changefreq: 'monthly',
-      priority: 0.7,
       schema: 'Product'
     });
   });
@@ -140,9 +112,9 @@ function createSitemaps() {
 
   // Generar sitemap índice
   const sitemapIndex = generateSitemapIndex([
-    { loc: `${BASE_URL}/sitemap-pages.xml`, lastmod: today },
-    { loc: `${BASE_URL}/sitemap-categories.xml`, lastmod: today },
-    { loc: `${BASE_URL}/sitemap-products.xml`, lastmod: today }
+    { loc: `${BASE_URL}/sitemap-pages.xml` },
+    { loc: `${BASE_URL}/sitemap-categories.xml` },
+    { loc: `${BASE_URL}/sitemap-products.xml` }
   ]);
 
   fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), sitemapIndex);
