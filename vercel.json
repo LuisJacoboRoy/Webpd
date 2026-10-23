@@ -5,12 +5,9 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "nodeVersion": "18.x",
-  "env": [
-    {
-      "key": "VITE_API_URL",
-      "value": "https://api.pinturasdiamante.com"
-    }
-  ],
+  "env": {
+    "VITE_API_URL": "https://api.pinturasdiamante.com"
+  },
   "headers": [
     {
       "source": "/(.*)",
