@@ -13,6 +13,7 @@
  */
 
 import { SEO_CONFIG } from '../config/seoConfig';
+import { categoryPath, productPathForId } from './routes';
 
 interface ProductDataForSchema {
   id: string;
@@ -161,7 +162,7 @@ export const generateProductSchema = (product: ProductDataForSchema, baseUrl: st
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    '@id': `${baseUrl.replace(/\/+$/, '')}/product/${product.id}/`,
+    '@id': `${baseUrl.replace(/\/+$/, '')}${productPathForId(product.id)}`,
     'name': product.name,
     'description': product.description,
     'image': {
@@ -179,7 +180,7 @@ export const generateProductSchema = (product: ProductDataForSchema, baseUrl: st
     ...(hasPrice && {
       'offers': {
         '@type': 'Offer',
-        'url': `${baseUrl.replace(/\/+$/, '')}/product/${product.id}/`,
+        'url': `${baseUrl.replace(/\/+$/, '')}${productPathForId(product.id)}`,
         'priceCurrency': 'MXN',
         'price': numericPrice,
         ...(product.availability && {
@@ -225,7 +226,7 @@ export const generateProductCollectionSchema = (
   '@type': 'CollectionPage',
   'name': category,
   'description': description,
-  'url': `${baseUrl.replace(/\/+$/, '')}/catalog/${category.toLowerCase().replace(' ', '-')}/`,
+  'url': `${baseUrl.replace(/\/+$/, '')}${categoryPath(category)}`,
   'image': {
     '@type': 'ImageObject',
     'url': imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`,

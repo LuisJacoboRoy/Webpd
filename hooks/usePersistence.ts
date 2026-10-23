@@ -3,7 +3,7 @@
  * Útil para cambiar el favicon basado en estado de la app
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useFavicon = (faviconPath: string = '/favicon.svg') => {
   useEffect(() => {
@@ -18,8 +18,6 @@ export const useFavicon = (faviconPath: string = '/favicon.svg') => {
  * Hook para gestionar la persistencia del carrito en localStorage
  * Sincroniza automáticamente los cambios
  */
-
-import { useEffect } from 'react';
 
 const CART_STORAGE_KEY = 'diamante_cart';
 
@@ -71,7 +69,9 @@ export const useBeforeUnloadWarning = (hasItems: boolean) => {
  */
 
 export const useOnlineStatus = () => {
-  const [isOnline, setIsOnline] = useEffect(() => {
+  const [isOnline, setIsOnline] = useState<boolean | null>(null);
+
+  useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 

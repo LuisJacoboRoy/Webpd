@@ -5,7 +5,6 @@
  */
 
 import React, { useMemo } from 'react';
-import { useHelmet } from '../hooks/useHelmet';
 import { generateBreadcrumbSchema } from '../utils/schemaGenerators';
 
 interface BreadcrumbItem {
@@ -28,8 +27,8 @@ interface BreadcrumbSchemaProps {
  * <BreadcrumbSchema 
  *   items={[
  *     { name: 'Inicio', path: '/' },
- *     { name: 'Catálogo', path: '/catalog' },
- *     { name: 'Automotriz', path: '/catalog/automotriz' }
+ *     { name: 'Catálogo', path: '/catalogo/' },
+ *     { name: 'Automotriz', path: '/categoria/automotriz/' }
  *   ]}
  * />
  */
@@ -47,7 +46,7 @@ export const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({
       items.map((item, index) => ({
         position: index + 1,
         name: item.name,
-        url: `${baseUrl}/#${item.path}`
+        url: new URL(item.path, `${baseUrl.replace(/\/+$/, '')}/`).toString()
       }))
     );
   }, [items, baseUrl, showSchema]);
@@ -72,7 +71,7 @@ export const BreadcrumbSchema: React.FC<BreadcrumbSchemaProps> = ({
             {index < items.length - 1 ? (
               <>
                 <a
-                  href={`#${item.path}`}
+                  href={item.path}
                   itemProp="item"
                   className="breadcrumb-link"
                   title={`Ir a ${item.name}`}

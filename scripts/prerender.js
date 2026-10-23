@@ -8,6 +8,7 @@ import {
   SEO_KEYWORDS
 } from '../data/seo.ts';
 import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from '../data/products.ts';
+import { CATALOG_PATH, categoryPath, findProductBySlug, productPath } from '../utils/routes.ts';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const distDirectory = path.resolve(scriptDirectory, '../dist');
@@ -141,15 +142,15 @@ function getBusinessSchemas() {
 
 function breadcrumbSchema(route, label, category, subCategory, product) {
   const items = [{ name: 'Inicio', url: pageUrl('/') }];
-  if (route === '/catalog' || route.startsWith('/catalog/') || route.startsWith('/product/')) {
-    items.push({ name: 'Catálogo', url: pageUrl('/catalog') });
+  if (route === '/catalogo' || route.startsWith('/categoria/') || route.startsWith('/producto/')) {
+    items.push({ name: 'Catálogo', url: pageUrl(CATALOG_PATH) });
   }
-  if (category) items.push({ name: category.name, url: pageUrl(`/catalog/${category.id}`) });
+  if (category) items.push({ name: category.name, url: pageUrl(categoryPath(category.id)) });
   if (subCategory) items.push({
     name: subCategory.name,
-    url: pageUrl(`/catalog/${category.id}/${subCategory.id}`)
+    url: pageUrl(categoryPath(category.id, subCategory.id))
   });
-  if (product) items.push({ name: product.name, url: pageUrl(`/product/${product.id}`) });
+  if (product) items.push({ name: product.name, url: pageUrl(productPath(product)) });
   else if (route === '/contact') items.push({ name: label, url: pageUrl(route) });
 
   return {
@@ -187,7 +188,7 @@ function pageData(route) {
     };
   }
 
-  if (route === '/catalog') {
+  if (route === '/catalogo') {
     return {
       title: 'Catálogo de Pinturas | Diamante Oaxaca',
       description: 'Explora nuestro catálogo de pinturas especializadas: automotriz, maderas y decorativo. Soluciones de pintura de alta gama.',
@@ -207,7 +208,7 @@ function pageData(route) {
               '@type': 'ListItem',
               position: index + 1,
               name: category.name,
-              url: pageUrl(`/catalog/${category.id}`)
+              url: pageUrl(categoryPath(category.id))
             }))
           }
         },
@@ -247,9 +248,9 @@ function pageData(route) {
     };
   }
 
-  const productMatch = route.match(/^\/product\/([^/]+)$/);
+  const productMatch = route.match(/^\/producto\/([^/]+)$/);
   if (productMatch) {
-    const product = PRODUCTS.find(item => item.id === productMatch[1]);
+    const product = findProductBySlug(productMatch[1]);
     if (!product) return null;
     const category = CATEGORIES.find(item => item.id === product.categoryId);
     const subCategory = SUB_CATEGORIES.find(item => item.id === product.subCategoryId);
@@ -290,7 +291,7 @@ function pageData(route) {
     };
   }
 
-  const categoryMatch = route.match(/^\/catalog\/([^/]+)$/);
+  const categoryMatch = route.match(/^\/categoria\/([^/]+)$/);
   if (categoryMatch) {
     const category = CATEGORIES.find(item => item.id === categoryMatch[1]);
     if (!category) return null;
@@ -316,7 +317,7 @@ function pageData(route) {
               '@type': 'ListItem',
               position: index + 1,
               name: subCategory.name,
-              url: pageUrl(`/catalog/${category.id}/${subCategory.id}`)
+              url: pageUrl(categoryPath(category.id, subCategory.id))
             }))
           }
         },
@@ -325,7 +326,7 @@ function pageData(route) {
     };
   }
 
-  const subCategoryMatch = route.match(/^\/catalog\/([^/]+)\/([^/]+)$/);
+  const subCategoryMatch = route.match(/^\/categoria\/([^/]+)\/([^/]+)$/);
   if (subCategoryMatch) {
     const category = CATEGORIES.find(item => item.id === subCategoryMatch[1]);
     const subCategory = SUB_CATEGORIES.find(item =>
@@ -356,7 +357,7 @@ function pageData(route) {
               item: {
                 '@type': 'Thing',
                 name: product.name,
-                url: pageUrl(`/product/${product.id}`),
+                url: pageUrl(productPath(product)),
                 image: imageSchema(
                   product.ogImage || product.image,
                   product.name,
@@ -402,7 +403,7 @@ function renderPage(template, route, data) {
     description: data.description,
     keywords: data.keywords,
     robots: data.noIndex ? 'noindex, follow' : 'index, follow',
-    'og:type': route.startsWith('/product/') ? 'product' : 'website',
+    'og:type': route.startsWith('/producto/') ? 'product' : 'website',
     'og:url': pageUrl(route),
     'og:title': data.title,
     'og:description': data.description,
@@ -451,12 +452,12 @@ if (!fs.existsSync(path.join(distDirectory, 'index.html'))) {
 const template = fs.readFileSync(path.join(distDirectory, 'index.html'), 'utf8');
 const routes = [
   '/',
-  '/catalog',
+  CATALOG_PATH.slice(0, -1),
   '/contact',
   '/search',
-  ...CATEGORIES.map(category => `/catalog/${category.id}`),
-  ...SUB_CATEGORIES.map(item => `/catalog/${item.categoryId}/${item.id}`),
-  ...PRODUCTS.map(product => `/product/${product.id}`)
+  ...CATEGORIES.map(category => categoryPath(category.id).slice(0, -1)),
+  ...SUB_CATEGORIES.map(item => categoryPath(item.categoryId, item.id).slice(0, -1)),
+  ...PRODUCTS.map(product => productPath(product).slice(0, -1))
 ];
 
 for (const route of routes) writeStaticPage(route, template);

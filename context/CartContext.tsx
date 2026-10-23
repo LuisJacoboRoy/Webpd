@@ -4,7 +4,7 @@ import { Product, CartItem } from '../types';
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, quantity?: number, color?: string) => void;
   // Update: Changed from productId to cartItemId to support individual color removal
   removeFromCart: (cartItemId: string) => void;
   clearCart: () => void;

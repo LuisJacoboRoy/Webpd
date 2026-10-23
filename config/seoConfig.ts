@@ -99,20 +99,6 @@ export const SEO_CONFIG = {
     }
   },
 
-  // Sitemap configuración
-  sitemap: {
-    updateFrequency: 'daily',
-    productChangefreq: 'monthly',
-    categoryChangefreq: 'weekly',
-    priorityMap: {
-      home: 1.0,
-      category: 0.85,
-      subcategory: 0.80,
-      product: 0.70,
-      contact: 0.8
-    }
-  },
-
   // Open Graph configuración
   openGraph: {
     type: 'website',
@@ -151,7 +137,7 @@ export const SEO_CONFIG = {
   // URLs especiales
   urls: {
     contact: '/contact/',
-    catalog: '/catalog/',
+    catalog: '/catalogo/',
     home: '/',
     sitemapXml: '/sitemap.xml',
     robotsTxt: '/robots.txt'

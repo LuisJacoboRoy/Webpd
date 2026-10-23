@@ -5,6 +5,7 @@ import { CATEGORIES, SUB_CATEGORIES } from '../data/products';
 import { useMetaTags } from '../hooks/useMetaTags';
 import { useJsonLd } from '../hooks/useJsonLd';
 import { BUSINESS_INFO, SEO_KEYWORDS, SEO_DESCRIPTIONS } from '../data/seo';
+import { CATALOG_PATH, categoryPath } from '../utils/routes';
 
 const SubCategorySelector: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -26,7 +27,9 @@ const SubCategorySelector: React.FC = () => {
     ogTitle: `${category?.name} | Diamante`,
     ogDescription: description,
     ogImage: category?.ogImage || BUSINESS_INFO.logo,
-    ogType: 'website'
+    ogType: 'website',
+    ogUrl: `${BUSINESS_INFO.url}${categoryPath(categoryId || '')}`,
+    canonicalUrl: `${BUSINESS_INFO.url}${categoryPath(categoryId || '')}`
   });
 
   // Schema BreadcrumbList
@@ -44,13 +47,13 @@ const SubCategorySelector: React.FC = () => {
         '@type': 'ListItem',
         'position': 2,
         'name': 'Catálogo',
-        'item': `${BUSINESS_INFO.url}/catalog`
+        'item': `${BUSINESS_INFO.url}/catalogo/`
       },
       {
         '@type': 'ListItem',
         'position': 3,
         'name': category?.name,
-        'item': `${BUSINESS_INFO.url}/catalog/${categoryId}`
+        'item': `${BUSINESS_INFO.url}${categoryPath(categoryId)}`
       }
     ]
   });
@@ -60,7 +63,7 @@ const SubCategorySelector: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <nav className="flex mb-8 text-xs font-bold uppercase tracking-widest gap-2">
-        <Link to="/catalog" className="text-slate-400 hover:text-blue-600 transition-colors">CATÁLOGO</Link>
+        <Link to={CATALOG_PATH} className="text-slate-400 hover:text-blue-600 transition-colors">CATÁLOGO</Link>
         <span className="text-slate-300">/</span>
         <span className="text-blue-600">{category.name}</span>
       </nav>
@@ -77,7 +80,7 @@ const SubCategorySelector: React.FC = () => {
         {subCats.map(sub => (
           <Link 
             key={sub.id} 
-            to={`/catalog/${categoryId}/${sub.id}`}
+            to={categoryPath(categoryId, sub.id)}
             className="p-8 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-xl hover:border-blue-200 transition-all group"
             title={sub.description}
           >

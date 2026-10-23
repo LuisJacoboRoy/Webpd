@@ -68,7 +68,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/automotriz/</loc>
+    <loc>https://pinturasdiamante.com/categoria/automotriz/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
       <image:title>AUTOMOTRIZ</image:title>
@@ -81,7 +81,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/maderas/</loc>
+    <loc>https://pinturasdiamante.com/categoria/maderas/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2.png</image:loc>
       <image:title>MADERAS</image:title>
@@ -94,7 +94,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/decorativo/</loc>
+    <loc>https://pinturasdiamante.com/categoria/decorativo/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2-300x300.png</image:loc>
       <image:title>DECORATIVO</image:title>
@@ -107,7 +107,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/automotriz/complementos-auto/</loc>
+    <loc>https://pinturasdiamante.com/categoria/automotriz/complementos-auto/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/acondicionador-de-metales-web-300x300.png</image:loc>
       <image:title>Complementos</image:title>
@@ -165,7 +165,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/automotriz/poliuretano-auto/</loc>
+    <loc>https://pinturasdiamante.com/categoria/automotriz/poliuretano-auto/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
       <image:title>Esmalte Poliuretano</image:title>
@@ -173,7 +173,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/automotriz/secado-rapido-auto/</loc>
+    <loc>https://pinturasdiamante.com/categoria/automotriz/secado-rapido-auto/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/turboprix-300x300.png</image:loc>
       <image:title>Esmalte Secado Rápido</image:title>
@@ -181,7 +181,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/automotriz/acrilicos-auto/</loc>
+    <loc>https://pinturasdiamante.com/categoria/automotriz/acrilicos-auto/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/ultraprix-web-300x300.png</image:loc>
       <image:title>Esmaltes Acrílicos</image:title>
@@ -189,7 +189,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/automotriz/primarios-auto/</loc>
+    <loc>https://pinturasdiamante.com/categoria/automotriz/primarios-auto/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/maxiprimer-web-300x300.png</image:loc>
       <image:title>Primarios</image:title>
@@ -207,7 +207,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/automotriz/resanadores-auto/</loc>
+    <loc>https://pinturasdiamante.com/categoria/automotriz/resanadores-auto/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/light-fill-pro-web-300x300.png</image:loc>
       <image:title>Resanadores</image:title>
@@ -215,7 +215,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/automotriz/transparentes-auto/</loc>
+    <loc>https://pinturasdiamante.com/categoria/automotriz/transparentes-auto/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/dprix-web-300x300.png</image:loc>
       <image:title>Transparentes</image:title>
@@ -238,7 +238,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/automotriz/base-color-auto/</loc>
+    <loc>https://pinturasdiamante.com/categoria/automotriz/base-color-auto/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/base-color-innovaprix-300x300.png</image:loc>
       <image:title>Base Color</image:title>
@@ -246,7 +246,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/maderas/poliuretanos-madera/</loc>
+    <loc>https://pinturasdiamante.com/categoria/maderas/poliuretanos-madera/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
       <image:title>Poliuretanos</image:title>
@@ -269,7 +269,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/maderas/nitrocelulosa-madera/</loc>
+    <loc>https://pinturasdiamante.com/categoria/maderas/nitrocelulosa-madera/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/acril-d-web-300x300.png</image:loc>
       <image:title>Nitrocelulosa</image:title>
@@ -292,7 +292,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/maderas/entintados-madera/</loc>
+    <loc>https://pinturasdiamante.com/categoria/maderas/entintados-madera/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/barniz-entintado-300x300.png</image:loc>
       <image:title>Barnices Entintados</image:title>
@@ -305,7 +305,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/maderas/complementos-madera/</loc>
+    <loc>https://pinturasdiamante.com/categoria/maderas/complementos-madera/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/mata-polilla-300x300.png</image:loc>
       <image:title>Complementos Maderas</image:title>
@@ -318,7 +318,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/decorativo/vinilicas-deco/</loc>
+    <loc>https://pinturasdiamante.com/categoria/decorativo/vinilicas-deco/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2-300x300.png</image:loc>
       <image:title>Vinílicas</image:title>
@@ -341,7 +341,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/decorativo/esmaltes-deco/</loc>
+    <loc>https://pinturasdiamante.com/categoria/decorativo/esmaltes-deco/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/D500-WEB-300x300.png</image:loc>
       <image:title>Esmaltes</image:title>
@@ -364,7 +364,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/decorativo/imper-deco/</loc>
+    <loc>https://pinturasdiamante.com/categoria/decorativo/imper-deco/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/fibratado-300x300.png</image:loc>
       <image:title>Impermeabilizantes</image:title>
@@ -377,7 +377,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/decorativo/aerosoles-deco/</loc>
+    <loc>https://pinturasdiamante.com/categoria/decorativo/aerosoles-deco/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
       <image:title>Aerosoles</image:title>
@@ -385,7 +385,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/decorativo/selladores-deco/</loc>
+    <loc>https://pinturasdiamante.com/categoria/decorativo/selladores-deco/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/sellador-vinilico-web-300x300.png</image:loc>
       <image:title>Selladores</image:title>
@@ -393,7 +393,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/catalog/decorativo/especiales-deco/</loc>
+    <loc>https://pinturasdiamante.com/categoria/decorativo/especiales-deco/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
       <image:title>Especiales</image:title>
@@ -406,7 +406,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-1/</loc>
+    <loc>https://pinturasdiamante.com/producto/acondicionador-de-metales/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/acondicionador-de-metales-web-300x300.png</image:loc>
       <image:title>Acondicionador de metales</image:title>
@@ -419,7 +419,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-2/</loc>
+    <loc>https://pinturasdiamante.com/producto/blender-clear-esfumador/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/blender-web-300x300.png</image:loc>
       <image:title>Blender Clear Esfumador</image:title>
@@ -427,7 +427,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-3/</loc>
+    <loc>https://pinturasdiamante.com/producto/body-plus-recubrimiento/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/body-web-300x300.png</image:loc>
       <image:title>Body Plus Recubrimiento</image:title>
@@ -435,7 +435,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-4/</loc>
+    <loc>https://pinturasdiamante.com/producto/desengrasante-automotriz/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
       <image:title>Desengrasante automotriz</image:title>
@@ -448,7 +448,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-5/</loc>
+    <loc>https://pinturasdiamante.com/producto/perla-universal-automotriz/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/perlas-universales-web-300x300.png</image:loc>
       <image:title>Perla Universal Automotriz</image:title>
@@ -461,7 +461,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-6/</loc>
+    <loc>https://pinturasdiamante.com/producto/plaste-automotriz/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/plaste-web-300x300.png</image:loc>
       <image:title>Plaste automotriz</image:title>
@@ -469,7 +469,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-7/</loc>
+    <loc>https://pinturasdiamante.com/producto/promotor-de-adherencia/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/promotor-adherente-aerosl-300x300.png</image:loc>
       <image:title>Promotor de adherencia</image:title>
@@ -477,7 +477,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-8/</loc>
+    <loc>https://pinturasdiamante.com/producto/removedor-amarillo/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/removedor-amarillo-web-300x300.png</image:loc>
       <image:title>Removedor amarillo</image:title>
@@ -485,7 +485,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-9/</loc>
+    <loc>https://pinturasdiamante.com/producto/esmalte-ureprix/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
       <image:title>Esmalte Ureprix</image:title>
@@ -493,7 +493,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-10/</loc>
+    <loc>https://pinturasdiamante.com/producto/esmalte-turboprix/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/turboprix-300x300.png</image:loc>
       <image:title>Esmalte Turboprix</image:title>
@@ -501,7 +501,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-11/</loc>
+    <loc>https://pinturasdiamante.com/producto/esmalte-ultraprix/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/ultraprix-web-300x300.png</image:loc>
       <image:title>Esmalte Ultraprix</image:title>
@@ -509,7 +509,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-12/</loc>
+    <loc>https://pinturasdiamante.com/producto/maxiprimer-anticorrosivo/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/maxiprimer-web-300x300.png</image:loc>
       <image:title>Maxiprimer anticorrosivo</image:title>
@@ -517,7 +517,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-13/</loc>
+    <loc>https://pinturasdiamante.com/producto/primario-universal/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/primario-universal-300x300.png</image:loc>
       <image:title>Primario Universal</image:title>
@@ -525,7 +525,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-14/</loc>
+    <loc>https://pinturasdiamante.com/producto/primer-filler-plus-2k/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/primario-de-aparejo-2k-web-300x300.png</image:loc>
       <image:title>Primer Filler Plus 2k</image:title>
@@ -533,7 +533,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-15/</loc>
+    <loc>https://pinturasdiamante.com/producto/resanador-light-fill-pro/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/light-fill-pro-web-300x300.png</image:loc>
       <image:title>Resanador Light Fill Pro</image:title>
@@ -541,7 +541,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-16/</loc>
+    <loc>https://pinturasdiamante.com/producto/transparente-d-prix/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/dprix-web-300x300.png</image:loc>
       <image:title>Transparente D-Prix</image:title>
@@ -549,7 +549,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-17/</loc>
+    <loc>https://pinturasdiamante.com/producto/transparente-clara-gloss/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/clara-gloss-300x300.png</image:loc>
       <image:title>Transparente Clara Gloss</image:title>
@@ -557,7 +557,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-18/</loc>
+    <loc>https://pinturasdiamante.com/producto/transparente-elite-plus-hs/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/PRIMER-WEB-300x300.png</image:loc>
       <image:title>Transparente Elite Plus Hs</image:title>
@@ -565,7 +565,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-19/</loc>
+    <loc>https://pinturasdiamante.com/producto/transparente-l-c-a/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/lca-300x300.png</image:loc>
       <image:title>Transparente L.C.A</image:title>
@@ -573,7 +573,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/auto-20/</loc>
+    <loc>https://pinturasdiamante.com/producto/base-color-innovaplus/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/base-color-innovaprix-300x300.png</image:loc>
       <image:title>Base Color Innovaplus</image:title>
@@ -581,7 +581,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-1/</loc>
+    <loc>https://pinturasdiamante.com/producto/barniz-pu-transparente/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>
       <image:title>Barniz PU Transparente</image:title>
@@ -589,7 +589,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-2/</loc>
+    <loc>https://pinturasdiamante.com/producto/fondo-pu-para-madera/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMACRIL-WEB.png</image:loc>
       <image:title>Fondo PU para Madera</image:title>
@@ -597,7 +597,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-3/</loc>
+    <loc>https://pinturasdiamante.com/producto/barniz-pu-blanco-chocolate/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/BASE-DIAMALUXE-WEB.png</image:loc>
       <image:title>Barniz PU Blanco/Chocolate</image:title>
@@ -605,7 +605,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-4/</loc>
+    <loc>https://pinturasdiamante.com/producto/brillo-directo-pu-as-100/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2.png</image:loc>
       <image:title>Brillo Directo PU AS-100</image:title>
@@ -613,7 +613,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-5/</loc>
+    <loc>https://pinturasdiamante.com/producto/laca-acrilica-acril-d/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/acril-d-web-300x300.png</image:loc>
       <image:title>Laca Acrílica Acril-D</image:title>
@@ -621,7 +621,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-6/</loc>
+    <loc>https://pinturasdiamante.com/producto/sellador-nitro-1000/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/d1000-web-300x300.png</image:loc>
       <image:title>Sellador Nitro 1000</image:title>
@@ -629,7 +629,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-7/</loc>
+    <loc>https://pinturasdiamante.com/producto/sellador-alta-dilucion/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/D50-WEB-300x300.png</image:loc>
       <image:title>Sellador Alta Dilución</image:title>
@@ -637,7 +637,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-8/</loc>
+    <loc>https://pinturasdiamante.com/producto/laca-industrial/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/nitrocelulosa-300x300.png</image:loc>
       <image:title>Laca Industrial</image:title>
@@ -645,7 +645,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-9/</loc>
+    <loc>https://pinturasdiamante.com/producto/barniz-entintado-hogar/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/barniz-entintado-300x300.png</image:loc>
       <image:title>Barniz Entintado Hogar</image:title>
@@ -653,7 +653,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-10/</loc>
+    <loc>https://pinturasdiamante.com/producto/tinta-al-alcohol/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/entintado-sr-300x300.png</image:loc>
       <image:title>Tinta al Alcohol</image:title>
@@ -661,7 +661,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-11/</loc>
+    <loc>https://pinturasdiamante.com/producto/mata-polilla/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/mata-polilla-300x300.png</image:loc>
       <image:title>Mata Polilla</image:title>
@@ -669,7 +669,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/mad-12/</loc>
+    <loc>https://pinturasdiamante.com/producto/removedor-para-madera/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
       <image:title>Removedor para madera</image:title>
@@ -677,7 +677,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-1/</loc>
+    <loc>https://pinturasdiamante.com/producto/diamaluxe/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/DIAMALUXE_2-300x300.png</image:loc>
       <image:title>Diamaluxe</image:title>
@@ -685,7 +685,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-2/</loc>
+    <loc>https://pinturasdiamante.com/producto/diamaflex/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/DIAMAFLEX-300x300.png</image:loc>
       <image:title>Diamaflex</image:title>
@@ -693,7 +693,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-3/</loc>
+    <loc>https://pinturasdiamante.com/producto/diamacril/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/DIAMACRIL_1.png</image:loc>
       <image:title>Diamacril</image:title>
@@ -701,7 +701,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-4/</loc>
+    <loc>https://pinturasdiamante.com/producto/diamacolor/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/DIAMACOLOR-1-300x300.png</image:loc>
       <image:title>Diamacolor</image:title>
@@ -709,7 +709,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-5/</loc>
+    <loc>https://pinturasdiamante.com/producto/esmalte-d500/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/D500-WEB-300x300.png</image:loc>
       <image:title>Esmalte D500</image:title>
@@ -717,7 +717,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-6/</loc>
+    <loc>https://pinturasdiamante.com/producto/esmalte-d50/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/D50-WEB-300x300.png</image:loc>
       <image:title>Esmalte D50</image:title>
@@ -725,7 +725,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-7/</loc>
+    <loc>https://pinturasdiamante.com/producto/esmalte-dg-secado-rapido/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/DG-WEB-300x300.png</image:loc>
       <image:title>Esmalte DG Secado Rápido</image:title>
@@ -733,7 +733,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-8/</loc>
+    <loc>https://pinturasdiamante.com/producto/esmalte-base-agua-d1000/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/d1000-web-300x300.png</image:loc>
       <image:title>Esmalte Base Agua D1000</image:title>
@@ -741,7 +741,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-9/</loc>
+    <loc>https://pinturasdiamante.com/producto/imperdiamante-fibratado/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/fibratado-300x300.png</image:loc>
       <image:title>Imperdiamante Fibratado</image:title>
@@ -749,7 +749,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-10/</loc>
+    <loc>https://pinturasdiamante.com/producto/imperdiamante-ecologico/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/imperecologico-300x300.png</image:loc>
       <image:title>Imperdiamante Ecológico</image:title>
@@ -757,7 +757,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-11/</loc>
+    <loc>https://pinturasdiamante.com/producto/aerosol-esmalte-acrilico/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
       <image:title>Aerosol Esmalte Acrílico</image:title>
@@ -765,7 +765,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-12/</loc>
+    <loc>https://pinturasdiamante.com/producto/sellador-vinilico-5x1/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/sellador-vinilico-web-300x300.png</image:loc>
       <image:title>Sellador Vinílico 5x1</image:title>
@@ -773,7 +773,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-13/</loc>
+    <loc>https://pinturasdiamante.com/producto/pintura-para-trafico/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/generica-web-300x300.png</image:loc>
       <image:title>Pintura para Tráfico</image:title>
@@ -781,7 +781,7 @@
     </image:image>
   </url>
   <url>
-    <loc>https://pinturasdiamante.com/product/dec-14/</loc>
+    <loc>https://pinturasdiamante.com/producto/pintura-para-albercas/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/diamaluz-esmaltes-300x300.png</image:loc>
       <image:title>Pintura para Albercas</image:title>

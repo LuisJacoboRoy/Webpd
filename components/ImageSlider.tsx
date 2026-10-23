@@ -2,11 +2,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { CATEGORIES, PRODUCTS } from '../data/products';
+import { categoryPath, findProductBySlug, productPath } from '../utils/routes';
 
 const ImageSlider: React.FC = () => {
   const { pathname } = useLocation();
-  const currentProductId = pathname.match(/^\/product\/([^/]+)/)?.[1];
-  const currentProduct = PRODUCTS.find(product => product.id === currentProductId);
+  const currentProductSlug = pathname.match(/^\/producto\/([^/]+)/)?.[1];
+  const currentProduct = currentProductSlug ? findProductBySlug(currentProductSlug) : undefined;
 
   // Configuración de las 10 imágenes proporcionadas por el usuario
   // Se asume que los archivos están en la carpeta /img/ del proyecto
@@ -15,61 +16,61 @@ const ImageSlider: React.FC = () => {
       id: 'auto-innova', 
       img: '/img/car.jpeg',
       label: 'Base Color Innova Plus',
-      link: '/catalog/automotriz' 
+      link: categoryPath('automotriz')
     },
     { 
       id: 'rodillo-cubriente', 
       img: '/img/rodillo.jpg',
       label: 'Poder Cubriente',
-      link: '/catalog/decorativo' 
+      link: categoryPath('decorativo')
     },
     { 
       id: 'brocha-intenso', 
       img: '/img/wood.jpg',
       label: 'Color Intenso',
-      link: '/catalog/decorativo' 
+      link: categoryPath('decorativo')
     },
     { 
       id: 'diamacril-8', 
       img: '/img/vinil.jpg',
       label: 'Diamacril 8 Años',
-      link: '/catalog/decorativo' 
+      link: categoryPath('decorativo')
     },
     { 
       id: 'poliuretano-madera', 
       img: '/img/wood.jpg',
       label: 'Sistema de Poliuretano',
-      link: '/catalog/maderas' 
+      link: categoryPath('maderas')
     },
     { 
       id: 'cromato-zinc-ind', 
       img: '/img/product/cromato.jpg',
       label: 'Cromato de Zinc',
-      link: '/catalog/automotriz' 
+      link: categoryPath('automotriz')
     },
     { 
       id: 'ureprix-esmalte', 
       img: '/img/product/urepix.jpg',
       label: 'Esmalte Ureprix',
-      link: '/catalog/automotriz' 
+      link: categoryPath('automotriz')
     },
     { 
       id: 'innova-red-base', 
       img: '/img/product/red.jpg',
       label: 'Innova Plus Red',
-      link: '/catalog/automotriz' 
+      link: categoryPath('automotriz')
     },
     { 
       id: 'd500-premium-anti', 
       img: '/img/product/d500.jpg',
       label: 'D500 Anticorrosivo',
-      link: '/catalog/decorativo' 
+      link: categoryPath('decorativo')
     },
     { 
       id: 'dg-rapido', 
       img: '/img/product/industrial.jpg',
       label: 'DG Secado Rápido',
-      link: '/catalog/decorativo' 
+      link: categoryPath('decorativo')
     },
   ];
 
@@ -87,7 +88,7 @@ const ImageSlider: React.FC = () => {
         id: product.id,
         img: product.image || product.ogImage || '',
         label: product.name,
-        link: `/product/${product.id}/`
+        link: productPath(product)
       }))
     : featuredItems;
 

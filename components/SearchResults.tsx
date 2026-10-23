@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { CATEGORIES, PRODUCTS } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useMetaTags } from '../hooks/useMetaTags';
+import { CATALOG_PATH, categoryPath, productPath } from '../utils/routes';
 
 /**
  * SearchResults Component
@@ -10,7 +11,13 @@ import { useMetaTags } from '../hooks/useMetaTags';
  * Prioridad: Productos primero, luego categorías
  */
 const SearchResults: React.FC = () => {
-  const { searchQuery } = useCart();
+  const { searchQuery, setSearchQuery } = useCart();
+  const [searchParams] = useSearchParams();
+  const queryFromUrl = searchParams.get('q') || '';
+
+  useEffect(() => {
+    if (queryFromUrl !== searchQuery) setSearchQuery(queryFromUrl);
+  }, [queryFromUrl, searchQuery, setSearchQuery]);
 
   // Buscar productos que coincidan con la búsqueda
   const matchedProducts = useMemo(() => {
@@ -40,7 +47,9 @@ const SearchResults: React.FC = () => {
     ogTitle: `Búsqueda: ${searchQuery}`,
     ogDescription: `Explora los resultados de búsqueda para "${searchQuery}"`,
     ogImage: CATEGORIES[0]?.image || '/img/logo.png',
-    ogType: 'website'
+    ogType: 'website',
+    ogUrl: `${window.location.origin}/search`,
+    canonicalUrl: `${window.location.origin}/search`
   });
 
   const totalResults = matchedProducts.length + matchedCategories.length;
@@ -68,7 +77,7 @@ const SearchResults: React.FC = () => {
             No encontramos productos o categorías para "{searchQuery}"
           </p>
           <Link
-            to="/catalog"
+            to={CATALOG_PATH}
             className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-all text-sm uppercase tracking-widest"
           >
             Ver Catálogo Completo
@@ -89,7 +98,7 @@ const SearchResults: React.FC = () => {
                 {matchedProducts.map(product => (
                   <Link
                     key={product.id}
-                    to={`/product/${product.id}/`}
+                    to={productPath(product)}
                     className="group bg-white rounded-[2rem] border border-slate-100 p-4 hover:shadow-2xl transition-all overflow-hidden flex flex-col h-full"
                   >
                     <div className="bg-slate-50 rounded-[1.5rem] flex items-center justify-center overflow-hidden mb-4 h-56">
@@ -140,7 +149,7 @@ const SearchResults: React.FC = () => {
                 {matchedCategories.map(cat => (
                   <Link
                     key={cat.id}
-                    to={`/catalog/${cat.id}`}
+                    to={categoryPath(cat.id)}
                     className="group relative h-[300px] rounded-3xl overflow-hidden bg-slate-100 flex items-center justify-center border border-slate-200 hover:border-emerald-300 transition-all hover:shadow-2xl"
                   >
                     {cat.image && (
@@ -175,7 +184,7 @@ const SearchResults: React.FC = () => {
         <div className="mt-16 pt-16 border-t border-slate-100 text-center">
           <p className="text-slate-600 mb-6">¿No encontraste lo que buscas?</p>
           <Link
-            to="/catalog"
+            to={CATALOG_PATH}
             className="inline-flex items-center px-8 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all text-sm uppercase tracking-widest"
           >
             Explorar Catálogo Completo

@@ -4,7 +4,7 @@
  * Se debe ejecutar en la página principal para máxima indexación
  */
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { generateOrganizationSchema } from '../utils/schemaGenerators';
 
 export const useOrganizationSchema = () => {

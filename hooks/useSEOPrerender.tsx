@@ -4,7 +4,7 @@
  * Compatible con client-side y server-side rendering
  */
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from '@dr.pogodin/react-helmet';
 import {
   generateProductSEOData,
@@ -29,7 +29,7 @@ export const useSEOProduct = (productId: string) => {
       document.head.appendChild(script);
 
       // Actualizar URL canónica dinámica
-      const canonicalLink = document.querySelector('link[rel="canonical"]') || 
+      const canonicalLink = document.querySelector<HTMLLinkElement>('link[rel="canonical"]') || 
                           document.createElement('link');
       canonicalLink.rel = 'canonical';
       canonicalLink.href = seoData.canonical;
@@ -59,7 +59,7 @@ export const useSEOCategory = (categoryId: string) => {
       script.textContent = JSON.stringify(seoData.structuredData);
       document.head.appendChild(script);
 
-      const canonicalLink = document.querySelector('link[rel="canonical"]') || 
+      const canonicalLink = document.querySelector<HTMLLinkElement>('link[rel="canonical"]') || 
                           document.createElement('link');
       canonicalLink.rel = 'canonical';
       canonicalLink.href = seoData.canonical;

@@ -5,6 +5,7 @@
  */
 
 import { SEO_CONFIG } from '../config/seoConfig';
+import { categoryPath, productPathForId } from './routes';
 
 interface CatalogItem {
   id: string;
@@ -23,11 +24,11 @@ const absoluteImageUrl = (image: string, baseUrl: string) =>
 const generateCatalogItem = (product: CatalogItem, baseUrl: string) => ({
   '@context': 'https://schema.org',
   '@type': 'Thing',
-  '@id': `${baseUrl}/product/${product.id}#item`,
+  '@id': `${baseUrl}${productPathForId(product.id)}#item`,
   name: product.name,
   description: product.description,
   image: absoluteImageUrl(product.image, baseUrl),
-  url: `${baseUrl}/product/${product.id}/`
+  url: `${baseUrl}${productPathForId(product.id)}`
 });
 
 export const generateEnhancedProductSchema = (product: CatalogItem) =>
@@ -56,13 +57,13 @@ export const generateProductSitelinksSchema = (
       '@type': 'ListItem',
       position: 2,
       name: 'Categoría',
-      item: `${baseUrl}/catalog/${categoryId}/`
+      item: `${baseUrl}${categoryPath(categoryId)}`
     },
     {
       '@type': 'ListItem',
       position: 3,
       name: 'Producto',
-      item: `${baseUrl}/product/${productId}/`
+      item: `${baseUrl}${productPathForId(productId)}`
     }
   ]
 });

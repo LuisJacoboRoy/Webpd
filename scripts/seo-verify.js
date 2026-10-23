@@ -27,7 +27,7 @@ const colors = {
 // Archivos requeridos
 const REQUIRED_FILES = [
   '../utils/seoPrerender.ts',
-  '../hooks/useSEOPrerender.ts',
+  '../hooks/useSEOPrerender.tsx',
   '../config/seoConfig.ts',
   '../components/SEOComponents.tsx',
   '../public/sitemap.xml',
@@ -111,7 +111,7 @@ function verifyFileContents() {
       name: 'Funciones de Generación SEO'
     },
     {
-      file: '../hooks/useSEOPrerender.ts',
+      file: '../hooks/useSEOPrerender.tsx',
       keywords: [
         'useSEOProduct',
         'useSEOCategory',
@@ -246,7 +246,7 @@ function verifyHooks() {
   log('\n🎣 VERIFICACIÓN DE HOOKS', 'cyan');
   log('═════════════════════════════════════════\n', 'cyan');
 
-  const hooksFile = path.resolve(__dirname, '../hooks/useSEOPrerender.ts');
+  const hooksFile = path.resolve(__dirname, '../hooks/useSEOPrerender.tsx');
   
   if (!fs.existsSync(hooksFile)) {
     log('  ❌ Archivo de hooks no encontrado', 'red');

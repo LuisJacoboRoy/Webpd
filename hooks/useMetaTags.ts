@@ -7,6 +7,7 @@ interface MetaTagsConfig {
   ogDescription?: string;
   ogImage?: string;
   ogType?: string;
+  ogUrl?: string;
   canonicalUrl?: string;
 }
 
@@ -47,6 +48,9 @@ export const useMetaTags = (config: MetaTagsConfig) => {
     }
     if (config.ogType) {
       updateMetaTag('og:type', config.ogType, true);
+    }
+    if (config.ogUrl) {
+      updateMetaTag('og:url', config.ogUrl, true);
     }
 
     // URL canónica

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T17:41:23.605Z",
+  "generatedAt": "2026-10-23T21:55:56.557Z",
   "baseUrl": "https://pinturasdiamante.com",
   "sitemaps": {
     "general": "sitemap.xml",
@@ -148,28 +148,28 @@
   },
   "urls": {
     "products": [
-      "https://pinturasdiamante.com/product/auto-1/",
-      "https://pinturasdiamante.com/product/auto-2/",
-      "https://pinturasdiamante.com/product/auto-3/",
-      "https://pinturasdiamante.com/product/auto-4/",
-      "https://pinturasdiamante.com/product/auto-5/",
-      "https://pinturasdiamante.com/product/auto-6/",
-      "https://pinturasdiamante.com/product/auto-7/",
-      "https://pinturasdiamante.com/product/auto-8/",
-      "https://pinturasdiamante.com/product/auto-9/",
-      "https://pinturasdiamante.com/product/auto-10/"
+      "https://pinturasdiamante.com/producto/acondicionador-de-metales/",
+      "https://pinturasdiamante.com/producto/blender-clear-esfumador/",
+      "https://pinturasdiamante.com/producto/body-plus-recubrimiento/",
+      "https://pinturasdiamante.com/producto/desengrasante-automotriz/",
+      "https://pinturasdiamante.com/producto/perla-universal-automotriz/",
+      "https://pinturasdiamante.com/producto/plaste-automotriz/",
+      "https://pinturasdiamante.com/producto/promotor-de-adherencia/",
+      "https://pinturasdiamante.com/producto/removedor-amarillo/",
+      "https://pinturasdiamante.com/producto/esmalte-ureprix/",
+      "https://pinturasdiamante.com/producto/esmalte-turboprix/"
     ],
     "categories": [
-      "https://pinturasdiamante.com/catalog/",
-      "https://pinturasdiamante.com/catalog/automotriz/",
-      "https://pinturasdiamante.com/catalog/maderas/",
-      "https://pinturasdiamante.com/catalog/decorativo/",
-      "https://pinturasdiamante.com/catalog/automotriz/complementos-auto/",
-      "https://pinturasdiamante.com/catalog/automotriz/poliuretano-auto/",
-      "https://pinturasdiamante.com/catalog/automotriz/secado-rapido-auto/",
-      "https://pinturasdiamante.com/catalog/automotriz/acrilicos-auto/",
-      "https://pinturasdiamante.com/catalog/automotriz/primarios-auto/",
-      "https://pinturasdiamante.com/catalog/automotriz/resanadores-auto/"
+      "https://pinturasdiamante.com/catalogo/",
+      "https://pinturasdiamante.com/categoria/automotriz/",
+      "https://pinturasdiamante.com/categoria/maderas/",
+      "https://pinturasdiamante.com/categoria/decorativo/",
+      "https://pinturasdiamante.com/categoria/automotriz/complementos-auto/",
+      "https://pinturasdiamante.com/categoria/automotriz/poliuretano-auto/",
+      "https://pinturasdiamante.com/categoria/automotriz/secado-rapido-auto/",
+      "https://pinturasdiamante.com/categoria/automotriz/acrilicos-auto/",
+      "https://pinturasdiamante.com/categoria/automotriz/primarios-auto/",
+      "https://pinturasdiamante.com/categoria/automotriz/resanadores-auto/"
     ]
   }
 }

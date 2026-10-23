@@ -13,6 +13,7 @@
 
 import { PRODUCTS, CATEGORIES, SUB_CATEGORIES } from '../data/products';
 import { Product, Category, SubCategory } from '../types';
+import { CATALOG_PATH, categoryPath, productPath, slugify } from './routes';
 
 // Determinar el dominio base según el entorno
 const isGitHubPages = process.env.GITHUB_PAGES === 'true';
@@ -96,25 +97,25 @@ export const generateBreadcrumbSchema = (
       '@type': 'ListItem',
       position: 2,
       name: 'Catálogo',
-      item: pageUrl('/catalog')
+      item: pageUrl(CATALOG_PATH)
     },
     {
       '@type': 'ListItem',
       position: 3,
       name: category.name,
-      item: pageUrl(`/catalog/${category.id}`)
+      item: pageUrl(categoryPath(category.id))
     },
     {
       '@type': 'ListItem',
       position: 4,
       name: subCategory.name,
-      item: pageUrl(`/catalog/${category.id}/${subCategory.id}`)
+      item: pageUrl(categoryPath(category.id, subCategory.id))
     },
     {
       '@type': 'ListItem',
       position: 5,
       name: product.name,
-      item: pageUrl(`/product/${product.id}`)
+      item: pageUrl(productPath(product))
     }
   ]
 });
@@ -123,7 +124,7 @@ export const generateBreadcrumbSchema = (
  * Describe the catalog item without declaring Product rich-result eligibility.
  */
 export const generateProductSchema = (product: Product) => {
-  const productUrl = pageUrl(`/product/${product.id}`);
+  const productUrl = pageUrl(productPath(product));
   return {
     '@context': 'https://schema.org/',
     '@type': 'Thing',
@@ -151,10 +152,10 @@ export const generateWebPageSchema = (
   return {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    '@id': `${pageUrl(`/product/${product.id}`)}#webpage`,
+    '@id': `${pageUrl(productPath(product))}#webpage`,
     name: product.name,
     description: product.description,
-    url: pageUrl(`/product/${product.id}`),
+    url: pageUrl(productPath(product)),
     image: product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`,
     datePublished: new Date().toISOString().split('T')[0],
     inLanguage: 'es-MX',
@@ -166,7 +167,7 @@ export const generateWebPageSchema = (
     // Product rich results require genuine offer or review data that is not provided.
     mainEntity: productSchema,
     breadcrumb: {
-      '@id': `${pageUrl(`/product/${product.id}`)}#breadcrumb`
+      '@id': `${pageUrl(productPath(product))}#breadcrumb`
     }
   };
 };
@@ -177,7 +178,7 @@ export const generateWebPageSchema = (
  */
 export const generateOpenGraphTags = (product: Product): Record<string, string> => ({
   'og:type': 'product',
-  'og:url': pageUrl(`/product/${product.id}`),
+  'og:url': pageUrl(productPath(product)),
   'og:title': product.ogTitle || `${product.name} - Pinturas Diamante`,
   'og:description': product.ogDescription || product.description,
   'og:image': product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`,
@@ -204,11 +205,14 @@ export const generateTwitterCardTags = (product: Product): Record<string, string
 /**
  * Genera meta tags canónicos y de robots
  */
-export const generateCanonicalAndRobotsMetaTags = (productId: string): Record<string, string> => ({
-  canonical: pageUrl(`/product/${productId}`),
-  robots: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
-  googlebot: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
-});
+export const generateCanonicalAndRobotsMetaTags = (productId: string): Record<string, string> => {
+  const product = PRODUCTS.find(item => item.id === productId);
+  return {
+    canonical: pageUrl(product ? productPath(product) : `/producto/${slugify(productId)}`),
+    robots: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+    googlebot: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+  };
+};
 
 /**
  * Complete SEO data for a product page without unsupported Product rich-result markup
@@ -223,7 +227,7 @@ export const generateProductSEOData = (productId: string): ProductSEOData | null
   if (!category || !subCategory) return null;
 
   return {
-    canonical: pageUrl(`/product/${productId}`),
+    canonical: pageUrl(productPath(product)),
     title: product.ogTitle || `${product.name} - Pinturas Diamante`,
     description: product.ogDescription || product.description,
     ogImage: product.ogImage ? `${DOMAIN}${product.ogImage}` : `${DOMAIN}${product.image}`,
@@ -258,7 +262,7 @@ export const generateCategorySEOData = (categoryId: string) => {
   if (!category) return null;
 
   return {
-    canonical: pageUrl(`/catalog/${categoryId}`),
+    canonical: pageUrl(categoryPath(categoryId)),
     title: `${category.name} | Pinturas Diamante Oaxaca`,
     description: category.description,
     ogImage: category.ogImage ? `${DOMAIN}${category.ogImage}` : `${DOMAIN}${category.image}`,
@@ -268,10 +272,10 @@ export const generateCategorySEOData = (categoryId: string) => {
         generateOrganizationSchema(),
         {
           '@type': 'CollectionPage',
-          '@id': pageUrl(`/catalog/${categoryId}`),
+          '@id': pageUrl(categoryPath(categoryId)),
           name: category.name,
           description: category.description,
-          url: pageUrl(`/catalog/${categoryId}`),
+          url: pageUrl(categoryPath(categoryId)),
           image: category.ogImage ? `${DOMAIN}${category.ogImage}` : `${DOMAIN}${category.image}`
         }
       ]
@@ -406,54 +410,36 @@ export const validateAllProductsSEO = (): Record<string, string[]> => {
  * Genera sitemap XML actualizado desde productos
  */
 export const generateDynamicSitemap = (): string => {
-  const lastmod = new Date().toISOString().split('T')[0];
-
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
   // URLs estáticas principales
-  const staticUrls = [
-    { url: '', priority: '1.0', changefreq: 'weekly' },
-    { url: 'contact', priority: '0.8', changefreq: 'monthly' },
-    { url: 'catalog', priority: '0.9', changefreq: 'weekly' }
-  ];
+  const staticUrls = ['', 'contact', CATALOG_PATH.slice(1, -1)];
 
-  staticUrls.forEach(({ url, priority, changefreq }) => {
+  staticUrls.forEach(url => {
     xml += `  <url>\n`;
     xml += `    <loc>${pageUrl(url)}</loc>\n`;
-    xml += `    <lastmod>${lastmod}</lastmod>\n`;
-    xml += `    <changefreq>${changefreq}</changefreq>\n`;
-    xml += `    <priority>${priority}</priority>\n`;
     xml += `  </url>\n`;
   });
 
   // Categorías
   CATEGORIES.forEach(category => {
     xml += `  <url>\n`;
-    xml += `    <loc>${pageUrl(`/catalog/${category.id}`)}</loc>\n`;
-    xml += `    <lastmod>${lastmod}</lastmod>\n`;
-    xml += `    <changefreq>weekly</changefreq>\n`;
-    xml += `    <priority>0.85</priority>\n`;
+    xml += `    <loc>${pageUrl(categoryPath(category.id))}</loc>\n`;
     xml += `  </url>\n`;
   });
 
   // Subcategorías
   SUB_CATEGORIES.forEach(subCat => {
     xml += `  <url>\n`;
-    xml += `    <loc>${pageUrl(`/catalog/${subCat.categoryId}/${subCat.id}`)}</loc>\n`;
-    xml += `    <lastmod>${lastmod}</lastmod>\n`;
-    xml += `    <changefreq>weekly</changefreq>\n`;
-    xml += `    <priority>0.80</priority>\n`;
+    xml += `    <loc>${pageUrl(categoryPath(subCat.categoryId, subCat.id))}</loc>\n`;
     xml += `  </url>\n`;
   });
 
   // Productos
   PRODUCTS.forEach(product => {
     xml += `  <url>\n`;
-    xml += `    <loc>${pageUrl(`/product/${product.id}`)}</loc>\n`;
-    xml += `    <lastmod>${lastmod}</lastmod>\n`;
-    xml += `    <changefreq>monthly</changefreq>\n`;
-    xml += `    <priority>0.70</priority>\n`;
+    xml += `    <loc>${pageUrl(productPath(product))}</loc>\n`;
     xml += `  </url>\n`;
   });
 

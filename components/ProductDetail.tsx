@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from '@dr.pogodin/react-helmet';
-import { PRODUCTS, CATEGORIES, SUB_CATEGORIES, PRODUCT_COLORS } from '../data/products';
+import { CATEGORIES, SUB_CATEGORIES, PRODUCT_COLORS } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useHelmetJsonLd } from '../hooks/useHelmet';
 import { BUSINESS_INFO } from '../data/seo';
 import { TwitterPicker, SliderPicker } from 'react-color';
+import { CATALOG_PATH, categoryPath, findProductBySlug, productPath } from '../utils/routes';
 import { 
   generateLocalBusinessSchemaForProduct,
   generateProductPageSchema
@@ -16,8 +17,8 @@ import {
  * Product rich results are omitted until genuine offer or review data exists.
  */
 const ProductDetailComponent: React.FC = () => {
-  const { productId } = useParams<{ productId: string }>();
-  const product = PRODUCTS.find(p => p.id === productId);
+  const { productSlug } = useParams<{ productSlug: string }>();
+  const product = productSlug ? findProductBySlug(productSlug) : undefined;
   const { addToCart } = useCart();
   const [quantity, setQuantity] = React.useState(1);
   const [selectedColor, setSelectedColor] = React.useState<{ name: string, hex: string } | null>(null);
@@ -46,7 +47,7 @@ const ProductDetailComponent: React.FC = () => {
   }, [product, category, subCat]);
 
   // Construir URLs con useMemo
-  const canonicalUrl = useMemo(() => `${BUSINESS_INFO.url}/product/${product.id}/`, [product.id]);
+  const canonicalUrl = useMemo(() => `${BUSINESS_INFO.url}${productPath(product)}`, [product]);
 
   // og:image: usa la imagen real del producto con URL absoluta
   const imageUrl = useMemo(() => {
@@ -83,19 +84,19 @@ const ProductDetailComponent: React.FC = () => {
         '@type': 'ListItem',
         'position': 2,
         'name': 'Catálogo',
-        'item': `${BUSINESS_INFO.url}/catalog`
+        'item': `${BUSINESS_INFO.url}${CATALOG_PATH}`
       },
       {
         '@type': 'ListItem',
         'position': 3,
         'name': category?.name,
-        'item': `${BUSINESS_INFO.url}/catalog/${product.categoryId}`
+        'item': `${BUSINESS_INFO.url}${categoryPath(product.categoryId)}`
       },
       {
         '@type': 'ListItem',
         'position': 4,
         'name': subCat?.name,
-        'item': `${BUSINESS_INFO.url}/catalog/${product.categoryId}/${product.subCategoryId}`
+        'item': `${BUSINESS_INFO.url}${categoryPath(product.categoryId, product.subCategoryId)}`
       },
       {
         '@type': 'ListItem',
@@ -142,11 +143,11 @@ const ProductDetailComponent: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 py-16">
         <nav className="flex mb-12 text-[10px] font-bold uppercase tracking-widest gap-3">
-          <Link to="/catalog" className="text-slate-400">Catálogo</Link>
+          <Link to={CATALOG_PATH} className="text-slate-400">Catálogo</Link>
           <span className="text-slate-300">/</span>
-          <Link to={`/catalog/${product.categoryId}`} className="text-slate-400">{category?.name}</Link>
+          <Link to={categoryPath(product.categoryId)} className="text-slate-400">{category?.name}</Link>
           <span className="text-slate-300">/</span>
-          <Link to={`/catalog/${product.categoryId}/${product.subCategoryId}`} className="text-slate-400">{subCat?.name}</Link>
+          <Link to={categoryPath(product.categoryId, product.subCategoryId)} className="text-slate-400">{subCat?.name}</Link>
           <span className="text-slate-300">/</span>
           <span className="text-blue-600">{product.name}</span>
         </nav>

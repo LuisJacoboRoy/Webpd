@@ -6,6 +6,7 @@ import { useMetaTags } from '../hooks/useMetaTags';
 import { useJsonLd } from '../hooks/useJsonLd';
 import { BUSINESS_INFO, SEO_KEYWORDS } from '../data/seo';
 import CatalogIntro from './CatalogIntro';
+import { categoryPath } from '../utils/routes';
 
 const categoryImages: Record<string, string> = {
   automotriz: '/img/categorias/vehicular.jpeg',
@@ -21,7 +22,9 @@ const CatalogCategories: React.FC = () => {
     ogTitle: 'Nuestro Catálogo | Diamante Oaxaca',
     ogDescription: 'Productos de pintura premium para automotriz, maderas y espacios decorativos',
     ogImage: BUSINESS_INFO.logo,
-    ogType: 'website'
+    ogType: 'website',
+    ogUrl: `${BUSINESS_INFO.url}/catalogo/`,
+    canonicalUrl: `${BUSINESS_INFO.url}/catalogo/`
   });
 
   // Schema BreadcrumbList
@@ -39,7 +42,7 @@ const CatalogCategories: React.FC = () => {
         '@type': 'ListItem',
         'position': 2,
         'name': 'Catálogo',
-        'item': `${BUSINESS_INFO.url}/catalog`
+        'item': `${BUSINESS_INFO.url}/catalogo/`
       }
     ]
   });
@@ -60,7 +63,7 @@ const CatalogCategories: React.FC = () => {
           {CATEGORIES.map(cat => (
             <Link
               key={cat.id}
-              to={`/catalog/${cat.id}`}
+              to={categoryPath(cat.id)}
               className="group relative h-[400px] rounded-3xl overflow-hidden bg-slate-100 flex items-center justify-center border border-slate-200 hover:border-blue-300 transition-all hover:shadow-2xl"
               title={cat.description}
             >

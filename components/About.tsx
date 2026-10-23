@@ -6,6 +6,7 @@ import { BUSINESS_INFO, BUSINESS_LOCATIONS } from '../data/seo';
 import { useRandomProductImage } from '../hooks/useRandomProductImage';
 import SolutionsOverview from './SolutionsOverview';
 import ParallaxBanner from './ParallaxBanner';
+import { CATALOG_PATH, categoryPath } from '../utils/routes';
 
 /**
  * About Component - Ejemplo de página de inicio con Helmet
@@ -176,7 +177,7 @@ const AboutComponent: React.FC = () => {
             {expertises.map((exp, i) => (
               <Link
                 key={i}
-                to={`/catalog/${exp.categoryId}`}
+                to={categoryPath(exp.categoryId)}
                 className="group bg-slate-50 rounded-3xl p-8 border border-slate-100 hover:border-blue-200 hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer no-underline"
               >
                 <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-2xl font-black mb-4 group-hover:bg-blue-200 transition-colors">
@@ -207,7 +208,7 @@ const AboutComponent: React.FC = () => {
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link
-              to="/catalog"
+              to={CATALOG_PATH}
               className="px-8 py-4 bg-white text-blue-600 font-black rounded-2xl hover:bg-slate-50 transition-all text-sm uppercase tracking-widest"
             >
               Ver Catálogo

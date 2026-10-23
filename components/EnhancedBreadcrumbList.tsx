@@ -5,8 +5,8 @@
  */
 
 import React, { useMemo } from 'react';
-import { useHelmet } from '../hooks/useHelmet';
 import { generateBreadcrumbSchema } from '../utils/schemaGenerators';
+import { CATALOG_PATH, categoryPath } from '../utils/routes';
 
 interface BreadcrumbItem {
   name: string;
@@ -48,7 +48,7 @@ export const EnhancedBreadcrumbList: React.FC<EnhancedBreadcrumbProps> = ({
         .map((item, index) => ({
           position: index + 1,
           name: item.name,
-          url: `${baseUrl}/#${item.path}`
+          url: new URL(item.path || '/', `${baseUrl.replace(/\/+$/, '')}/`).toString()
         }))
     );
   }, [items, baseUrl, showSchema]);
@@ -99,7 +99,7 @@ export const EnhancedBreadcrumbList: React.FC<EnhancedBreadcrumbProps> = ({
               {index < displayItems.length - 1 && item.path ? (
                 <>
                   <a
-                    href={`#${item.path}`}
+                    href={item.path}
                     itemProp="item"
                     className="breadcrumb-link"
                     aria-label={item.ariaLabel || `Ir a ${item.name}`}
@@ -270,7 +270,7 @@ export const useBreadcrumbsFromRoute = (
       },
       {
         name: '📋 Catálogo',
-        path: '/catalog',
+        path: CATALOG_PATH,
         ariaLabel: 'Ver catálogo completo'
       }
     ];
@@ -278,7 +278,7 @@ export const useBreadcrumbsFromRoute = (
     if (categoryId) {
       items.push({
         name: categoryId.charAt(0).toUpperCase() + categoryId.slice(1),
-        path: `/catalog/${categoryId}`,
+        path: categoryPath(categoryId),
         ariaLabel: `Ver categoría ${categoryId}`
       });
     }
@@ -290,7 +290,7 @@ export const useBreadcrumbsFromRoute = (
           .charAt(0)
           .toUpperCase() +
           subCategoryId.replace(/-/g, ' ').slice(1),
-        path: `/catalog/${categoryId}/${subCategoryId}`,
+        path: categoryPath(categoryId, subCategoryId),
         ariaLabel: `Ver subcategoría`
       });
     }

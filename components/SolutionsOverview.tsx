@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { categoryPath } from '../utils/routes';
 
 const solutionLines = [
   [
@@ -49,7 +50,7 @@ const SolutionsOverview: React.FC = () => (
           {line.map((item, itemIndex) => (
             <li key={item.label} className="flex items-center gap-3">
               <Link
-                to={`/catalog/${item.categoryId}`}
+                to={categoryPath(item.categoryId)}
                 className="transition-colors hover:text-[#168345] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#168345]"
               >
                 {item.label}

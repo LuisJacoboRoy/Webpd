@@ -16,6 +16,14 @@ interface SchemaValidationResult {
   data: any;
 }
 
+declare global {
+  interface Window {
+    validateAllSchemas: () => SchemaValidationResult[];
+    validateSchema: (schema: any) => SchemaValidationResult;
+    printSEORecommendations: () => void;
+  }
+}
+
 class MicroformatValidator {
   /**
    * Valida todos los schemas JSON-LD en la página

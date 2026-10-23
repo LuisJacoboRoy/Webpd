@@ -25,7 +25,7 @@ const ParallaxBanner: React.FC<ParallaxBannerProps> = ({
         const { top, height } = container.getBoundingClientRect();
         const progress = (window.innerHeight - top) / (window.innerHeight + height);
         const direction = inverted ? -1 : 1;
-        setOffset((Math.min(1, Math.max(0, progress)) - 0.5) * 80 * direction);
+        setOffset((Math.min(1, Math.max(0, progress)) - 0.5) * 140 * direction);
       });
     };
 
@@ -44,12 +44,12 @@ const ParallaxBanner: React.FC<ParallaxBannerProps> = ({
     <section
       ref={containerRef}
       aria-label={alt}
-      className="relative mb-24 h-[350px] w-full overflow-hidden"
+      className="relative mb-24 h-[300px] w-full overflow-hidden"
     >
       <img
         src={src}
         alt={alt}
-        className="absolute -inset-y-10 left-0 h-[calc(100%+5rem)] w-full object-cover"
+        className="absolute -inset-y-20 left-0 h-[calc(100%+10rem)] w-full object-cover"
         style={{ transform: `translateY(${offset}px)` }}
         loading="lazy"
       />

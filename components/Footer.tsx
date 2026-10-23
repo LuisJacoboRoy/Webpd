@@ -8,11 +8,11 @@ const Footer: React.FC = () => {
     <footer className="bg-white border-t border-slate-200 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 items-start gap-8">
-          <div className="flex justify-center md:justify-start">
+          <div className="flex items-center justify-center">
             <img
               src="/img/iso.png"
               alt="Certificación ISO 9001:2015 de Pinturas Diamante"
-              className="h-auto w-full max-w-[220px] object-contain"
+              className="h-[150px] w-auto max-w-full object-contain"
               loading="lazy"
             />
           </div>

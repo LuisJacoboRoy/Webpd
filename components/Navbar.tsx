@@ -1,8 +1,109 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { CATEGORIES } from '../data/products';
+import { CATEGORIES, PRODUCTS } from '../data/products';
+import { CATALOG_PATH, categoryPath, productPath } from '../utils/routes';
+
+const SearchAutocomplete: React.FC<{ id: string; className: string }> = ({ id, className }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const { searchQuery, setSearchQuery } = useCart();
+  const listId = `${id}-suggestions`;
+  const suggestions = useMemo(() => {
+    const query = searchQuery.trim().toLocaleLowerCase('es');
+    if (!query) return [];
+
+    return PRODUCTS.filter(product =>
+      `${product.name} ${product.description} ${product.tag}`.toLocaleLowerCase('es').includes(query)
+    ).slice(0, 6);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const closeOnOutsideClick = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', closeOnOutsideClick);
+    return () => document.removeEventListener('mousedown', closeOnOutsideClick);
+  }, []);
+
+  const submitSearch = () => {
+    if (!searchQuery.trim()) return;
+    setIsOpen(false);
+    navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+  };
+
+  return (
+    <div className={`relative ${className}`} ref={containerRef}>
+      <input
+        id={id}
+        name={id}
+        type="search"
+        role="combobox"
+        aria-label="Buscar productos"
+        aria-autocomplete="list"
+        aria-expanded={isOpen && suggestions.length > 0}
+        aria-controls={listId}
+        value={searchQuery}
+        onChange={event => {
+          setSearchQuery(event.target.value);
+          setIsOpen(true);
+        }}
+        onFocus={() => setIsOpen(true)}
+        onKeyDown={event => {
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            submitSearch();
+          } else if (event.key === 'ArrowDown' && suggestions.length > 0) {
+            event.preventDefault();
+            document.getElementById(listId)?.querySelector<HTMLAnchorElement>('a')?.focus();
+          } else if (event.key === 'Escape') {
+            setIsOpen(false);
+          }
+        }}
+        placeholder="Buscar producto..."
+        className="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full text-xs focus:ring-2 focus:ring-green-500/20 transition-all bg-slate-50/50"
+      />
+      {isOpen && suggestions.length > 0 && (
+        <ul
+          id={listId}
+          role="listbox"
+          aria-label="Sugerencias de productos"
+          className="absolute z-[120] top-full mt-2 w-[min(24rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl"
+        >
+          {suggestions.map(product => (
+            <li key={product.id} role="option" aria-selected="false">
+              <Link
+                to={productPath(product)}
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 px-3 py-2 hover:bg-green-50 focus:bg-green-50 focus:outline-none"
+              >
+                {product.image ? (
+                  <img
+                    src={product.image}
+                    alt=""
+                    className="h-12 w-12 flex-none rounded-lg bg-slate-100 object-contain p-1"
+                  />
+                ) : (
+                  <span aria-hidden="true" className="h-12 w-12 flex-none rounded-lg bg-slate-100" />
+                )}
+                <span className="min-w-0">
+                  <span className="block truncate text-xs font-bold text-slate-800">{product.name}</span>
+                  <span className="block truncate text-[10px] text-slate-500">
+                    https://pinturasdiamante.com{productPath(product)}
+                  </span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,19 +111,11 @@ const Navbar: React.FC = () => {
   const [isSticky, setIsSticky] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
-  const navigate = useNavigate();
-  const { totalItems, setIsCartOpen, searchQuery, setSearchQuery, cart, totalPrice } = useCart();
+  const { totalItems, setIsCartOpen, cart, totalPrice } = useCart();
 
   const isActive = (path: string) => location.pathname === path;
-  const isCatalogActive = location.pathname.startsWith('/catalog');
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    if (query.trim()) {
-      navigate('/search');
-    }
-  };
+  const isCatalogActive = location.pathname.startsWith(CATALOG_PATH) ||
+    location.pathname.startsWith('/categoria');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,17 +145,7 @@ const Navbar: React.FC = () => {
             <Link to="/" className="text-xl font-bold bg-gradient-to-r from-green-700 to-green-500 bg-clip-text text-transparent uppercase tracking-tight">
               Diamante Pinturas Oaxaca
             </Link>
-            <div className="hidden sm:block relative ml-4">
-              <input
-                id="search"
-                name="search"
-                type="text"
-                value={searchQuery}
-                onChange={handleSearchChange}
-                placeholder="Buscar producto..."
-                className="block w-64 pl-10 pr-3 py-1 border border-slate-200 rounded-full text-xs focus:ring-2 focus:ring-green-500/20 transition-all bg-slate-50/50"
-              />
-            </div>
+            <SearchAutocomplete id="search" className="hidden sm:block ml-4 w-64" />
           </div>
           
           <div className="hidden md:flex items-center space-x-6">
@@ -79,10 +162,10 @@ const Navbar: React.FC = () => {
               
               {isCatalogOpen && (
                 <div className="absolute left-0 mt-2 w-56 rounded-xl bg-white shadow-xl border border-slate-100 py-2 animate-in fade-in zoom-in-95 duration-150">
-                  <Link to="/catalog" onClick={() => setIsCatalogOpen(false)} className="block px-4 py-2 text-xs font-bold text-green-600 hover:bg-green-50">Ver Todo el Catálogo</Link>
+                  <Link to={CATALOG_PATH} onClick={() => setIsCatalogOpen(false)} className="block px-4 py-2 text-xs font-bold text-green-600 hover:bg-green-50">Ver Todo el Catálogo</Link>
                   <div className="h-px bg-slate-100 my-1" />
                   {CATEGORIES.map(cat => (
-                    <Link key={cat.id} to={`/catalog/${cat.id}`} onClick={() => setIsCatalogOpen(false)} className="block px-4 py-2 text-xs text-slate-600 hover:bg-green-50 hover:text-green-600 uppercase font-semibold">
+                    <Link key={cat.id} to={categoryPath(cat.id)} onClick={() => setIsCatalogOpen(false)} className="block px-4 py-2 text-xs text-slate-600 hover:bg-green-50 hover:text-green-600 uppercase font-semibold">
                       {cat.name}
                     </Link>
                   ))}
@@ -115,23 +198,15 @@ const Navbar: React.FC = () => {
         <div id="mobile-navigation" className="md:hidden bg-white border-b border-slate-200 max-h-[calc(100vh-64px)] overflow-y-auto">
           {/* Buscador móvil */}
           <div className="px-4 py-3 border-b border-slate-100">
-            <input
-              id="search-mobile"
-              name="search-mobile"
-              type="text"
-              value={searchQuery}
-              onChange={handleSearchChange}
-              placeholder="Buscar producto..."
-              className="w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full text-sm focus:ring-2 focus:ring-green-500/20 transition-all bg-slate-50"
-            />
+            <SearchAutocomplete id="search-mobile" className="w-full" />
           </div>
 
           {/* Menú de navegación */}
           <div className="px-2 pt-2 pb-3 space-y-1 border-b border-slate-100">
             <Link to="/" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-medium text-slate-500 hover:text-green-600">Principal</Link>
-            <Link to="/catalog" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-bold text-green-600">Catálogo</Link>
+            <Link to={CATALOG_PATH} onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-bold text-green-600">Catálogo</Link>
             {CATEGORIES.map(cat => (
-              <Link key={cat.id} to={`/catalog/${cat.id}`} onClick={() => setIsOpen(false)} className="block px-6 py-1.5 text-xs text-slate-400 uppercase hover:text-slate-600">{cat.name}</Link>
+              <Link key={cat.id} to={categoryPath(cat.id)} onClick={() => setIsOpen(false)} className="block px-6 py-1.5 text-xs text-slate-400 uppercase hover:text-slate-600">{cat.name}</Link>
             ))}
             <Link to="/contact" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sm font-medium text-slate-500 hover:text-green-600">Contactanos</Link>
           </div>

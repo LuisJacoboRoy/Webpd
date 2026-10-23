@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { categoryPath, productPath } from '../utils/routes';
+import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from '../data/products';
+import { BUSINESS_LOCATIONS } from '../data/seo';
 
 /**
  * Script para generar sitemaps dinámicos basados en los datos de productos
@@ -84,94 +87,14 @@ ${entries}
 </urlset>`;
 }
 
-function extractProductIds(productsContent: string): string[] {
-  const productIdMatches = [...productsContent.matchAll(/id:\s*['"`]([a-z0-9-]+)['"`],\s*categoryId/g)];
-  return productIdMatches.map(m => m[1]);
-}
-
-function readProductsData(): {
-  products: { id: string }[];
-  categories: { id: string; name: string }[];
-  subCategories: { id: string; categoryId: string; name: string }[];
-} {
-  const productsPath = path.join(__dirname, '..', 'data', 'products.ts');
-  const content = fs.readFileSync(productsPath, 'utf-8');
-
-  // Extraer categorías
-  const categoryRegex = /\{\s*id:\s*['"`]([^'"`]+)['"`],\s*name:\s*['"`]([^'"`]+)['"`]/g;
-  const categories: { id: string; name: string }[] = [];
-
-  let match;
-  const categoriesSection = content.substring(
-    content.indexOf('CATEGORIES: Category[]'),
-    content.indexOf('export const SUB_CATEGORIES')
-  );
-
-  let catMatch;
-  while ((catMatch = categoryRegex.exec(categoriesSection)) !== null) {
-    categories.push({ id: catMatch[1], name: catMatch[2] });
-  }
-
-  // Extraer subcategorías
-  const subCategoryRegex = /\{\s*id:\s*['"`]([^'"`]+)['"`],\s*categoryId:\s*['"`]([^'"`]+)['"`],\s*name:\s*['"`]([^'"`]+)['"`]/g;
-  const subCategories: { id: string; categoryId: string; name: string }[] = [];
-
-  const subCatSection = content.substring(
-    content.indexOf('SUB_CATEGORIES: SubCategory[]'),
-    content.indexOf('export const PRODUCTS')
-  );
-
-  let subCatMatch;
-  while ((subCatMatch = subCategoryRegex.exec(subCatSection)) !== null) {
-    subCategories.push({
-      id: subCatMatch[1],
-      categoryId: subCatMatch[2],
-      name: subCatMatch[3]
-    });
-  }
-
-  // Extraer productos
-  const products = extractProductIds(content).map(id => ({ id }));
-
-  return { products, categories, subCategories };
-}
-
-// Importar datos dinámicamente
-async function loadProductsData() {
-  try {
-    const { PRODUCTS, CATEGORIES, SUB_CATEGORIES } = await import('../data/products.js');
-    const { BUSINESS_LOCATIONS } = await import('../data/seo.js');
-    return { PRODUCTS, CATEGORIES, SUB_CATEGORIES, BUSINESS_LOCATIONS };
-  } catch (error) {
-    console.warn('⚠️ No se pudieron cargar datos dinámicos, usando método fallback');
-    return {
-      PRODUCTS: [],
-      CATEGORIES: [],
-      SUB_CATEGORIES: [],
-      BUSINESS_LOCATIONS: []
-    };
-  }
-}
-
 async function generateSitemaps() {
   const baseUrl = (process.env.SITE_URL || 'https://pinturasdiamante.com').replace(/\/+$/, '');
 
   try {
-    // Leer datos de productos
-    const { PRODUCTS, CATEGORIES, SUB_CATEGORIES, BUSINESS_LOCATIONS } = await loadProductsData();
-    
-    // Si falla la carga dinámica, usar método de parsing
-    let products = PRODUCTS || [];
-    let categories = CATEGORIES || [];
-    let subCategories = SUB_CATEGORIES || [];
-    let businessLocations = BUSINESS_LOCATIONS || [];
-
-    if (products.length === 0) {
-      const { products: p, categories: c, subCategories: sc } = readProductsData();
-      products = p;
-      categories = c;
-      subCategories = sc;
-    }
+    const products = PRODUCTS;
+    const categories = CATEGORIES;
+    const subCategories = SUB_CATEGORIES;
+    const businessLocations = BUSINESS_LOCATIONS;
 
     console.log('📚 Datos cargados:');
     console.log(`   - Productos: ${products.length}`);
@@ -209,7 +132,7 @@ async function generateSitemaps() {
         )
       },
       {
-        loc: `${baseUrl}/catalog/`,
+        loc: `${baseUrl}/catalogo/`,
         schemaType: 'CollectionPage'
       },
       {
@@ -225,7 +148,7 @@ async function generateSitemaps() {
     if (Array.isArray(categories)) {
       categories.forEach(cat => {
         allUrls.push({
-          loc: `${baseUrl}/catalog/${cat.id}/`,
+          loc: `${baseUrl}${categoryPath(cat.id)}`,
           schemaType: 'CollectionPage',
           images: imageReferences(baseUrl, cat.name, cat.description, [cat.image, cat.ogImage])
         });
@@ -238,7 +161,7 @@ async function generateSitemaps() {
         const category = categories.find(c => c.id === subCat.categoryId);
         if (category) {
           allUrls.push({
-            loc: `${baseUrl}/catalog/${category.id}/${subCat.id}/`,
+            loc: `${baseUrl}${categoryPath(category.id, subCat.id)}`,
             schemaType: 'CollectionPage',
             images: imageReferences(
               baseUrl,
@@ -256,7 +179,7 @@ async function generateSitemaps() {
     if (Array.isArray(products)) {
       products.forEach(product => {
         allUrls.push({
-          loc: `${baseUrl}/product/${product.id}/`,
+          loc: `${baseUrl}${productPath(product)}`,
           schemaType: 'ProductPage',
           images: imageReferences(
             baseUrl,
@@ -281,8 +204,8 @@ async function generateSitemaps() {
     // ============================================
     const productUrls = allUrls.filter(u => u.schemaType === 'ProductPage');
     const productSitemap = generateSitemapXML(productUrls);
-    const productPath = path.join(__dirname, '..', 'public', 'sitemap-products.xml');
-    fs.writeFileSync(productPath, productSitemap);
+    const productSitemapPath = path.join(__dirname, '..', 'public', 'sitemap-products.xml');
+    fs.writeFileSync(productSitemapPath, productSitemap);
 
     console.log(`✅ sitemap-products.xml generado (${productUrls.length} URLs)`);
 
@@ -291,8 +214,8 @@ async function generateSitemaps() {
     // ============================================
     const categoryUrls = allUrls.filter(u => u.schemaType === 'CollectionPage');
     const categorySitemap = generateSitemapXML(categoryUrls);
-    const categoryPath = path.join(__dirname, '..', 'public', 'sitemap-categories.xml');
-    fs.writeFileSync(categoryPath, categorySitemap);
+    const categorySitemapPath = path.join(__dirname, '..', 'public', 'sitemap-categories.xml');
+    fs.writeFileSync(categorySitemapPath, categorySitemap);
 
     console.log(`✅ sitemap-categories.xml generado (${categoryUrls.length} URLs)`);
 

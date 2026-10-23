@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { PRODUCTS, CATEGORIES, SUB_CATEGORIES } from '../data/products.js';
+import { CATALOG_PATH, categoryPath, productPath } from '../utils/routes.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -49,7 +50,7 @@ function generatePagesSitemap(): SitemapEntry[] {
       schema: 'ContactPage'
     },
     {
-      loc: `${BASE_URL}/catalog/`,
+      loc: `${BASE_URL}${CATALOG_PATH}`,
       schema: 'CollectionPage'
     }
   ];
@@ -64,7 +65,7 @@ function generateCategoriesSitemap(): SitemapEntry[] {
   // Categorías principales
   CATEGORIES.forEach(category => {
     categories.push({
-      loc: `${BASE_URL}/catalog/${category.id}/`,
+      loc: `${BASE_URL}${categoryPath(category.id)}`,
       schema: 'Category'
     });
   });
@@ -72,7 +73,7 @@ function generateCategoriesSitemap(): SitemapEntry[] {
   // Subcategorías
   SUB_CATEGORIES.forEach(subCategory => {
     categories.push({
-      loc: `${BASE_URL}/catalog/${subCategory.categoryId}/${subCategory.id}/`,
+      loc: `${BASE_URL}${categoryPath(subCategory.categoryId, subCategory.id)}`,
       schema: 'Category'
     });
   });
@@ -86,7 +87,7 @@ function generateProductsSitemap(): SitemapEntry[] {
 
   PRODUCTS.forEach(product => {
     products.push({
-      loc: `${BASE_URL}/product/${product.id}/`,
+      loc: `${BASE_URL}${productPath(product)}`,
       schema: 'Product'
     });
   });

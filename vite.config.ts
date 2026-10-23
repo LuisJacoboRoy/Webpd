@@ -1,12 +1,10 @@
 import path from 'path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import fs from 'fs';
+import basicSsl from '@vitejs/plugin-basic-ssl';
 import { execSync } from 'child_process';
 
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, '.', '');
-
+export default defineConfig(() => {
   // Detectar si estamos en GitHub Pages
   const isGitHubPages = process.env.GITHUB_PAGES === 'true';
   const base = isGitHubPages ? '/Webpd/' : '/';
@@ -33,7 +31,6 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
       host: '0.0.0.0',
-      https: true,
       proxy: {
         '/api': {
           target: process.env.VITE_API_URL || 'http://localhost:3001',
@@ -57,7 +54,7 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    plugins: [sitemapPlugin, react()],
+    plugins: [sitemapPlugin, react(), basicSsl()],
     define: {
       __BASE_URL__: JSON.stringify(base),
     },

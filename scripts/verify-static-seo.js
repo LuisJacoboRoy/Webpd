@@ -2,17 +2,18 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from '../data/products.ts';
+import { CATALOG_PATH, categoryPath, findProductBySlug, productPath } from '../utils/routes.ts';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const distDirectory = path.resolve(scriptDirectory, '../dist');
 const routes = [
   '/',
-  '/catalog',
+  CATALOG_PATH.slice(0, -1),
   '/contact',
   '/search',
-  ...CATEGORIES.map(category => `/catalog/${category.id}`),
-  ...SUB_CATEGORIES.map(item => `/catalog/${item.categoryId}/${item.id}`),
-  ...PRODUCTS.map(product => `/product/${product.id}`)
+  ...CATEGORIES.map(category => categoryPath(category.id).slice(0, -1)),
+  ...SUB_CATEGORIES.map(item => categoryPath(item.categoryId, item.id).slice(0, -1)),
+  ...PRODUCTS.map(product => productPath(product).slice(0, -1))
 ];
 const domain = 'https://pinturasdiamante.com';
 
@@ -80,13 +81,13 @@ for (const route of routes) {
     if (containsType(schema, 'Product')) {
       fail(`${route}: contiene Product sin datos de oferta o reseñas verificables`);
     }
-    if (route.startsWith('/product/') && !types.includes('WebPage')) {
+    if (route.startsWith('/producto/') && !types.includes('WebPage')) {
       fail(`${route}: falta el schema WebPage`);
     }
-    if (route.startsWith('/product/') && !containsType(schema, 'Thing')) {
+    if (route.startsWith('/producto/') && !containsType(schema, 'Thing')) {
       fail(`${route}: falta la descripción estructurada del elemento del catálogo`);
     }
-    if (route.startsWith('/product/')) {
+    if (route.startsWith('/producto/')) {
       const productImageObjects = JSON.stringify(schema).match(/"@type":"ImageObject"/g) || [];
       if (!productImageObjects.length ||
           !JSON.stringify(schema).includes('"copyrightNotice":"© Diamante Pinturas"')) {
@@ -95,14 +96,14 @@ for (const route of routes) {
       if (!html.includes('og:image:alt') || !html.includes('twitter:image:alt')) {
         fail(`${route}: faltan metadatos alt para la imagen de compartir`);
       }
-      const productId = route.slice('/product/'.length);
-      const product = PRODUCTS.find(item => item.id === productId);
+      const productSlug = route.slice('/producto/'.length);
+      const product = findProductBySlug(productSlug);
       const noscript = html.match(/<noscript>([\s\S]*?)<\/noscript>/i)?.[1] || '';
       if (!product || !noscript.includes('<h1>') || !noscript.includes(product.name) || !noscript.includes('<img ')) {
         fail(`${route}: falta texto e imagen accesibles en el HTML prerenderizado`);
       }
     }
-    if ((route === '/catalog' || route.startsWith('/catalog/')) && !types.includes('CollectionPage')) {
+    if ((route === '/catalogo' || route.startsWith('/categoria/')) && !types.includes('CollectionPage')) {
       fail(`${route}: falta el schema CollectionPage`);
     }
     if (route === '/contact' && !types.includes('ContactPage')) {
@@ -153,9 +154,10 @@ if (!fs.existsSync(robotsPath)) {
   }
 }
 
-for (const [fileName, expectedPrefix] of [
-  ['sitemap-products.xml', `${domain}/product/`],
-  ['sitemap-categories.xml', `${domain}/catalog/`]
+for (const [fileName, isExpectedUrl] of [
+  ['sitemap-products.xml', url => url.startsWith(`${domain}/producto/`)],
+  ['sitemap-categories.xml', url =>
+    url === `${domain}/catalogo/` || url.startsWith(`${domain}/categoria/`)]
 ]) {
   const filePath = path.join(distDirectory, fileName);
   if (!fs.existsSync(filePath)) {
@@ -164,7 +166,7 @@ for (const [fileName, expectedPrefix] of [
   }
   const sitemapUrls = [...fs.readFileSync(filePath, 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)]
     .map(match => match[1]);
-  if (!sitemapUrls.length || sitemapUrls.some(url => !url.startsWith(expectedPrefix) || !url.endsWith('/'))) {
+  if (!sitemapUrls.length || sitemapUrls.some(url => !isExpectedUrl(url) || !url.endsWith('/'))) {
     fail(`${fileName} contiene URLs incorrectas o no canónicas`);
   }
 }
@@ -177,7 +179,7 @@ if (!fs.existsSync(imageSitemapPath)) {
   const imagePageEntries = [...imageSitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)]
     .map(match => match[1]);
   const productEntries = imagePageEntries.filter(entry =>
-    entry.includes(`<loc>${domain}/product/`)
+    entry.includes(`<loc>${domain}/producto/`)
   );
   if (!imageSitemap.includes('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"')) {
     fail('sitemap-images.xml no declara el namespace de Google Images');

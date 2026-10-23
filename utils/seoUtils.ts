@@ -5,6 +5,7 @@
 
 import { PRODUCTS, CATEGORIES, SUB_CATEGORIES } from '../data/products';
 import { BUSINESS_INFO } from '../data/seo';
+import { CATALOG_PATH, categoryPath, productPath } from './routes';
 
 /**
  * Genera un sitemap.xml dinámico
@@ -12,43 +13,24 @@ import { BUSINESS_INFO } from '../data/seo';
  */
 export const generateSitemap = (): string => {
   const baseUrl = BUSINESS_INFO.url.replace(/\/+$/, '');
-  const lastmod = new Date().toISOString().split('T')[0];
   const urls = [
     {
-      loc: `${baseUrl}/`,
-      lastmod,
-      changefreq: 'weekly',
-      priority: '1.0'
+      loc: `${baseUrl}/`
     },
     {
-      loc: `${baseUrl}/catalog/`,
-      lastmod,
-      changefreq: 'weekly',
-      priority: '0.9'
+      loc: `${baseUrl}${CATALOG_PATH}`
     },
     ...CATEGORIES.map(cat => ({
-      loc: `${baseUrl}/catalog/${cat.id}/`,
-      lastmod,
-      changefreq: 'weekly',
-      priority: '0.8'
+      loc: `${baseUrl}${categoryPath(cat.id)}`
     })),
     ...SUB_CATEGORIES.map(sub => ({
-      loc: `${baseUrl}/catalog/${sub.categoryId}/${sub.id}/`,
-      lastmod,
-      changefreq: 'weekly',
-      priority: '0.7'
+      loc: `${baseUrl}${categoryPath(sub.categoryId, sub.id)}`
     })),
     ...PRODUCTS.map(product => ({
-      loc: `${baseUrl}/product/${product.id}/`,
-      lastmod,
-      changefreq: 'monthly',
-      priority: '0.6'
+      loc: `${baseUrl}${productPath(product)}`
     })),
     {
-      loc: `${baseUrl}/contact/`,
-      lastmod,
-      changefreq: 'monthly',
-      priority: '0.8'
+      loc: `${baseUrl}/contact/`
     }
   ];
 
@@ -57,9 +39,6 @@ export const generateSitemap = (): string => {
 ${urls.map(url => `
   <url>
     <loc>${url.loc}</loc>
-    <lastmod>${url.lastmod}</lastmod>
-    <changefreq>${url.changefreq}</changefreq>
-    <priority>${url.priority}</priority>
   </url>
 `).join('')}
 </urlset>`;

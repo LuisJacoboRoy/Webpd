@@ -7,6 +7,7 @@ import { useMetaTags } from '../hooks/useMetaTags';
 import { useJsonLd } from '../hooks/useJsonLd';
 import { BUSINESS_INFO } from '../data/seo';
 import { Product } from '../types';
+import { CATALOG_PATH, categoryPath, productPath } from '../utils/routes';
 
 const ProductCard: React.FC<{ product: Product, subCategoryId: string | undefined }> = ({ product: p, subCategoryId }) => {
 
@@ -14,7 +15,7 @@ const ProductCard: React.FC<{ product: Product, subCategoryId: string | undefine
     <div className="bg-white rounded-[2rem] border border-slate-100 p-2 hover:shadow-2xl transition-all group overflow-hidden flex flex-col h-full relative">
 
 
-      <Link key={p.id} to={`/product/${p.id}/`} className="block">
+      <Link key={p.id} to={productPath(p)} className="block">
         <div className="bg-slate-50 rounded-[1.8rem] flex items-center justify-center overflow-hidden relative h-56">
           {p.image ? (
             <img 
@@ -36,14 +37,14 @@ const ProductCard: React.FC<{ product: Product, subCategoryId: string | undefine
           <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded">{p.tag}</span>
         </div>
         
-        <Link to={`/product/${p.id}/`}>
+        <Link to={productPath(p)}>
           <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{p.name}</h3>
         </Link>
         <p className="text-slate-500 text-sm mt-3 line-clamp-2 leading-relaxed flex-grow">{p.description}</p>
         
         <div className="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between">
           <span className="text-xs font-bold text-slate-400">Pinturas Diamante®</span>
-          <Link to={`/product/${p.id}/`} className="text-blue-600 font-black text-xs uppercase group-hover:translate-x-1 transition-transform">Ver Detalles →</Link>
+          <Link to={productPath(p)} className="text-blue-600 font-black text-xs uppercase group-hover:translate-x-1 transition-transform">Ver Detalles →</Link>
         </div>
       </div>
     </div>
@@ -68,7 +69,9 @@ const ProductList: React.FC = () => {
     ogTitle: `${subCat?.name || 'Productos'} | Diamante Oaxaca`,
     ogDescription: `${subCat?.name || 'Productos'} de calidad premium. Explora ${products.length} opciones especializadas.`,
     ogImage: BUSINESS_INFO.logo,
-    ogType: 'website'
+    ogType: 'website',
+    ogUrl: `${BUSINESS_INFO.url}${categoryPath(categoryId || '', subCategoryId)}`,
+    canonicalUrl: `${BUSINESS_INFO.url}${categoryPath(categoryId || '', subCategoryId)}`
   });
 
   // Schema BreadcrumbList
@@ -86,19 +89,19 @@ const ProductList: React.FC = () => {
         '@type': 'ListItem',
         'position': 2,
         'name': 'Catálogo',
-        'item': `${BUSINESS_INFO.url}/catalog`
+        'item': `${BUSINESS_INFO.url}/catalogo/`
       },
       {
         '@type': 'ListItem',
         'position': 3,
         'name': category?.name,
-        'item': `${BUSINESS_INFO.url}/catalog/${categoryId}`
+        'item': `${BUSINESS_INFO.url}${categoryPath(categoryId)}`
       },
       {
         '@type': 'ListItem',
         'position': 4,
         'name': subCat?.name,
-        'item': `${BUSINESS_INFO.url}/catalog/${categoryId}/${subCategoryId}`
+        'item': `${BUSINESS_INFO.url}${categoryPath(categoryId, subCategoryId)}`
       }
     ]
   });
@@ -115,7 +118,7 @@ const ProductList: React.FC = () => {
       'item': {
         '@type': 'Thing',
         'name': p.name,
-        'url': `${BUSINESS_INFO.url}/product/${p.id}/`,
+        'url': `${BUSINESS_INFO.url}${productPath(p)}`,
         'image': p.ogImage || p.image,
         'description': p.description.substring(0, 160)
       }
@@ -127,9 +130,9 @@ const ProductList: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <nav className="flex mb-8 text-[10px] font-black uppercase tracking-[0.2em] gap-3">
-        <Link to="/catalog" className="text-slate-400 hover:text-blue-600">Catálogo</Link>
+        <Link to={CATALOG_PATH} className="text-slate-400 hover:text-blue-600">Catálogo</Link>
         <span className="text-slate-300">/</span>
-        <Link to={`/catalog/${categoryId}`} className="text-slate-400 hover:text-blue-600">{category.name}</Link>
+        <Link to={categoryPath(categoryId || '')} className="text-slate-400 hover:text-blue-600">{category.name}</Link>
         <span className="text-slate-300">/</span>
         <span className="text-blue-600">{subCat.name}</span>
       </nav>

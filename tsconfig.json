@@ -25,5 +25,13 @@
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
-  }
+  },
+  "exclude": [
+    "docs/SEO_INTEGRATION_EXAMPLES.tsx",
+    "docs/SSR_SETUP_EXAMPLE.tsx",
+    "docs/MICROFORMATOS_EJEMPLOS.tsx",
+    "MIGRATION_HELMET.ts",
+    "PERSISTENCE_HTTPS_FAVICONS.ts",
+    "TIPS_BEST_PRACTICES.ts"
+  ]
 }

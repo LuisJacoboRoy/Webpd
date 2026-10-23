@@ -4,11 +4,12 @@
  */
 
 import { Product, Category, SubCategory } from '../types';
+import { productPath } from './routes';
 
 const DOMAIN = process.env.GITHUB_PAGES === 'true' 
   ? 'https://luisjacoboroy.github.io/Webpd'
   : 'https://pinturasdiamante.com';
-const productPageUrl = (productId: string) => `${DOMAIN}/product/${productId}/`;
+const productPageUrl = (product: Product) => `${DOMAIN}${productPath(product)}`;
 const absoluteProductImageUrl = (image: string) =>
   image.startsWith('http') ? image : `${DOMAIN}${image.startsWith('/') ? '' : '/'}${image}`;
 const productImageSchema = (product: Product) => ({
@@ -32,7 +33,7 @@ export const generateEnhancedProductSchema = (
   _subCategory?: SubCategory,
   _includeReviews: boolean = true
 ) => {
-  const productUrl = productPageUrl(product.id);
+  const productUrl = productPageUrl(product);
 
   return {
     '@context': 'https://schema.org',
@@ -108,8 +109,8 @@ export const generateProductPageSchema = (
 ) => ({
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  '@id': `${productPageUrl(product.id)}#webpage`,
-  url: productPageUrl(product.id),
+  '@id': `${productPageUrl(product)}#webpage`,
+  url: productPageUrl(product),
   name: `${product.name} - Pinturas Diamante`,
   description: product.description.substring(0, 160),
   image: productImageSchema(product),

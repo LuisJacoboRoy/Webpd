@@ -1,6 +1,6 @@
 
 import React, { useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { HelmetProvider, Helmet } from '@dr.pogodin/react-helmet';
 
 
@@ -15,6 +15,8 @@ import { useJsonLd } from './hooks/useJsonLd';
 import { useFavicon, useBeforeUnloadWarning } from './hooks/usePersistence';
 import { useScrollToTop } from './hooks/useScrollToTop';
 import { BUSINESS_INFO, BUSINESS_LOCATIONS } from './data/seo';
+import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from './data/products';
+import { categoryPath, findProductBySlug, productPath } from './utils/routes';
 
 declare const __BASE_URL__: string;
 
@@ -26,6 +28,35 @@ const SubCategorySelector = lazy(() => import('./components/SubCategorySelector'
 const ProductList = lazy(() => import('./components/ProductList'));
 const ProductDetail = lazy(() => import('./components/ProductDetail'));
 const SearchResults = lazy(() => import('./components/SearchResults'));
+
+const LegacyProductRedirect: React.FC = () => {
+  const { productId = '' } = useParams<{ productId: string }>();
+  const product = PRODUCTS.find(item => item.id === productId);
+  return <Navigate to={product ? productPath(product) : '/'} replace />;
+};
+
+const LegacyCategoryRedirect: React.FC = () => {
+  const { categoryId = '' } = useParams<{ categoryId: string }>();
+  const category = CATEGORIES.find(item => item.id === categoryId);
+  return <Navigate to={category ? categoryPath(categoryId) : '/'} replace />;
+};
+
+const LegacySubCategoryRedirect: React.FC = () => {
+  const { categoryId = '', subCategoryId = '' } = useParams<{
+    categoryId: string;
+    subCategoryId: string;
+  }>();
+  const subCategory = SUB_CATEGORIES.find(item =>
+    item.categoryId === categoryId && item.id === subCategoryId
+  );
+  return <Navigate to={subCategory ? categoryPath(categoryId, subCategoryId) : '/'} replace />;
+};
+
+const ProductSlugRedirect: React.FC = () => {
+  const { productSlug = '' } = useParams<{ productSlug: string }>();
+  const product = findProductBySlug(productSlug);
+  return product ? <ProductDetail /> : <Navigate to="/" replace />;
+};
 
 // Loading component para Suspense
 const LoadingComponent = () => (
@@ -42,6 +73,7 @@ const AppContent: React.FC = () => {
   useJsonLd({
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': `${BUSINESS_INFO.url}/#organization`,
     'name': BUSINESS_INFO.name,
     'brand': {
       '@type': 'Brand',
@@ -96,6 +128,23 @@ const AppContent: React.FC = () => {
     }))
   });
 
+  useJsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${BUSINESS_INFO.url}/#website`,
+    'url': `${BUSINESS_INFO.url}/`,
+    'name': BUSINESS_INFO.name,
+    'publisher': { '@id': `${BUSINESS_INFO.url}/#organization` },
+    'potentialAction': {
+      '@type': 'SearchAction',
+      'target': {
+        '@type': 'EntryPoint',
+        'urlTemplate': `${BUSINESS_INFO.url}/search?q={search_term_string}`
+      },
+      'query-input': 'required name=search_term_string'
+    }
+  });
+
   return (
     <div className="flex flex-col min-h-screen">
       <HeroHeader />
@@ -106,10 +155,14 @@ const AppContent: React.FC = () => {
             <Route path="/" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/search" element={<SearchResults />} />
-            <Route path="/catalog" element={<CatalogCategories />} />
-            <Route path="/catalog/:categoryId" element={<SubCategorySelector />} />
-            <Route path="/catalog/:categoryId/:subCategoryId" element={<ProductList />} />
-            <Route path="/product/:productId" element={<ProductDetail />} />
+            <Route path="/catalogo" element={<CatalogCategories />} />
+            <Route path="/categoria/:categoryId" element={<SubCategorySelector />} />
+            <Route path="/categoria/:categoryId/:subCategoryId" element={<ProductList />} />
+            <Route path="/producto/:productSlug" element={<ProductSlugRedirect />} />
+            <Route path="/catalog" element={<Navigate to="/catalogo/" replace />} />
+            <Route path="/catalog/:categoryId" element={<LegacyCategoryRedirect />} />
+            <Route path="/catalog/:categoryId/:subCategoryId" element={<LegacySubCategoryRedirect />} />
+            <Route path="/product/:productId" element={<LegacyProductRedirect />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
