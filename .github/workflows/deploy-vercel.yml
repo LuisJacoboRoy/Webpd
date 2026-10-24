@@ -55,6 +55,14 @@ jobs:
             fi
           done
 
+          user_status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
+            --header "Authorization: Bearer $VERCEL_TOKEN" \
+            https://api.vercel.com/v2/user)
+          if [ "$user_status" != "200" ]; then
+            echo "::error::Vercel could not resolve the account associated with VERCEL_TOKEN (HTTP $user_status). Create a new active personal token in the Vercel account that owns or has access to this project, then replace the GitHub secret VERCEL_TOKEN."
+            exit 1
+          fi
+
           project_status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
             --header "Authorization: Bearer $VERCEL_TOKEN" \
             "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID")
@@ -63,7 +71,7 @@ jobs:
             exit 1
           fi
 
-          echo "Vercel token can access the configured project."
+          echo "Vercel token identifies an account and can access the configured project."
 
       - name: Deploy production to Vercel
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'

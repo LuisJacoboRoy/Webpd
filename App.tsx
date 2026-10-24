@@ -2,6 +2,8 @@
 import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { HelmetProvider, Helmet } from '@dr.pogodin/react-helmet';
+import PaginaResena from './components/PaginaResena';
+import { ReviewRedirectProvider } from './context/ReviewRedirectContext';
 
 
 // Eager-loaded components (críticos para LCP)
@@ -176,6 +178,15 @@ const AppContent: React.FC = () => {
 
 const App: React.FC = () => {
   const helmetContext = {};
+  let currentPath = window.location.pathname;
+
+  try {
+    currentPath = decodeURIComponent(currentPath);
+  } catch {
+    currentPath = window.location.pathname;
+  }
+
+  const isReviewPage = currentPath === '/reseña';
 
   // Establecer favicon
   useFavicon('/favicon.svg');
@@ -183,7 +194,7 @@ const App: React.FC = () => {
   return (
     <HelmetProvider context={helmetContext}>
       <CartProvider>
-        <BrowserRouter basename={__BASE_URL__}>
+        <ReviewRedirectProvider>
           <Helmet>
             <html lang="es" />
             <meta charSet="utf-8" />
@@ -210,8 +221,14 @@ const App: React.FC = () => {
             <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
             <link rel="manifest" href="/site.webmanifest" />
           </Helmet>
-          <AppContent />
-        </BrowserRouter>
+          {isReviewPage ? (
+            <PaginaResena />
+          ) : (
+            <BrowserRouter basename={__BASE_URL__}>
+              <AppContent />
+            </BrowserRouter>
+          )}
+        </ReviewRedirectProvider>
       </CartProvider>
     </HelmetProvider>
   );
