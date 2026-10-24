@@ -18,6 +18,12 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="text-left max-w-sm">
+        <img
+              src="./public\img\logo.png"
+              alt="logo footer"
+              className="h-[80px] w-auto max-w-full object-contain"
+              loading="lazy"
+            />
             <span className="text-xl font-bold bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent uppercase tracking-tighter">
               Pinturas Diamante
             </span>
