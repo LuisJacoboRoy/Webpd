@@ -39,7 +39,7 @@ jobs:
       - name: Build and verify SEO output
         run: npm run build
 
-      - name: Validate Vercel token and project access
+      - name: Validate Vercel project access
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -55,27 +55,15 @@ jobs:
             fi
           done
 
-          token_status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
-            --header "Authorization: Bearer $VERCEL_TOKEN" \
-            https://api.vercel.com/v2/user)
-          if [ "$token_status" != "200" ]; then
-            echo "::error::Vercel rejected VERCEL_TOKEN (HTTP $token_status). Replace it with an active token from an account with access."
-            exit 1
-          fi
-
           project_status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
             --header "Authorization: Bearer $VERCEL_TOKEN" \
             "https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID?teamId=$VERCEL_ORG_ID")
           if [ "$project_status" != "200" ]; then
-            if [ "$project_status" = "404" ]; then
-              echo "::error::Vercel authenticated the token, but cannot find this project in the specified team. Check VERCEL_ORG_ID and VERCEL_PROJECT_ID and confirm the account has team access."
-            else
-              echo "::error::Vercel authenticated the token, but denied access to the project (HTTP $project_status). Check the token account's team membership and project permissions."
-            fi
+            echo "::error::Vercel project access check failed (HTTP $project_status). For 401, replace VERCEL_TOKEN with an active token; for 403, grant its owner access to the team/project; for 404, verify VERCEL_ORG_ID and VERCEL_PROJECT_ID belong together."
             exit 1
           fi
 
-          echo "Vercel token is valid and can access the configured project."
+          echo "Vercel token can access the configured project."
 
       - name: Deploy production to Vercel
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
