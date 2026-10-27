@@ -3,7 +3,7 @@ import { Helmet } from '@dr.pogodin/react-helmet';
 import { ReviewRedirectContext } from '../context/ReviewRedirectContext';
 
 const PaginaResena: React.FC = () => {
-  const { secondsRemaining } = useContext(ReviewRedirectContext);
+  const { secondsRemaining, startFacebookRedirect, cancelFacebookRedirect } = useContext(ReviewRedirectContext);
 
   return (
     <>
@@ -49,7 +49,7 @@ const PaginaResena: React.FC = () => {
                 2
               </span>
               <span className="pt-1 leading-relaxed">
-                <strong>Paso 2:</strong> Regresa a esta pestaña para seguirnos en Facebook.
+                <strong>Paso 2:</strong> Cuando termines tu reseña, vuelve a esta pestaña y confirma para visitar Facebook.
               </span>
             </li>
           </ol>
@@ -62,9 +62,35 @@ const PaginaResena: React.FC = () => {
           >
             Dejar reseña en Google
           </a>
-          <p className="mt-4 text-sm text-slate-500">
-            Esta pestaña te llevará a Facebook en {secondsRemaining} segundos.
-          </p>
+          {secondsRemaining === null ? (
+            <div className="mt-5">
+              <button
+                type="button"
+                onClick={startFacebookRedirect}
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-blue-200 px-5 py-3 text-sm font-bold text-blue-800 transition-colors hover:bg-blue-50 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+              >
+                Ya terminé mi reseña
+              </button>
+              <p className="mt-3 text-sm text-slate-500">
+                Facebook solo se abrirá después de que confirmes que terminaste.
+              </p>
+            </div>
+          ) : (
+            <div className="mt-5" aria-live="polite">
+              <p className="text-sm font-semibold text-slate-700">
+                {secondsRemaining > 0
+                  ? `Facebook se abrirá en ${secondsRemaining} segundos.`
+                  : 'Abriendo Facebook...'}
+              </p>
+              <button
+                type="button"
+                onClick={cancelFacebookRedirect}
+                className="mt-3 text-sm font-semibold text-blue-700 underline underline-offset-2"
+              >
+                Cancelar
+              </button>
+            </div>
+          )}
         </section>
       </main>
     </>

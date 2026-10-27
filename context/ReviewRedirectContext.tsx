@@ -1,35 +1,43 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
 const FACEBOOK_PAGE_URL = 'https://www.facebook.com/diamantepinturasoaxaca';
-const REDIRECT_DELAY_MS = 60_000;
+const REDIRECT_DELAY_SECONDS = 5;
 
 interface ReviewRedirectContextValue {
-  secondsRemaining: number;
+  secondsRemaining: number | null;
+  startFacebookRedirect: () => void;
+  cancelFacebookRedirect: () => void;
 }
 
 export const ReviewRedirectContext = createContext<ReviewRedirectContextValue>({
-  secondsRemaining: 60,
+  secondsRemaining: null,
+  startFacebookRedirect: () => {},
+  cancelFacebookRedirect: () => {}
 });
 
 export const ReviewRedirectProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [secondsRemaining, setSecondsRemaining] = useState(60);
+  const [secondsRemaining, setSecondsRemaining] = useState<number | null>(null);
 
   useEffect(() => {
-    const redirectTimeout = window.setTimeout(() => {
-      window.location.assign(FACEBOOK_PAGE_URL);
-    }, REDIRECT_DELAY_MS);
+    if (secondsRemaining === null) return;
 
-    const countdownInterval = window.setInterval(() => {
-      setSecondsRemaining((seconds) => Math.max(0, seconds - 1));
+    if (secondsRemaining === 0) {
+      window.location.assign(FACEBOOK_PAGE_URL);
+      return;
+    }
+
+    const countdownTimeout = window.setTimeout(() => {
+      setSecondsRemaining(secondsRemaining - 1);
     }, 1_000);
 
-    return () => {
-      window.clearTimeout(redirectTimeout);
-      window.clearInterval(countdownInterval);
-    };
-  }, []);
+    return () => window.clearTimeout(countdownTimeout);
+  }, [secondsRemaining]);
 
-  const value = useMemo(() => ({ secondsRemaining }), [secondsRemaining]);
+  const value = useMemo(() => ({
+    secondsRemaining,
+    startFacebookRedirect: () => setSecondsRemaining(REDIRECT_DELAY_SECONDS),
+    cancelFacebookRedirect: () => setSecondsRemaining(null)
+  }), [secondsRemaining]);
 
   return (
     <ReviewRedirectContext.Provider value={value}>

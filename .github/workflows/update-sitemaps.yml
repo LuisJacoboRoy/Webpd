@@ -7,6 +7,7 @@ on:
       - develop
     paths:
       - 'data/products.ts'
+      - 'data/additionalProducts.ts'
       - 'data/seo.ts'
       - 'scripts/generate-sitemap.ts'
       - 'src/components/**/*.tsx'
@@ -24,7 +25,7 @@ jobs:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: 📦 Setup Node.js
@@ -68,7 +69,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '✅ Sitemaps actualizados automáticamente\n\n- **sitemap.xml** (73 URLs)\n- **sitemap-products.xml** (46 productos)\n- **sitemap-categories.xml** (22 categorías)\n- **sitemap-metadata.json** (guía de medición)'
+              body: '✅ Sitemaps actualizados automáticamente con los datos del commit de este pull request.'
             })
 
       - name: 📊 Show statistics

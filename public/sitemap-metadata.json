@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T16:35:56.253Z",
+  "generatedAt": "2026-10-27T20:59:26.368Z",
   "baseUrl": "https://pinturasdiamante.com",
   "sitemaps": {
     "general": "sitemap.xml",
@@ -8,18 +8,18 @@
     "images": "sitemap-images.xml"
   },
   "statistics": {
-    "totalURLs": 70,
+    "totalURLs": 130,
     "bySchema": {
       "Organization": 1,
-      "ProductPage": 46,
-      "CollectionPage": 22,
+      "ProductPage": 103,
+      "CollectionPage": 25,
       "ContactPage": 1
     },
     "breakdown": {
       "staticPages": 3,
       "categories": 3,
-      "subcategories": 18,
-      "products": 46
+      "subcategories": 21,
+      "products": 103
     }
   },
   "measurementGuide": {
@@ -74,7 +74,7 @@
       "title": "Monitorear Cobertura",
       "location": "Menú izquierdo > Cobertura",
       "whatToLook": {
-        "valid": "Se enviaron 70 URLs; el envío no garantiza que Google las indexe",
+        "valid": "Se enviaron 130 URLs; el envío no garantiza que Google las indexe",
         "excluded": "Las URLs enviadas no garantizan indexación; revisa las exclusiones y sus motivos",
         "error": "Resuelve cualquier error de indexación"
       }
@@ -83,7 +83,7 @@
   "schemasTracking": {
     "productPages": {
       "schema": "WebPage / Thing",
-      "count": 46,
+      "count": 103,
       "howToMeasure": "En Search Console > Rendimiento, filtra por página; el sitemap no habilita resultados enriquecidos de producto",
       "expectedMetrics": [
         "clics",
@@ -99,7 +99,7 @@
     },
     "categories": {
       "schema": "Category / BreadcrumbList",
-      "count": 22,
+      "count": 25,
       "documentation": "https://developers.google.com/search/docs/appearance/structured-data/breadcrumb",
       "howToMeasure": "En \"Resultados enriquecidos\" > \"BreadcrumbList\"",
       "expectedMetrics": [
@@ -149,12 +149,12 @@
   "urls": {
     "products": [
       "https://pinturasdiamante.com/producto/acondicionador-de-metales/",
-      "https://pinturasdiamante.com/producto/blender-clear-esfumador/",
+      "https://pinturasdiamante.com/producto/blender-clear-solvente-esfumador/",
       "https://pinturasdiamante.com/producto/body-plus-recubrimiento/",
       "https://pinturasdiamante.com/producto/desengrasante-automotriz/",
       "https://pinturasdiamante.com/producto/perla-universal-automotriz/",
       "https://pinturasdiamante.com/producto/plaste-automotriz/",
-      "https://pinturasdiamante.com/producto/promotor-de-adherencia/",
+      "https://pinturasdiamante.com/producto/adherente-para-plasticos/",
       "https://pinturasdiamante.com/producto/removedor-amarillo/",
       "https://pinturasdiamante.com/producto/esmalte-ureprix/",
       "https://pinturasdiamante.com/producto/esmalte-turboprix/"

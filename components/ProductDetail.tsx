@@ -9,7 +9,8 @@ import { TwitterPicker, SliderPicker } from 'react-color';
 import { CATALOG_PATH, categoryPath, findProductBySlug, productPath } from '../utils/routes';
 import { 
   generateLocalBusinessSchemaForProduct,
-  generateProductPageSchema
+  generateProductPageSchema,
+  generateProductArticleSchema
 } from '../utils/productSchemaGenerator';
 
 /**
@@ -69,6 +70,10 @@ const ProductDetailComponent: React.FC = () => {
     generateProductPageSchema(product, category, subCat)
   , [product, category, subCat]);
 
+  const articleSchema = useMemo(() =>
+    generateProductArticleSchema(product, category, subCat)
+  , [product, category, subCat]);
+
   // Schema BreadcrumbList
   const breadcrumbSchema = useMemo(() => ({
     '@context': 'https://schema.org',
@@ -111,6 +116,7 @@ const ProductDetailComponent: React.FC = () => {
   useHelmetJsonLd(breadcrumbSchema);
   useHelmetJsonLd(localBusinessSchema);
   useHelmetJsonLd(webPageSchema);
+  useHelmetJsonLd(articleSchema);
 
   return (
     <>
@@ -183,6 +189,32 @@ const ProductDetailComponent: React.FC = () => {
                 Palabras clave: {keywords}
               </div>
             </div>
+
+            {(product.sku || product.specifications) && (
+              <section className="mb-8 rounded-3xl border border-slate-100 bg-white p-6">
+                <h2 className="mb-4 text-xs font-black uppercase tracking-widest text-slate-500">
+                  Especificaciones
+                </h2>
+                <dl className="grid gap-3 sm:grid-cols-2">
+                  {product.sku && (
+                    <div>
+                      <dt className="text-xs font-bold text-slate-400">SKU</dt>
+                      <dd className="mt-1 text-sm font-semibold text-slate-800">
+                        {Array.isArray(product.sku) ? product.sku.join(', ') : product.sku}
+                      </dd>
+                    </div>
+                  )}
+                  {Object.entries(product.specifications || {}).map(([label, value]) => (
+                    <div key={label}>
+                      <dt className="text-xs font-bold text-slate-400">{label}</dt>
+                      <dd className="mt-1 text-sm text-slate-700">
+                        {Array.isArray(value) ? value.join(', ') : value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            )}
 
             <div className="bg-slate-50 rounded-3xl p-8 mb-8 border border-slate-100 flex flex-col gap-6">
               <div>

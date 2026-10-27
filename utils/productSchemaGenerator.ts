@@ -5,6 +5,7 @@
 
 import { Product, Category, SubCategory } from '../types';
 import { productPath } from './routes';
+import IMAGE_LICENSING from '../data/image-licensing.json';
 
 const DOMAIN = process.env.GITHUB_PAGES === 'true' 
   ? 'https://luisjacoboroy.github.io/Webpd'
@@ -12,16 +13,23 @@ const DOMAIN = process.env.GITHUB_PAGES === 'true'
 const productPageUrl = (product: Product) => `${DOMAIN}${productPath(product)}`;
 const absoluteProductImageUrl = (image: string) =>
   image.startsWith('http') ? image : `${DOMAIN}${image.startsWith('/') ? '' : '/'}${image}`;
-const productImageSchema = (product: Product) => ({
-  '@type': 'ImageObject',
-  contentUrl: absoluteProductImageUrl(product.ogImage || product.image || ''),
-  name: product.name,
-  description: product.ogDescription || product.description,
-  creator: { '@id': `${DOMAIN}/#organization` },
-  creditText: 'Diamante Pinturas',
-  copyrightHolder: { '@id': `${DOMAIN}/#organization` },
-  copyrightNotice: '© Diamante Pinturas'
-});
+const productImageSchema = (product: Product) => {
+  const image = product.ogImage || product.image;
+  if (!image) return undefined;
+
+  return {
+    '@type': 'ImageObject',
+    contentUrl: absoluteProductImageUrl(image),
+    name: product.name,
+    description: product.ogDescription || product.description,
+    creator: { '@id': `${DOMAIN}/#organization` },
+    creditText: 'Diamante Pinturas',
+    copyrightHolder: { '@id': `${DOMAIN}/#organization` },
+    copyrightNotice: '© Diamante Pinturas',
+    license: IMAGE_LICENSING.license,
+    acquireLicensePage: IMAGE_LICENSING.acquireLicensePage
+  };
+};
 
 /**
  * Describes the catalog item as a generic Thing so it cannot trigger
@@ -34,6 +42,7 @@ export const generateEnhancedProductSchema = (
   _includeReviews: boolean = true
 ) => {
   const productUrl = productPageUrl(product);
+  const image = productImageSchema(product);
 
   return {
     '@context': 'https://schema.org',
@@ -42,7 +51,20 @@ export const generateEnhancedProductSchema = (
     name: product.name,
     url: productUrl,
     description: product.description.substring(0, 5000),
-    image: [productImageSchema(product)]
+    ...(product.sku ? {
+      identifier: Array.isArray(product.sku)
+        ? product.sku.map(value => ({
+          '@type': 'PropertyValue',
+          propertyID: 'SKU',
+          value
+        }))
+        : {
+          '@type': 'PropertyValue',
+          propertyID: 'SKU',
+          value: product.sku
+        }
+    } : {}),
+    ...(image ? { image: [image] } : {})
   };
 };
 
@@ -106,21 +128,69 @@ export const generateProductPageSchema = (
   product: Product,
   category?: Category,
   subCategory?: SubCategory
-) => ({
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  '@id': `${productPageUrl(product)}#webpage`,
-  url: productPageUrl(product),
-  name: `${product.name} - Pinturas Diamante`,
-  description: product.description.substring(0, 160),
-  image: productImageSchema(product),
-  // Generic Thing avoids claiming Product rich-result eligibility.
-  mainEntity: generateEnhancedProductSchema(product, category, subCategory),
-  // Información del sitio
-  isPartOf: {
-    '@id': `${DOMAIN}/#website`
-  }
-});
+) => {
+  const image = productImageSchema(product);
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${productPageUrl(product)}#webpage`,
+    url: productPageUrl(product),
+    name: `${product.name} - Pinturas Diamante`,
+    description: product.description.substring(0, 160),
+    ...(image ? { image } : {}),
+    // Generic Thing avoids claiming Product rich-result eligibility.
+    mainEntity: generateEnhancedProductSchema(product, category, subCategory),
+    // Información del sitio
+    isPartOf: {
+      '@id': `${DOMAIN}/#website`
+    }
+  };
+};
+
+export const generateProductArticleSchema = (
+  product: Product,
+  category?: Category,
+  subCategory?: SubCategory
+) => {
+  const productUrl = productPageUrl(product);
+  const image = productImageSchema(product);
+  const articleBody = [
+    product.description,
+    ...Object.entries(product.specifications || {}).map(([label, value]) =>
+      `${label}: ${Array.isArray(value) ? value.join(', ') : value}`
+    )
+  ].join('\n\n');
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${productUrl}#article`,
+    headline: product.name,
+    url: productUrl,
+    mainEntityOfPage: { '@id': `${productUrl}#webpage` },
+    about: { '@id': `${productUrl}#item` },
+    articleSection: [category?.name, subCategory?.name].filter(Boolean).join(' > '),
+    description: product.description,
+    articleBody,
+    ...(product.sku ? {
+      identifier: Array.isArray(product.sku)
+        ? product.sku.map(value => ({
+          '@type': 'PropertyValue',
+          propertyID: 'SKU',
+          value
+        }))
+        : {
+          '@type': 'PropertyValue',
+          propertyID: 'SKU',
+          value: product.sku
+        }
+    } : {}),
+    ...(image ? { image: [image] } : {}),
+    author: { '@id': `${DOMAIN}/#organization` },
+    publisher: { '@id': `${DOMAIN}/#organization` }
+  };
+};
 
 /**
  * Confirms the product page uses descriptive markup rather than unsupported Product markup.
@@ -131,7 +201,7 @@ export const validateProductSchema = (schema: Record<string, unknown>): string[]
   if (schema['@type'] !== 'Thing') errors.push('El elemento descriptivo debe usar @type Thing');
   if (typeof schema.name !== 'string' || !schema.name) errors.push('Falta name');
   if (typeof schema.description !== 'string' || !schema.description) errors.push('Falta description');
-  if (!Array.isArray(schema.image) || schema.image.length === 0) errors.push('Falta image');
+  if ('image' in schema && (!Array.isArray(schema.image) || schema.image.length === 0)) errors.push('image debe contener al menos una imagen');
   if ('offers' in schema || 'review' in schema || 'aggregateRating' in schema) {
     errors.push('El marcado descriptivo no debe incluir datos comerciales o reseñas no verificados');
   }
@@ -143,5 +213,6 @@ export default {
   generateEnhancedProductSchema,
   generateLocalBusinessSchemaForProduct,
   generateProductPageSchema,
+  generateProductArticleSchema,
   validateProductSchema
 };

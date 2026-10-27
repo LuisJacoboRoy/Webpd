@@ -18,7 +18,7 @@ import { useFavicon, useBeforeUnloadWarning } from './hooks/usePersistence';
 import { useScrollToTop } from './hooks/useScrollToTop';
 import { BUSINESS_INFO, BUSINESS_LOCATIONS } from './data/seo';
 import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from './data/products';
-import { categoryPath, findProductBySlug, productPath } from './utils/routes';
+import { categoryPath, findProductBySlug, productPath, productSlug as getProductSlug } from './utils/routes';
 
 declare const __BASE_URL__: string;
 
@@ -57,7 +57,10 @@ const LegacySubCategoryRedirect: React.FC = () => {
 const ProductSlugRedirect: React.FC = () => {
   const { productSlug = '' } = useParams<{ productSlug: string }>();
   const product = findProductBySlug(productSlug);
-  return product ? <ProductDetail /> : <Navigate to="/" replace />;
+  if (!product) return <Navigate to="/" replace />;
+  return productSlug === getProductSlug(product)
+    ? <ProductDetail />
+    : <Navigate to={productPath(product)} replace />;
 };
 
 // Loading component para Suspense

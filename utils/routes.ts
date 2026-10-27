@@ -37,4 +37,7 @@ export const productPathForId = (productId: string): string => {
 };
 
 export const findProductBySlug = (slug: string): Product | undefined =>
-  PRODUCTS.find(product => productSlug(product) === slug);
+  PRODUCTS.find(product =>
+    productSlug(product) === slug ||
+    product.legacyNames?.some(name => slugify(name) === slug)
+  );

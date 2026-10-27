@@ -1,0 +1,502 @@
+{
+  "catalog": "catalogo",
+  "description": "Productos que necesitan una imagen de catálogo propia o reemplazar una imagen genérica.",
+  "pendingImages": [
+    {
+      "id": "auto-4",
+      "sku": "87-3403",
+      "name": "Desengrasante automotriz",
+      "categoryId": "automotriz",
+      "subCategoryId": "complementos-auto",
+      "currentPlaceholder": "/img/catalog/generica-web-300x300.png",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "mad-12",
+      "sku": "53-294",
+      "name": "Removedor para madera",
+      "categoryId": "maderas",
+      "subCategoryId": "complementos-madera",
+      "currentPlaceholder": "/img/catalog/generica-web-300x300.png",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "dec-11",
+      "sku": "55-10XX",
+      "name": "Aerosol Esmalte Acrílico",
+      "categoryId": "decorativo",
+      "subCategoryId": "aerosoles-deco",
+      "currentPlaceholder": "/img/catalog/generica-web-300x300.png",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "dec-13",
+      "sku": "101-308X",
+      "name": "Pintura para Tráfico",
+      "categoryId": "decorativo",
+      "subCategoryId": "especiales-deco",
+      "currentPlaceholder": "/img/catalog/generica-web-300x300.png",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-2-1",
+      "sku": "21-802",
+      "name": "Sellador Vinílico de Relleno",
+      "categoryId": "decorativo",
+      "subCategoryId": "selladores-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-2-3",
+      "sku": "21-803",
+      "name": "Econosello Vinílico",
+      "categoryId": "decorativo",
+      "subCategoryId": "selladores-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-2-4",
+      "sku": "17-95X",
+      "name": "Tintas Concentradas Vinílicas",
+      "categoryId": "decorativo",
+      "subCategoryId": "selladores-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-2-5",
+      "sku": "21-805",
+      "name": "Restaura Muros",
+      "categoryId": "decorativo",
+      "subCategoryId": "resanadores-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-2-6",
+      "sku": "21-806",
+      "name": "Repara Grietas",
+      "categoryId": "decorativo",
+      "subCategoryId": "resanadores-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-3-2",
+      "sku": "24-85X",
+      "name": "Imperdiamante Línea Plus (3 y 5 Años)",
+      "categoryId": "decorativo",
+      "subCategoryId": "imper-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-3-4",
+      "sku": "24-86X",
+      "name": "Imperobra Línea Contratista (5 Años)",
+      "categoryId": "decorativo",
+      "subCategoryId": "imper-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-3-5",
+      "sku": "18-980",
+      "name": "Repelente de Agua",
+      "categoryId": "decorativo",
+      "subCategoryId": "imper-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-4-2",
+      "sku": "PE-SR",
+      "name": "Primario Estructural Secado Rápido",
+      "categoryId": "decorativo",
+      "subCategoryId": "primarios-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-4-5",
+      "sku": "41-3xx",
+      "name": "Primario Estructural Primer",
+      "categoryId": "decorativo",
+      "subCategoryId": "primarios-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-4-7",
+      "sku": "CZ-IND",
+      "name": "Primario Industrial Cromato de Zinc",
+      "categoryId": "decorativo",
+      "subCategoryId": "primarios-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-4-8",
+      "sku": "95-1XX",
+      "name": "Diamaxpress",
+      "categoryId": "decorativo",
+      "subCategoryId": "esmaltes-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-5-1",
+      "sku": "104-3120",
+      "name": "Pintura para Cancha de Frontón",
+      "categoryId": "decorativo",
+      "subCategoryId": "especiales-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-5-2",
+      "sku": "103-311x",
+      "name": "Pintura para Cancha de Tenis",
+      "categoryId": "decorativo",
+      "subCategoryId": "especiales-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-5-5",
+      "sku": "101-3091",
+      "name": "Pintura para Guarnición",
+      "categoryId": "decorativo",
+      "subCategoryId": "especiales-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-5-6",
+      "sku": "107-3103",
+      "name": "Primario de Minio",
+      "categoryId": "decorativo",
+      "subCategoryId": "especiales-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-6-2",
+      "sku": "FLORAL-SERIE",
+      "name": "Diamaluz Aerosol Floral",
+      "categoryId": "decorativo",
+      "subCategoryId": "aerosoles-deco",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-7-4",
+      "sku": "50-284K",
+      "name": "Fondo PU Transparente 50",
+      "categoryId": "maderas",
+      "subCategoryId": "poliuretanos-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-7-5",
+      "sku": "50-279K",
+      "name": "Barniz PU Transparente 279 SM",
+      "categoryId": "maderas",
+      "subCategoryId": "poliuretanos-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-7-6",
+      "sku": "50-281K",
+      "name": "Barniz PU Transparente 281 M",
+      "categoryId": "maderas",
+      "subCategoryId": "poliuretanos-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-7-8",
+      "sku": "50-286K",
+      "name": "Fondo PU Blanco 286",
+      "categoryId": "maderas",
+      "subCategoryId": "poliuretanos-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-7-9",
+      "sku": "50-289K",
+      "name": "Fondo PU Chocolate",
+      "categoryId": "maderas",
+      "subCategoryId": "poliuretanos-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-7-10",
+      "sku": "50-290K",
+      "name": "Barniz PU Chocolate Wengue SM",
+      "categoryId": "maderas",
+      "subCategoryId": "poliuretanos-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-7-11",
+      "sku": [
+        "50-291K",
+        "051-292",
+        "050-293K"
+      ],
+      "name": "Fondo Laca Madera (Blanco / Chocolate / Chocolate Wengue)",
+      "categoryId": "maderas",
+      "subCategoryId": "poliuretanos-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-8-2",
+      "sku": "49-259",
+      "name": "Laca Transparente PL 1000",
+      "categoryId": "maderas",
+      "subCategoryId": "nitrocelulosa-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-8-4",
+      "sku": "48-248",
+      "name": "Sellador Pro 27/10",
+      "categoryId": "maderas",
+      "subCategoryId": "nitrocelulosa-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-8-5",
+      "sku": "49-2xx",
+      "name": "Laca para Madera Familia 740 (Brillante 740/10, Mate 742/10, Semi-Mate 743/10)",
+      "categoryId": "maderas",
+      "subCategoryId": "nitrocelulosa-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-8-6",
+      "sku": "54-50x",
+      "name": "Primer Industrial Madera",
+      "categoryId": "maderas",
+      "subCategoryId": "nitrocelulosa-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-8-8",
+      "sku": "47-00x",
+      "name": "Tinta Universal",
+      "categoryId": "maderas",
+      "subCategoryId": "entintados-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-8-10",
+      "sku": "46-2xx",
+      "name": "Barniz Entintado SR (Secado Rápido)",
+      "categoryId": "maderas",
+      "subCategoryId": "entintados-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-8-14",
+      "sku": "53-295",
+      "name": "Resanaveta",
+      "categoryId": "maderas",
+      "subCategoryId": "complementos-madera",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-9-5",
+      "sku": "80-2628",
+      "name": "Resanador D-Prix",
+      "categoryId": "automotriz",
+      "subCategoryId": "resanadores-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-9-6",
+      "sku": "80-2626",
+      "name": "Resanador Light-Prix",
+      "categoryId": "automotriz",
+      "subCategoryId": "resanadores-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-10-1",
+      "sku": "107-3102",
+      "name": "Primario Cromato de Zinc Automotriz",
+      "categoryId": "automotriz",
+      "subCategoryId": "primarios-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-10-4",
+      "sku": "81-2640",
+      "name": "Kit Primario de Relleno 2K PVT",
+      "categoryId": "automotriz",
+      "subCategoryId": "primarios-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-10-5",
+      "sku": "74-2625",
+      "name": "Primario de Relleno 2K Gris HS",
+      "categoryId": "automotriz",
+      "subCategoryId": "primarios-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-10-6",
+      "sku": "73-41xx",
+      "name": "Primario Universal Módico",
+      "categoryId": "automotriz",
+      "subCategoryId": "primarios-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-10-7",
+      "sku": "74-2901",
+      "name": "Primario de Relleno AR-1K Gris",
+      "categoryId": "automotriz",
+      "subCategoryId": "primarios-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-10-9",
+      "sku": "99-3450",
+      "name": "Primario Negro Chasis",
+      "categoryId": "automotriz",
+      "subCategoryId": "primarios-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-11-3",
+      "sku": "62-23xx",
+      "name": "Kolorprix Esmalte Acrílico Alta Productividad",
+      "categoryId": "automotriz",
+      "subCategoryId": "acrilicos-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-11-5",
+      "sku": "63-24xx",
+      "name": "Laca Acrílica Automotriz",
+      "categoryId": "automotriz",
+      "subCategoryId": "acrilicos-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-11-6",
+      "sku": "65-27xx",
+      "name": "Base Color Innovaprix",
+      "categoryId": "automotriz",
+      "subCategoryId": "base-color-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-12-2",
+      "sku": "84-2645",
+      "name": "Kit D-Prix Plus SR Transparente Poliuretano",
+      "categoryId": "automotriz",
+      "subCategoryId": "transparentes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-12-7",
+      "sku": "94-2666",
+      "name": "Promotor de Adherencia en Aerosol",
+      "categoryId": "automotriz",
+      "subCategoryId": "complementos-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-1",
+      "sku": "89-2646",
+      "name": "Thinner Americano P/Primarios 1K",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-2",
+      "sku": "89-2647",
+      "name": "Thinner Acrílico +25 P/Laca Acrílica",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-3",
+      "sku": "89-2648",
+      "name": "Thinner Acrílico -25 P/Laca Acrílica",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-4",
+      "sku": "94-2659",
+      "name": "Reductor Acrílico Alto Brillo +32 P/Esmalte",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-5",
+      "sku": "94-2656",
+      "name": "Reductor Acrílico +25 P/Esmalte",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-6",
+      "sku": "94-2657",
+      "name": "Reductor Acrílico -25 P/Esmalte",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-7",
+      "sku": "94-2660",
+      "name": "Reductor Base Color",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-8",
+      "sku": "94-2661",
+      "name": "Reductor P/Poliuretanos",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-9",
+      "sku": "86-2636",
+      "name": "Catalizador Universal",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-10",
+      "sku": "86-2650",
+      "name": "Catalizador Universal Ultra",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-11",
+      "sku": "94-2662",
+      "name": "Reductor Universal Rápido",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-12",
+      "sku": "94-2663",
+      "name": "Reductor Universal Medio",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    },
+    {
+      "id": "catalog-13-13",
+      "sku": "94-2664",
+      "name": "Reductor Universal Lento",
+      "categoryId": "automotriz",
+      "subCategoryId": "solventes-auto",
+      "status": "pending-image-update"
+    }
+  ]
+}

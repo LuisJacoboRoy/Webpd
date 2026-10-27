@@ -8,6 +8,7 @@ import {
   SEO_KEYWORDS
 } from '../data/seo.ts';
 import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from '../data/products.ts';
+import IMAGE_LICENSING from '../data/image-licensing.json';
 import { CATALOG_PATH, categoryPath, findProductBySlug, productPath } from '../utils/routes.ts';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -48,7 +49,21 @@ function imageSchema(value, name, description) {
     creator: { '@id': `${domain}/#organization` },
     creditText: 'Diamante Pinturas',
     copyrightHolder: { '@id': `${domain}/#organization` },
-    copyrightNotice: '© Diamante Pinturas'
+    copyrightNotice: '© Diamante Pinturas',
+    license: IMAGE_LICENSING.license,
+    acquireLicensePage: IMAGE_LICENSING.acquireLicensePage
+  };
+}
+
+function productIdentifier(sku) {
+  if (!sku) return {};
+  const values = Array.isArray(sku) ? sku : [sku];
+  return {
+    identifier: values.map(value => ({
+      '@type': 'PropertyValue',
+      propertyID: 'SKU',
+      value
+    }))
   };
 }
 
@@ -257,13 +272,23 @@ function pageData(route) {
     const title = product.ogTitle || `${product.name} - Diamante Oaxaca`;
     const description = product.ogDescription || product.description.slice(0, 160);
     const productUrl = pageUrl(route);
+    const productImages = availableImages([product.ogImage, product.image]);
+    const imageObjects = productImages.map(image =>
+      imageSchema(image, product.name, product.ogDescription || product.description)
+    );
+    const articleBody = [
+      product.description,
+      ...Object.entries(product.specifications || {}).map(([label, value]) =>
+        `${label}: ${Array.isArray(value) ? value.join(', ') : value}`
+      )
+    ].join('\n\n');
 
     return {
       title,
       description,
       keywords: [product.tag, product.name, subCategory?.name, category?.name, 'Oaxaca'].filter(Boolean).join(', '),
-      image: availableImages([product.ogImage, product.image])[0] || BUSINESS_INFO.logo,
-      noscriptContent: `<main><article><h1>${escapeHtml(product.name)}</h1><p>${escapeHtml(product.description)}</p>${availableImages([product.image, product.ogImage]).map(image => `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(`${product.name} | Diamante Pinturas`)}" title="${escapeHtml(product.name)}" /><figcaption>© Diamante Pinturas</figcaption></figure>`).join('')}</article></main>`,
+      image: productImages[0] || BUSINESS_INFO.logo,
+      noscriptContent: `<main><article><h1>${escapeHtml(product.name)}</h1><p>${escapeHtml(product.description)}</p>${productImages.map(image => `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(`${product.name} | Diamante Pinturas`)}" title="${escapeHtml(product.name)}" /><figcaption>© Diamante Pinturas</figcaption></figure>`).join('')}</article></main>`,
       schemas: [
         {
           '@type': 'WebPage',
@@ -271,20 +296,31 @@ function pageData(route) {
           name: product.name,
           url: productUrl,
           description: product.description,
-          primaryImageOfPage: imageSchema(
-            availableImages([product.ogImage, product.image])[0],
-            product.name,
-            product.ogDescription || product.description
-          ),
+          ...(imageObjects.length ? { primaryImageOfPage: imageObjects[0] } : {}),
           mainEntity: {
             '@type': 'Thing',
             '@id': `${productUrl}#item`,
             name: product.name,
             url: productUrl,
             description: product.description,
-            image: availableImages([product.ogImage, product.image])
-              .map(value => imageSchema(value, product.name, product.ogDescription || product.description))
+            ...productIdentifier(product.sku),
+            ...(imageObjects.length ? { image: imageObjects } : {})
           }
+        },
+        {
+          '@type': 'Article',
+          '@id': `${productUrl}#article`,
+          headline: product.name,
+          url: productUrl,
+          mainEntityOfPage: { '@id': `${productUrl}#webpage` },
+          about: { '@id': `${productUrl}#item` },
+          articleSection: [category?.name, subCategory?.name].filter(Boolean).join(' > '),
+          description: product.description,
+          articleBody,
+          ...productIdentifier(product.sku),
+          ...(imageObjects.length ? { image: imageObjects } : {}),
+          author: { '@id': `${domain}/#organization` },
+          publisher: { '@id': `${domain}/#organization` }
         },
         breadcrumbSchema(route, product.name, category, subCategory, product)
       ]

@@ -2,6 +2,9 @@
 export interface Product {
   id: string;
   name: string;
+  sku?: string | string[];
+  legacyNames?: string[];
+  specifications?: Record<string, string | string[]>;
   categoryId: string;
   subCategoryId: string;
   description: string;

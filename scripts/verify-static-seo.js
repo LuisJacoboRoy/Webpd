@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from '../data/products.ts';
+import IMAGE_LICENSING from '../data/image-licensing.json';
 import { CATALOG_PATH, categoryPath, findProductBySlug, productPath } from '../utils/routes.ts';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -30,6 +31,17 @@ function containsType(value, type) {
       ? child.some(item => containsType(item, type))
       : containsType(child, type)
   );
+}
+
+function hasAvailableProductImage(product) {
+  return [product.image, product.ogImage].filter(Boolean).some(image => {
+    if (/^https?:\/\//i.test(image)) return true;
+    return fs.existsSync(path.join(
+      scriptDirectory,
+      '../public',
+      image.replace(/^\/+/, '')
+    ));
+  });
 }
 
 for (const route of routes) {
@@ -88,19 +100,31 @@ for (const route of routes) {
       fail(`${route}: falta la descripción estructurada del elemento del catálogo`);
     }
     if (route.startsWith('/producto/')) {
-      const productImageObjects = JSON.stringify(schema).match(/"@type":"ImageObject"/g) || [];
-      if (!productImageObjects.length ||
-          !JSON.stringify(schema).includes('"copyrightNotice":"© Diamante Pinturas"')) {
-        fail(`${route}: faltan metadatos de imagen y atribución de Diamante Pinturas`);
+      const product = findProductBySlug(route.slice('/producto/'.length));
+      const article = graph.find(item => item['@type'] === 'Article');
+      if (!article) fail(`${route}: falta el schema Article`);
+      if (product && hasAvailableProductImage(product)) {
+        const images = Array.isArray(article?.image) ? article.image : [article?.image];
+        if (!images.some(image =>
+          image?.['@type'] === 'ImageObject' &&
+          image.license === IMAGE_LICENSING.license &&
+          image.acquireLicensePage === IMAGE_LICENSING.acquireLicensePage &&
+          image.copyrightNotice === '© Diamante Pinturas'
+        )) {
+          fail(`${route}: faltan metadatos de licencia y atribución en la imagen`);
+        }
+      } else if (article?.image) {
+        fail(`${route}: asigna una imagen al schema Article sin una imagen de producto disponible`);
       }
       if (!html.includes('og:image:alt') || !html.includes('twitter:image:alt')) {
         fail(`${route}: faltan metadatos alt para la imagen de compartir`);
       }
-      const productSlug = route.slice('/producto/'.length);
-      const product = findProductBySlug(productSlug);
       const noscript = html.match(/<noscript>([\s\S]*?)<\/noscript>/i)?.[1] || '';
-      if (!product || !noscript.includes('<h1>') || !noscript.includes(product.name) || !noscript.includes('<img ')) {
-        fail(`${route}: falta texto e imagen accesibles en el HTML prerenderizado`);
+      if (!product || !noscript.includes('<h1>') || !noscript.includes(product.name) || !noscript.includes('<p>')) {
+        fail(`${route}: falta texto accesible en el HTML prerenderizado`);
+      }
+      if (product && hasAvailableProductImage(product) && !noscript.includes('<img ')) {
+        fail(`${route}: falta la imagen disponible en el HTML prerenderizado`);
       }
     }
     if ((route === '/catalogo' || route.startsWith('/categoria/')) && !types.includes('CollectionPage')) {
@@ -181,12 +205,17 @@ if (!fs.existsSync(imageSitemapPath)) {
   const productEntries = imagePageEntries.filter(entry =>
     entry.includes(`<loc>${domain}/producto/`)
   );
+  const expectedProductImageUrls = PRODUCTS
+    .filter(hasAvailableProductImage)
+    .map(product => `${domain}${productPath(product)}`);
   if (!imageSitemap.includes('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"')) {
     fail('sitemap-images.xml no declara el namespace de Google Images');
   }
-  if (productEntries.length !== PRODUCTS.length ||
-      productEntries.some(entry => !entry.includes('<image:image>'))) {
-    fail('sitemap-images.xml no asocia una imagen con cada ficha de producto');
+  if (productEntries.length !== expectedProductImageUrls.length ||
+      expectedProductImageUrls.some(url =>
+        !productEntries.some(entry => entry.includes(`<loc>${url}</loc>`) && entry.includes('<image:image>'))
+      )) {
+    fail('sitemap-images.xml no coincide con las fichas que tienen imágenes disponibles');
   }
   if (imagePageEntries.some(entry => !entry.includes('<image:title>') || !entry.includes('<image:caption>'))) {
     fail('sitemap-images.xml contiene imágenes sin título o descripción');

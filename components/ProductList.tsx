@@ -40,6 +40,11 @@ const ProductCard: React.FC<{ product: Product, subCategoryId: string | undefine
         <Link to={productPath(p)}>
           <h3 className="text-xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{p.name}</h3>
         </Link>
+        {p.sku && (
+          <p className="mt-1 text-xs font-semibold text-slate-400">
+            SKU: {Array.isArray(p.sku) ? p.sku.join(', ') : p.sku}
+          </p>
+        )}
         <p className="text-slate-500 text-sm mt-3 line-clamp-2 leading-relaxed flex-grow">{p.description}</p>
         
         <div className="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between">
@@ -120,7 +125,20 @@ const ProductList: React.FC = () => {
         'name': p.name,
         'url': `${BUSINESS_INFO.url}${productPath(p)}`,
         'image': p.ogImage || p.image,
-        'description': p.description.substring(0, 160)
+        'description': p.description.substring(0, 160),
+        ...(p.sku ? {
+          'identifier': Array.isArray(p.sku)
+            ? p.sku.map(value => ({
+              '@type': 'PropertyValue',
+              'propertyID': 'SKU',
+              'value': value
+            }))
+            : {
+              '@type': 'PropertyValue',
+              'propertyID': 'SKU',
+              'value': p.sku
+            }
+        } : {})
       }
     }))
   });
