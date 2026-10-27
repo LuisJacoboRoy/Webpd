@@ -19,8 +19,8 @@ const Footer: React.FC = () => {
 
           <div className="text-left max-w-sm">
         <img
-              src="./public\img\logo.png"
-              alt="logo footer"
+              src="/img/logo.png"
+              alt="Pinturas Diamante"
               className="h-[80px] w-auto max-w-full object-contain"
               loading="lazy"
             />
