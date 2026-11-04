@@ -1,6 +1,6 @@
 
 import React, { useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { HelmetProvider, Helmet } from '@dr.pogodin/react-helmet';
 import PaginaResena from './components/PaginaResena';
 import { ReviewRedirectProvider } from './context/ReviewRedirectContext';
@@ -19,6 +19,7 @@ import { useScrollToTop } from './hooks/useScrollToTop';
 import { BUSINESS_INFO, BUSINESS_LOCATIONS } from './data/seo';
 import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from './data/products';
 import { categoryPath, findProductBySlug, productPath, productSlug as getProductSlug } from './utils/routes';
+import Admin from './components/admin/Admin';
 
 declare const __BASE_URL__: string;
 
@@ -70,7 +71,7 @@ const LoadingComponent = () => (
   </div>
 );
 
-const AppContent: React.FC = () => {
+const SiteContent: React.FC = () => {
   // Scroll automático al inicio cuando cambia la ruta
   useScrollToTop();
 
@@ -177,6 +178,12 @@ const AppContent: React.FC = () => {
       <CartDrawer />
     </div>
   );
+};
+
+const AppContent: React.FC = () => {
+  const location = useLocation();
+  const isAdminRoute = location.pathname === '/admin' || location.pathname.startsWith('/admin/');
+  return isAdminRoute ? <Admin /> : <SiteContent />;
 };
 
 const App: React.FC = () => {
