@@ -3,27 +3,19 @@ import { createElement as h } from 'react';
 import { getSupabase } from '../server/supabase.js';
 import { getBearerToken, verifyAdminToken } from '../server/http.js';
 
-export const config = { runtime: 'edge' };
-
 const BASE_IMAGE_URL = 'https://raw.githubusercontent.com/LuisJacoboRoy/Webpd/main/public/img/pubs/bannerdp.png';
 
-export default async function handler(request) {
-  const session = await verifyAdminToken(getBearerToken(request));
+export default async function handler(req, res) {
+  const session = await verifyAdminToken(getBearerToken(req));
   if (!session || session.forzarCambio) {
-    return new Response(JSON.stringify({ error: 'Sesión inválida o vencida' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(401).json({ error: 'Sesión inválida o vencida' });
   }
 
-  const url = new URL(request.url);
+  const url = new URL(req.url, `https://${req.headers.host || 'localhost'}`);
   const id = Number(url.searchParams.get('id'));
   const day = Number(url.searchParams.get('dia'));
   if ((!Number.isInteger(id) || id < 1) && (!Number.isInteger(day) || day < 1 || day > 10)) {
-    return new Response(JSON.stringify({ error: 'Se requiere un id o un día de campaña válido' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(400).json({ error: 'Se requiere un id o un día de campaña válido' });
   }
 
   try {
@@ -37,10 +29,7 @@ export default async function handler(request) {
     const { data: publication, error } = await query.maybeSingle();
     if (error) throw error;
     if (!publication) {
-      return new Response(JSON.stringify({ error: 'Publicación no encontrada' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return res.status(404).json({ error: 'Publicación no encontrada' });
     }
 
     const text = (url.searchParams.get('texto_imagen') || publication.texto_imagen).slice(0, 120);
@@ -52,7 +41,7 @@ export default async function handler(request) {
       ? requestedColor
       : storedColor;
 
-    return new ImageResponse(
+    const image = new ImageResponse(
       h('div', {
         style: {
           display: 'flex',
@@ -90,11 +79,13 @@ export default async function handler(request) {
       }),
       { width: 1080, height: 1080 }
     );
+    const png = Buffer.from(await image.arrayBuffer());
+
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader('Cache-Control', 'private, no-store');
+    return res.status(200).send(png);
   } catch (error) {
     console.error('Image generation failed:', error);
-    return new Response(JSON.stringify({ error: 'No se pudo generar la imagen' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(500).json({ error: 'No se pudo generar la imagen' });
   }
 }
