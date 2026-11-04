@@ -9,6 +9,7 @@ type Props = {
 
 type PublicationsResponse = { publicaciones: Publication[] };
 type TextResponse = { texto_imagen: string; copy_facebook: string };
+type EditorialSettings = { custom_instructions: string; updated_at: string };
 type ImagePreviewProps = {
   token: string;
   publication: Publication;
@@ -71,13 +72,39 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
   const [dirtyIds, setDirtyIds] = useState<Set<number>>(() => new Set());
   const [busy, setBusy] = useState(false);
   const [generating, setGenerating] = useState(false);
+  const [imagePrompt, setImagePrompt] = useState('');
+  const [generatedImageUrl, setGeneratedImageUrl] = useState('');
+  const [generatingImage, setGeneratingImage] = useState(false);
+  const [imageGenerationError, setImageGenerationError] = useState('');
+  const [imageGenerationNotice, setImageGenerationNotice] = useState('');
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
+  const [editorialInstructions, setEditorialInstructions] = useState('');
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
+  const [settingsLoading, setSettingsLoading] = useState(true);
+  const [settingsSaving, setSettingsSaving] = useState(false);
+  const [settingsDirty, setSettingsDirty] = useState(false);
+  const [settingsError, setSettingsError] = useState('');
+  const [settingsNotice, setSettingsNotice] = useState('');
 
   const selected = useMemo(
     () => batch.find(publication => publication.id === selectedId) || null,
     [batch, selectedId]
   );
+
+  useEffect(() => {
+    if (!selected) return;
+    setImagePrompt(
+      `Fotografía publicitaria realista en Oaxaca sobre ${(selected.copy_facebook || selected.texto_imagen).slice(0, 1400)}. Escena auténtica de aplicación de pintura, composición profesional y luz natural.`
+    );
+    setImageGenerationError('');
+    setImageGenerationNotice('');
+    setGeneratedImageUrl('');
+  }, [selected?.id]);
+
+  useEffect(() => () => {
+    if (generatedImageUrl) URL.revokeObjectURL(generatedImageUrl);
+  }, [generatedImageUrl]);
 
   const handleError = useCallback((requestError: unknown) => {
     if (requestError instanceof AdminApiError && requestError.status === 401) {
@@ -121,6 +148,30 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
     });
     return () => { active = false; };
   }, [token, handleError]);
+
+  useEffect(() => {
+    let active = true;
+    adminApi<{ settings: EditorialSettings }>('/api/admin-settings', token)
+      .then(({ settings }) => {
+        if (!active) return;
+        setEditorialInstructions(settings.custom_instructions);
+        setSettingsLoaded(true);
+      })
+      .catch(requestError => {
+        if (!active) return;
+        if (requestError instanceof AdminApiError && requestError.status === 401) {
+          onSessionExpired();
+          return;
+        }
+        setSettingsError(requestError instanceof Error
+          ? requestError.message
+          : 'No se pudo cargar la configuración editorial.');
+      })
+      .finally(() => {
+        if (active) setSettingsLoading(false);
+      });
+    return () => { active = false; };
+  }, [token, onSessionExpired]);
 
   function updateSelected(changes: Partial<Publication>) {
     if (!selected) return;
@@ -183,6 +234,72 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
       handleError(requestError);
     } finally {
       setGenerating(false);
+    }
+  }
+
+  async function generateImage(event: FormEvent) {
+    event.preventDefault();
+    setImageGenerationError('');
+    setImageGenerationNotice('');
+    setGeneratingImage(true);
+    try {
+      const response = await fetch('/api/generar-fondo', {
+        method: 'POST',
+        headers: {
+          Authorization: `******`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: imagePrompt }),
+      });
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        if (response.status === 401) {
+          onSessionExpired();
+          return;
+        }
+        throw new Error(typeof payload.error === 'string'
+          ? payload.error
+          : 'No se pudo generar la imagen');
+      }
+
+      const imageBlob = await response.blob();
+      if (!imageBlob.type.startsWith('image/')) {
+        throw new Error('Gemini no devolvió un archivo de imagen válido');
+      }
+      setGeneratedImageUrl(URL.createObjectURL(imageBlob));
+      setImageGenerationNotice(`Imagen generada con ${response.headers.get('X-Image-Model') || 'Gemini'}.`);
+    } catch (requestError) {
+      setImageGenerationError(requestError instanceof Error
+        ? requestError.message
+        : 'No se pudo generar la imagen');
+    } finally {
+      setGeneratingImage(false);
+    }
+  }
+
+  async function saveEditorialSettings(event: FormEvent) {
+    event.preventDefault();
+    setSettingsError('');
+    setSettingsNotice('');
+    setSettingsSaving(true);
+    try {
+      const result = await adminApi<{ settings: EditorialSettings }>('/api/admin-settings', token, {
+        method: 'POST',
+        body: JSON.stringify({ custom_instructions: editorialInstructions }),
+      });
+      setEditorialInstructions(result.settings.custom_instructions);
+      setSettingsDirty(false);
+      setSettingsNotice('Instrucciones guardadas. Se aplicarán a las próximas redacciones.');
+    } catch (requestError) {
+      if (requestError instanceof AdminApiError && requestError.status === 401) {
+        onSessionExpired();
+      } else {
+        setSettingsError(requestError instanceof Error
+          ? requestError.message
+          : 'No se pudo guardar la configuración editorial.');
+      }
+    } finally {
+      setSettingsSaving(false);
     }
   }
 
@@ -342,6 +459,119 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
               )}
             </div>
           )}
+        </section>
+
+        <section className="admin-panel" aria-labelledby="image-generator-title">
+          <div className="admin-panel-title">
+            <div>
+              <h2 id="image-generator-title">Generador de imágenes con Gemini</h2>
+              <p>Genera una escena visual desde una descripción. Cada generación consume cuota del proyecto de Google.</p>
+            </div>
+          </div>
+          <form className="admin-editor" onSubmit={generateImage}>
+            <label htmlFor="image-generation-prompt">
+              Describe la imagen
+              <textarea
+                id="image-generation-prompt"
+                name="image_prompt"
+                rows={4}
+                maxLength={2000}
+                required
+                value={imagePrompt}
+                onChange={event => setImagePrompt(event.target.value)}
+                disabled={!selected || generatingImage}
+              />
+            </label>
+            <p className="admin-muted">
+              La clave se usa únicamente en el servidor. Esta primera versión genera una imagen independiente: no la guarda en Supabase ni incorpora automáticamente el PNG del catálogo.
+            </p>
+            {imageGenerationError && <p className="admin-error" role="alert">{imageGenerationError}</p>}
+            {imageGenerationNotice && <p className="admin-success" role="status">{imageGenerationNotice}</p>}
+            <div className="admin-editor-actions">
+              <button
+                className="admin-primary-button"
+                type="submit"
+                disabled={!selected || !imagePrompt.trim() || generatingImage}
+              >
+                {generatingImage ? 'Generando imagen…' : 'Generar imagen con Gemini'}
+              </button>
+              {generatedImageUrl && (
+                <a
+                  className="admin-secondary-button"
+                  href={generatedImageUrl}
+                  download={`pinturas-diamante-gemini-${selected?.id || 'imagen'}.png`}
+                >
+                  Descargar imagen
+                </a>
+              )}
+            </div>
+            {generatedImageUrl && (
+              <figure className="admin-generated-image">
+                <img src={generatedImageUrl} alt="Imagen generada por Gemini para revisión" />
+                <figcaption>Vista previa generada. Revísala antes de usarla en una publicación.</figcaption>
+              </figure>
+            )}
+          </form>
+        </section>
+
+        <section className="admin-panel" aria-labelledby="editorial-settings-title">
+          <div className="admin-panel-title">
+            <div>
+              <h2 id="editorial-settings-title">Instrucciones de Gemini</h2>
+              <p>Define el tono y las pautas permanentes para redactar textos.</p>
+            </div>
+            {settingsLoading && <span className="admin-muted">Cargando…</span>}
+          </div>
+          {settingsError && <p className="admin-error" role="alert">{settingsError}</p>}
+          {settingsNotice && <p className="admin-success" role="status">{settingsNotice}</p>}
+          <form className="admin-editor" onSubmit={saveEditorialSettings}>
+            <label htmlFor="editorial-instructions">
+              Instrucciones adicionales
+              <textarea
+                id="editorial-instructions"
+                name="custom_instructions"
+                rows={8}
+                maxLength={8000}
+                aria-describedby="editorial-instructions-help editorial-instructions-count"
+                value={editorialInstructions}
+                onChange={event => {
+                  setEditorialInstructions(event.target.value);
+                  setSettingsDirty(true);
+                  setSettingsNotice('');
+                }}
+                disabled={!settingsLoaded || settingsSaving}
+              />
+            </label>
+            <div className="admin-panel-title">
+              <p id="editorial-instructions-help">
+                Se combina con las reglas fijas de formato y veracidad. Por ahora afecta el texto generado; no activa la selección de productos, imágenes, Stories ni publicaciones web o Meta.
+              </p>
+              <span id="editorial-instructions-count" className="admin-muted">
+                {editorialInstructions.length}/8000
+              </span>
+            </div>
+            <div className="admin-editor-actions">
+              <button
+                className="admin-secondary-button"
+                type="button"
+                onClick={() => {
+                  setEditorialInstructions('');
+                  setSettingsDirty(true);
+                  setSettingsNotice('');
+                }}
+                disabled={!settingsLoaded || settingsSaving || editorialInstructions.length === 0}
+              >
+                Quitar instrucciones adicionales
+              </button>
+              <button
+                className="admin-primary-button"
+                type="submit"
+                disabled={!settingsLoaded || settingsSaving || !settingsDirty}
+              >
+                {settingsSaving ? 'Guardando…' : 'Guardar instrucciones'}
+              </button>
+            </div>
+          </form>
         </section>
 
         <section className="admin-panel admin-history-panel">

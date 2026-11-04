@@ -408,6 +408,32 @@
   line-height: 1.5;
 }
 
+.admin-generated-image {
+  display: grid;
+  justify-items: start;
+  gap: .55rem;
+  margin: 0;
+}
+
+.admin-generated-image img {
+  display: block;
+  width: min(100%, 36rem);
+  max-height: 42rem;
+  border: 1px solid #e1ece3;
+  border-radius: .8rem;
+  object-fit: contain;
+  background: #f5faf6;
+}
+
+.admin-generated-image figcaption {
+  color: #647568;
+  font-size: .82rem;
+}
+
+.admin-editor-actions > a {
+  text-decoration: none;
+}
+
 .admin-editor-actions {
   flex-wrap: wrap;
 }

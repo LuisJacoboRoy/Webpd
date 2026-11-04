@@ -1,4 +1,9 @@
 import { authorizeAdmin, jsonResponse, parseJsonBody, requirePost } from '../server/http.js';
+import {
+  buildEditorialSystemInstruction,
+  getEditorialSettings,
+  isMissingEditorialSettingsTable,
+} from '../server/editorialSettings.js';
 
 const MODEL = 'gemini-2.5-flash';
 
@@ -14,6 +19,7 @@ export default async function handler(req, res) {
 
     const body = parseJsonBody(req);
     const topic = typeof body.tema === 'string' ? body.tema.trim().slice(0, 2000) : '';
+    const editorialSettings = await getEditorialSettings();
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`,
       {
@@ -22,7 +28,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           system_instruction: {
             parts: [{
-              text: 'Eres redactor de Pinturas Diamante en Oaxaca. Devuelve únicamente JSON válido con las propiedades texto_imagen y copy_facebook. texto_imagen debe ser una frase clara de máximo 5 palabras. copy_facebook debe tener párrafos naturales, sin engagement bait, sin pedir likes, comentarios, etiquetas o compartidos, y terminar con 3 a 5 hashtags contextuales. No inventes precios, promociones, características técnicas ni disponibilidad.',
+              text: buildEditorialSystemInstruction(editorialSettings.custom_instructions),
             }],
           },
           contents: [{
@@ -78,6 +84,11 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error('Text generation failed:', error);
+    if (isMissingEditorialSettingsTable(error)) {
+      return jsonResponse(res, 503, {
+        error: 'Aplica la migración 20261104000000_admin_editorial_settings.sql en Supabase antes de generar contenido.',
+      });
+    }
     return jsonResponse(res, 500, { error: 'No se pudo generar el contenido' });
   }
 }
