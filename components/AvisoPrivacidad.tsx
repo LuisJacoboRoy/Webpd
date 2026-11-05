@@ -2,6 +2,8 @@ import React from 'react';
 import { useMetaTags } from '../hooks/useMetaTags';
 import { BUSINESS_INFO, BUSINESS_LOCATIONS } from '../data/seo';
 
+const PRIVACY_CONTACT_EMAIL = 'killerpollo22@msn.com';
+
 const AvisoPrivacidad: React.FC = () => {
   useMetaTags({
     title: 'Aviso de privacidad | Pinturas Diamante',
@@ -28,7 +30,7 @@ const AvisoPrivacidad: React.FC = () => {
             Pinturas Diamante (en adelante, “Pinturas Diamante”) es responsable del tratamiento de los datos
             personales que recaba a través de <a className="text-blue-700 underline" href={BUSINESS_INFO.url}>{BUSINESS_INFO.url}</a>.
             Para asuntos de privacidad puedes contactarnos en{' '}
-            <a className="text-blue-700 underline" href={`mailto:${BUSINESS_INFO.email}`}>{BUSINESS_INFO.email}</a>
+            <a className="text-blue-700 underline" href={`mailto:${PRIVACY_CONTACT_EMAIL}`}>{PRIVACY_CONTACT_EMAIL}</a>
             {' '}o en nuestras sucursales:
           </p>
           <ul className="mt-3 list-disc space-y-2 pl-6">
@@ -120,8 +122,8 @@ const AvisoPrivacidad: React.FC = () => {
           <p className="mt-2">
             Puedes solicitar acceso, rectificación, cancelación u oposición al tratamiento de tus datos, así como
             limitar su uso o divulgación, escribiendo a{' '}
-            <a className="text-blue-700 underline" href={`mailto:${BUSINESS_INFO.email}?subject=Privacidad%20de%20datos`}>
-              {BUSINESS_INFO.email}
+            <a className="text-blue-700 underline" href={`mailto:${PRIVACY_CONTACT_EMAIL}?subject=Privacidad%20de%20datos`}>
+              {PRIVACY_CONTACT_EMAIL}
             </a>
             {' '}con el asunto “Privacidad de datos”. Describe tu solicitud e incluye datos para que podamos
             identificar la información correspondiente; podremos solicitar información adicional para verificar
