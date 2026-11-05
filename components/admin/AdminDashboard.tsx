@@ -26,6 +26,22 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ token, publication }) => {
     setImageUrl('');
 
     const timeout = window.setTimeout(async () => {
+      if (publication.imagen_generada_path) {
+        try {
+          const result = await adminApi<{ previewUrl: string }>(
+            `/api/imagen-publicacion?id=${publication.id}`,
+            token,
+            { signal: controller.signal }
+          );
+          setImageUrl(result.previewUrl);
+        } catch (error) {
+          if (!controller.signal.aborted) {
+            setImageError(error instanceof Error ? error.message : 'Error al cargar la imagen guardada');
+          }
+        }
+        return;
+      }
+
       const params = new URLSearchParams({
         texto_imagen: publication.texto_imagen,
         color_fondo: publication.color_fondo,
@@ -53,7 +69,14 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ token, publication }) => {
       controller.abort();
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
-  }, [publication.id, publication.dia_campana, publication.texto_imagen, publication.color_fondo, token]);
+  }, [
+    publication.id,
+    publication.dia_campana,
+    publication.texto_imagen,
+    publication.color_fondo,
+    publication.imagen_generada_path,
+    token,
+  ]);
 
   return (
     <div className="admin-preview">
@@ -74,6 +97,7 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
   const [generating, setGenerating] = useState(false);
   const [imagePrompt, setImagePrompt] = useState('');
   const [generatedImageUrl, setGeneratedImageUrl] = useState('');
+  const [loadingStoredImage, setLoadingStoredImage] = useState(false);
   const [generatingImage, setGeneratingImage] = useState(false);
   const [imageGenerationError, setImageGenerationError] = useState('');
   const [imageGenerationNotice, setImageGenerationNotice] = useState('');
@@ -102,9 +126,43 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
     setGeneratedImageUrl('');
   }, [selected?.id]);
 
-  useEffect(() => () => {
-    if (generatedImageUrl) URL.revokeObjectURL(generatedImageUrl);
-  }, [generatedImageUrl]);
+  useEffect(() => {
+    let active = true;
+    const controller = new AbortController();
+    setGeneratedImageUrl('');
+    setLoadingStoredImage(Boolean(selected?.imagen_generada_path));
+
+    if (!selected?.imagen_generada_path) {
+      return () => {
+        active = false;
+        controller.abort();
+      };
+    }
+
+    adminApi<{ previewUrl: string }>(
+      `/api/imagen-publicacion?id=${selected.id}`,
+      token,
+      { signal: controller.signal }
+    ).then(({ previewUrl }) => {
+      if (active) setGeneratedImageUrl(previewUrl);
+    }).catch(requestError => {
+      if (!active || controller.signal.aborted) return;
+      if (requestError instanceof AdminApiError && requestError.status === 401) {
+        onSessionExpired();
+      } else {
+        setImageGenerationError(requestError instanceof Error
+          ? requestError.message
+          : 'No se pudo cargar la imagen guardada.');
+      }
+    }).finally(() => {
+      if (active) setLoadingStoredImage(false);
+    });
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [selected?.id, selected?.imagen_generada_path, token, onSessionExpired]);
 
   const handleError = useCallback((requestError: unknown) => {
     if (requestError instanceof AdminApiError && requestError.status === 401) {
@@ -239,36 +297,30 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
 
   async function generateImage(event: FormEvent) {
     event.preventDefault();
+    if (!selected) return;
     setImageGenerationError('');
     setImageGenerationNotice('');
     setGeneratingImage(true);
     try {
-      const response = await fetch('/api/generar-fondo', {
+      const result = await adminApi<{
+        publication: Publication;
+        previewUrl: string | null;
+        warning?: string;
+      }>('/api/generar-fondo', token, {
         method: 'POST',
-        headers: {
-          Authorization: `******`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: imagePrompt }),
+        body: JSON.stringify({ prompt: imagePrompt, publicationId: selected.id }),
       });
-      if (!response.ok) {
-        const payload = await response.json().catch(() => ({}));
-        if (response.status === 401) {
-          onSessionExpired();
-          return;
-        }
-        throw new Error(typeof payload.error === 'string'
-          ? payload.error
-          : 'No se pudo generar la imagen');
-      }
-
-      const imageBlob = await response.blob();
-      if (!imageBlob.type.startsWith('image/')) {
-        throw new Error('Gemini no devolvió un archivo de imagen válido');
-      }
-      setGeneratedImageUrl(URL.createObjectURL(imageBlob));
-      setImageGenerationNotice(`Imagen generada con ${response.headers.get('X-Image-Model') || 'Gemini'}.`);
+      setBatch(current => current.map(publication =>
+        publication.id === result.publication.id ? result.publication : publication
+      ));
+      setGeneratedImageUrl(result.previewUrl || '');
+      setImageGenerationNotice(result.warning ||
+        `Imagen generada con ${result.publication.imagen_generada_modelo} y guardada en Supabase.`);
     } catch (requestError) {
+      if (requestError instanceof AdminApiError && requestError.status === 401) {
+        onSessionExpired();
+        return;
+      }
       setImageGenerationError(requestError instanceof Error
         ? requestError.message
         : 'No se pudo generar la imagen');
@@ -483,15 +535,20 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
               />
             </label>
             <p className="admin-muted">
-              La clave se usa únicamente en el servidor. Esta primera versión genera una imagen independiente: no la guarda en Supabase ni incorpora automáticamente el PNG del catálogo.
+              Las imágenes generadas se guardan en un bucket privado de Supabase y vuelven a cargarse al abrir la publicación. Aún no se componen con el PNG del producto.
             </p>
+            {selected?.estado === 'aprobado' && (
+              <p className="admin-muted">
+                Desaprueba esta publicación antes de regenerar su imagen; al cambiarla será necesario revisarla y aprobarla de nuevo.
+              </p>
+            )}
             {imageGenerationError && <p className="admin-error" role="alert">{imageGenerationError}</p>}
             {imageGenerationNotice && <p className="admin-success" role="status">{imageGenerationNotice}</p>}
             <div className="admin-editor-actions">
               <button
                 className="admin-primary-button"
                 type="submit"
-                disabled={!selected || !imagePrompt.trim() || generatingImage}
+                disabled={!selected || selected.estado === 'aprobado' || !imagePrompt.trim() || generatingImage}
               >
                 {generatingImage ? 'Generando imagen…' : 'Generar imagen con Gemini'}
               </button>
@@ -499,18 +556,20 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
                 <a
                   className="admin-secondary-button"
                   href={generatedImageUrl}
-                  download={`pinturas-diamante-gemini-${selected?.id || 'imagen'}.png`}
+                  target="_blank"
+                  rel="noreferrer"
                 >
-                  Descargar imagen
+                  Abrir imagen guardada
                 </a>
               )}
             </div>
             {generatedImageUrl && (
               <figure className="admin-generated-image">
                 <img src={generatedImageUrl} alt="Imagen generada por Gemini para revisión" />
-                <figcaption>Vista previa generada. Revísala antes de usarla en una publicación.</figcaption>
+                <figcaption>Imagen guardada en Supabase. Revísala antes de usarla en una publicación.</figcaption>
               </figure>
             )}
+            {loadingStoredImage && <p className="admin-muted" role="status">Cargando imagen guardada…</p>}
           </form>
         </section>
 

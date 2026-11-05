@@ -36,4 +36,7 @@ export type Publication = {
   fecha_programada: string | null;
   fecha_publicacion: string | null;
   fb_post_id: string | null;
+  imagen_generada_path: string | null;
+  imagen_generada_prompt: string | null;
+  imagen_generada_modelo: string | null;
 };

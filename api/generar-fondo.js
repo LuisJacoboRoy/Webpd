@@ -1,11 +1,24 @@
 import { authorizeAdmin, jsonResponse, parseJsonBody, requirePost } from '../server/http.js';
+import { getSupabase } from '../server/supabase.js';
 
 const MODEL = 'gemini-3.1-flash-image';
 const MAX_PROMPT_LENGTH = 2000;
 const MAX_IMAGE_BYTES = 12 * 1024 * 1024;
 const IMAGE_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp']);
+const STORAGE_BUCKET = 'admin-generated-images';
 
 export const config = { maxDuration: 60 };
+
+function getImageExtension(mimeType) {
+  if (mimeType === 'image/jpeg') return 'jpg';
+  if (mimeType === 'image/webp') return 'webp';
+  return 'png';
+}
+
+function isMissingImageStorageSetup(error) {
+  return ['PGRST204', '42703', '42P01'].includes(error?.code) ||
+    /bucket not found/i.test(error?.message || '');
+}
 
 export default async function handler(req, res) {
   if (!requirePost(req, res)) return;
@@ -21,9 +34,31 @@ export default async function handler(req, res) {
 
     const body = parseJsonBody(req);
     const prompt = typeof body.prompt === 'string' ? body.prompt.trim() : '';
+    const publicationId = Number(body.publicationId);
     if (!prompt || prompt.length > MAX_PROMPT_LENGTH) {
       return jsonResponse(res, 400, {
         error: `Describe la imagen en un máximo de ${MAX_PROMPT_LENGTH} caracteres`,
+      });
+    }
+    if (!Number.isInteger(publicationId) || publicationId < 1) {
+      return jsonResponse(res, 400, { error: 'Selecciona una publicación válida para guardar la imagen' });
+    }
+
+    const supabase = getSupabase();
+    const { data: publication, error: publicationError } = await supabase
+      .from('publicaciones')
+      .select('id, dia_campana, estado, imagen_generada_path')
+      .eq('id', publicationId)
+      .gte('dia_campana', 1)
+      .lte('dia_campana', 10)
+      .maybeSingle();
+    if (publicationError) throw publicationError;
+    if (!publication) {
+      return jsonResponse(res, 404, { error: 'La publicación no pertenece al lote activo' });
+    }
+    if (publication.estado === 'aprobado') {
+      return jsonResponse(res, 409, {
+        error: 'Desaprueba la publicación antes de reemplazar su imagen para que pueda revisarse de nuevo',
       });
     }
 
@@ -94,16 +129,76 @@ export default async function handler(req, res) {
       return jsonResponse(res, 502, { error: 'La imagen generada excede el tamaño permitido' });
     }
 
-    res.setHeader('Content-Type', mimeType);
-    res.setHeader('Content-Length', image.length);
-    res.setHeader('Cache-Control', 'private, no-store');
-    res.setHeader('X-Image-Model', MODEL);
-    return res.status(200).send(image);
+    const storagePath = `${publicationId}/${crypto.randomUUID()}.${getImageExtension(mimeType)}`;
+    const { error: uploadError } = await supabase.storage
+      .from(STORAGE_BUCKET)
+      .upload(storagePath, image, {
+        contentType: mimeType,
+        cacheControl: '3600',
+      });
+    if (uploadError) throw uploadError;
+
+    const { data: savedPublication, error: saveError } = await supabase
+      .from('publicaciones')
+      .update({
+        imagen_generada_path: storagePath,
+        imagen_generada_prompt: prompt,
+        imagen_generada_modelo: MODEL,
+      })
+      .eq('id', publicationId)
+      .eq('estado', 'borrador')
+      .gte('dia_campana', 1)
+      .lte('dia_campana', 10)
+      .select('id, dia_campana, estado, imagen_generada_path, imagen_generada_prompt, imagen_generada_modelo')
+      .maybeSingle();
+    if (saveError || !savedPublication) {
+      const { error: cleanupError } = await supabase.storage
+        .from(STORAGE_BUCKET)
+        .remove([storagePath]);
+      if (cleanupError) {
+        console.error('Could not remove unlinked generated image:', cleanupError);
+      }
+      if (saveError) throw saveError;
+      return jsonResponse(res, 409, {
+        error: 'La publicación cambió durante la generación; no se reemplazó la imagen guardada. Actualiza el panel e inténtalo de nuevo.',
+      });
+    }
+
+    if (publication.imagen_generada_path && publication.imagen_generada_path !== storagePath) {
+      const { error: removeError } = await supabase.storage
+        .from(STORAGE_BUCKET)
+        .remove([publication.imagen_generada_path]);
+      if (removeError) {
+        console.error('New image saved but previous image cleanup failed:', removeError);
+      }
+    }
+
+    const { data: signedImage, error: signedUrlError } = await supabase.storage
+      .from(STORAGE_BUCKET)
+      .createSignedUrl(storagePath, 60 * 60);
+    if (signedUrlError) {
+      console.error('Generated image saved but signed preview URL failed:', signedUrlError);
+      return jsonResponse(res, 200, {
+        publication: savedPublication,
+        previewUrl: null,
+        warning: 'La imagen se guardó, pero no se pudo cargar la vista previa. Vuelve a abrir la publicación para intentar verla.',
+      });
+    }
+
+    return jsonResponse(res, 200, {
+      publication: savedPublication,
+      previewUrl: signedImage.signedUrl,
+    });
   } catch (error) {
     if (error?.name === 'TimeoutError' || error?.name === 'AbortError') {
       return jsonResponse(res, 504, { error: 'Gemini tardó demasiado en generar la imagen; vuelve a intentarlo' });
     }
     console.error('Gemini image generation failed:', error);
+    if (isMissingImageStorageSetup(error)) {
+      return jsonResponse(res, 503, {
+        error: 'Aplica la migración 20261104160000_generated_image_storage.sql en Supabase antes de generar imágenes.',
+      });
+    }
     return jsonResponse(res, 500, { error: 'No se pudo completar la generación de imagen' });
   }
 }

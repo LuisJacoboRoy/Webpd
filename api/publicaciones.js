@@ -1,7 +1,7 @@
 import { authorizeAdmin, jsonResponse, parseJsonBody, validColor } from '../server/http.js';
 import { getSupabase } from '../server/supabase.js';
 
-const publicationFields = 'id, dia_campana, texto_imagen, color_fondo, copy_facebook, estado, fecha_programada, fecha_publicacion, fb_post_id';
+const publicationFields = 'id, dia_campana, texto_imagen, color_fondo, copy_facebook, estado, fecha_programada, fecha_publicacion, fb_post_id, imagen_generada_path, imagen_generada_prompt, imagen_generada_modelo';
 
 export default async function handler(req, res) {
   try {
