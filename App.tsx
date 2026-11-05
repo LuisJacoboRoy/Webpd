@@ -31,6 +31,7 @@ const SubCategorySelector = lazy(() => import('./components/SubCategorySelector'
 const ProductList = lazy(() => import('./components/ProductList'));
 const ProductDetail = lazy(() => import('./components/ProductDetail'));
 const SearchResults = lazy(() => import('./components/SearchResults'));
+const AvisoPrivacidad = lazy(() => import('./components/AvisoPrivacidad'));
 
 const LegacyProductRedirect: React.FC = () => {
   const { productId = '' } = useParams<{ productId: string }>();
@@ -160,6 +161,7 @@ const SiteContent: React.FC = () => {
           <Routes>
             <Route path="/" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/aviso-de-privacidad" element={<AvisoPrivacidad />} />
             <Route path="/search" element={<SearchResults />} />
             <Route path="/catalogo" element={<CatalogCategories />} />
             <Route path="/categoria/:categoryId" element={<SubCategorySelector />} />

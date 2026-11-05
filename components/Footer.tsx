@@ -30,6 +30,16 @@ const Footer: React.FC = () => {
             <p className="text-slate-500 text-sm mt-2">
               Distribuidores autorizados en Oaxaca para todo México. Calidad que transforma tus espacios.
             </p>
+            <ul className="mt-4">
+              <li>
+                <Link
+                  to="/aviso-de-privacidad"
+                  className="text-sm text-blue-600 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                >
+                  Aviso de privacidad
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {BUSINESS_LOCATIONS.map(location => (

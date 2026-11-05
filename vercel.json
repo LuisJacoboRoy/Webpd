@@ -61,5 +61,11 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/meta-scheduler",
+      "schedule": "0 1 * * *"
+    }
   ]
 }

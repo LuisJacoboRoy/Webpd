@@ -281,7 +281,13 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
     try {
       const result = await adminApi<TextResponse>('/api/generar-texto', token, {
         method: 'POST',
-        body: JSON.stringify({ tema: selected.copy_facebook || selected.texto_imagen }),
+        body: JSON.stringify({
+          publicacion: {
+            dia_campana: selected.dia_campana,
+            texto_imagen: selected.texto_imagen,
+            copy_facebook: selected.copy_facebook,
+          },
+        }),
       });
       updateSelected({
         texto_imagen: result.texto_imagen,
@@ -500,8 +506,17 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
                     />
                   </label>
                   <div className="admin-editor-actions">
-                    <button className="admin-secondary-button" type="button" onClick={generateCopy} disabled={generating}>
-                      {generating ? 'Redactando…' : '✨ Generar con Gemini'}
+                    <button
+                      className="admin-secondary-button"
+                      type="button"
+                      onClick={generateCopy}
+                      disabled={generating || !settingsLoaded || settingsSaving || settingsDirty}
+                    >
+                      {settingsDirty
+                        ? 'Guarda el prompt para generar'
+                        : generating
+                          ? 'Redactando…'
+                          : '✨ Generar copy y texto con Gemini'}
                     </button>
                     <button className="admin-primary-button" type="submit" disabled={busy}>
                       Guardar cambios
