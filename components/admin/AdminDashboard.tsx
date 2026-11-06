@@ -688,7 +688,7 @@ const AdminDashboard: React.FC<Props> = ({ token, onLogout, onSessionExpired }) 
                       : 'Sin fecha'}</td>
                     <td className="admin-history-copy">{publication.copy_facebook}</td>
                     <td><span className={`admin-status ${publication.estado === 'aprobado' ? 'is-approved' : ''}`}>
-                      {publication.estado}
+                      {publication.fb_post_id ? 'Enviada a Meta' : publication.estado === 'aprobado' ? 'En cola para Meta' : publication.estado}
                     </span></td>
                   </tr>
                 ))}

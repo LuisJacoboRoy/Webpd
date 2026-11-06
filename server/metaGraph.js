@@ -174,6 +174,10 @@ async function createScheduledPagePost(supabase, publication, config, now) {
   const message = link
     ? copy.replace(link, '').trim()
     : copy;
+  if (!message && !link && !hasImage) {
+    throw new Error(`La publicación ${publication.id} no tiene texto, enlace ni imagen para enviar a Meta.`);
+  }
+
   const form = new URLSearchParams({
     published: 'false',
     scheduled_publish_time: String(scheduled.timestamp),
@@ -183,7 +187,7 @@ async function createScheduledPagePost(supabase, publication, config, now) {
 
   if (hasImage) {
     const photo = await uploadUnpublishedPhoto(supabase, publication, config);
-    form.set('attached_media', JSON.stringify([{ media_fbid: photo.id }]));
+    form.set('attached_media[0]', JSON.stringify({ media_fbid: photo.id }));
   }
 
   const post = await graphRequest(`${config.pageId}/feed`, 'programar la publicación', config, {
