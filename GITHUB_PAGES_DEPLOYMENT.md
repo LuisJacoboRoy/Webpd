@@ -2,60 +2,40 @@
 
 ## ✅ Configuración Completada
 
-Tu proyecto está ahora completamente configurado para desplegarse en GitHub Pages con React 19.
+El workflow `.github/workflows/deploy-github-pages.yml` publica el sitio estático en GitHub Pages cuando hay un push a `main` o cuando se ejecuta manualmente.
 
 ---
 
 ## 🚀 Cómo Desplegar (MUY SIMPLE)
 
-### El Proceso en 3 Pasos:
+Para publicar, haz push a `main` o ejecuta **Deploy to GitHub Pages** desde la pestaña Actions.
 
-**Paso 1: Ejecutar script local de preparación**
-```powershell
-npm run prepare:deploy
-```
+El workflow instala dependencias, ejecuta `npm run build`, verifica que la meta de verificación esté en `dist/index.html`, agrega `CNAME` y `.nojekyll`, y publica el artefacto.
 
-Este comando hace todo automáticamente:
-- ✅ Instala dependencias
-- ✅ Build con Vite
-- ✅ Genera contenido SSG
-- ✅ Verifica que todo funciona
-- ✅ Te dice si hay errores
+En **Settings → Pages**, configura GitHub Actions como fuente de despliegue. El DNS de `pinturasdiamante.com` también debe apuntar a GitHub Pages; el archivo `CNAME` no cambia el DNS.
 
-**Paso 2: Si todo está ✅, hacer commit**
-```bash
-git add .
-git commit -m "Deploy: GitHub Pages with React 19 + SSG"
-```
+El sitio estático estará en:
+**https://pinturasdiamante.com/**
 
-**Paso 3: Hacer push**
-```bash
-git push origin main
-```
+> Vercel conserva su workflow independiente para `www.pinturasdiamante.com`. GitHub Pages publica archivos estáticos y no ejecuta las funciones `/api` del proyecto; las funciones administrativas requieren que el backend siga disponible en un host que las soporte.
 
-### ¡Eso Es Todo! 🎉
+### Publicación manual
 
-El GitHub Action se ejecutará automáticamente:
-- Instala dependencias (`npm ci`)
-- Build con Vite y genera/valida SEO estático (`npm run build`)
-- Deploy a GitHub Pages
-
-**Tu sitio estará en:** https://luisjacoboroy.github.io/Webpd/
+Si necesitas probar el build localmente, ejecuta `npm run build`. El workflow es quien publica a GitHub Pages.
 
 ---
 
 ## 🔧 Qué Está Configurado
 
-✅ **GitHub Action** (`.github/workflows/deploy-pages.yml`)
+✅ **GitHub Action** (`.github/workflows/deploy-github-pages.yml`)
 - Corre automáticamente en cada push a main
 - Instala dependencias con `npm ci`
-- Build optimizado para GitHub Pages
-- SSG prerendering automático
-- Upload de artifact
-- Deploy automático
+- Build optimizado para el dominio raíz
+- Comprueba la meta de verificación y agrega `CNAME`
+- Upload de artifact y deploy automático
 
 ✅ **Vite** (`vite.config.ts`)
-- Base path automático: `/Webpd/`
+- Usa base `/` para el dominio personalizado
 - Code splitting configurado
 - Minificación con terser
 - Optimización de assets
@@ -67,10 +47,9 @@ El GitHub Action se ejecutará automáticamente:
 - Cada HTML entrega metadatos y JSON-LD inline desde la primera respuesta
 - `npm run seo:verify:static` valida las rutas y sus schemas
 
-✅ **SPA Routing** (`public/_redirects`)
-- Todas las rutas apuntan a index.html
-- BrowserRouter funciona perfectamente
-- GitHub Pages lo soporta natively
+✅ **Dominio personalizado**
+- El workflow publica `CNAME` con `pinturasdiamante.com`
+- Las rutas estáticas prerenderizadas se publican desde `dist/`
 
 ✅ **Scripts Disponibles**
 ```bash
@@ -96,7 +75,7 @@ npm run seo:verify       # Verificar SEO
 - ✅ **Robots.txt** optimizado
 - ✅ **Open Graph & Twitter Cards**
 - ✅ **GitHub Pages** deployment workflow automático
-- ✅ **Base path** automático (`/Webpd/`)
+- ✅ **Dominio personalizado** (`pinturasdiamante.com`)
 - ✅ **Asset optimization** con Vite
 - ✅ **Code splitting** para mejor performance
 - ✅ **Cache** busting automático
@@ -105,19 +84,18 @@ npm run seo:verify       # Verificar SEO
 
 ## 🎯 URLs Importantes
 
-- **Sitio en vivo**: https://luisjacoboroy.github.io/Webpd/
-- **Sitemap**: https://luisjacoboroy.github.io/Webpd/sitemap.xml
-- **Robots.txt**: https://luisjacoboroy.github.io/Webpd/robots.txt
+- **Sitio en vivo**: https://pinturasdiamante.com/
+- **Sitemap**: https://pinturasdiamante.com/sitemap.xml
+- **Robots.txt**: https://pinturasdiamante.com/robots.txt
 - **GitHub Actions**: https://github.com/LuisJacoboRoy/Webpd/actions
 
 ---
 
 ## ✨ Próximos Pasos
 
-1. **Ejecuta** `npm run prepare:deploy` en tu terminal
-2. **Verifica** que dice ✅ al final
-3. **Haz push** a main
-4. **Espera** 2-5 minutos
-5. **¡Disfruta tu sitio desplegado!**
+1. Configura GitHub Pages para desplegar desde **GitHub Actions**.
+2. Verifica que el DNS del dominio raíz apunte a GitHub Pages.
+3. Haz push a `main` o ejecuta el workflow manualmente.
+4. Revisa el resultado en GitHub Actions y visita el dominio.
 
 Ver documentación detallada: [DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md)
