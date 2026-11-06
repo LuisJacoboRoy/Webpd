@@ -39,11 +39,14 @@ jobs:
       - name: Build site
         run: npm run build
 
-      - name: Prepare custom domain and verify site
+      - name: Prepare custom domain and redirect pages
+        env:
+          VERCEL_PRODUCTION_URL: https://pinturas-web.vercel.app
         run: |
           test "$(tr -d '\r\n' < CNAME)" = "pinturasdiamante.com"
           cp CNAME dist/CNAME
           touch dist/.nojekyll
+          node scripts/create-github-pages-redirects.js dist
           grep -Fq 'facebook-domain-verification' dist/index.html
 
       - name: Upload Pages artifact
