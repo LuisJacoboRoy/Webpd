@@ -198,7 +198,12 @@ const AboutComponent: React.FC = () => {
           alt="Soluciones de pintura para cada proyecto"
           inverted={false}
         />
-
+<div
+  class="fb-like"
+  data-share="true"
+  data-width="450"
+  data-show-faces="true">
+</div>
         {/* CTA Section */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-3xl p-12 text-center" data-scroll-animate>
           <h2 className="text-4xl font-black text-white mb-6">¿Necesitas Soluciones de Pintura?</h2>
