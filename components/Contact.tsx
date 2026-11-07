@@ -1,89 +1,63 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useMetaTags } from '../hooks/useMetaTags';
 import { useJsonLd } from '../hooks/useJsonLd';
 import { BUSINESS_INFO, BUSINESS_LOCATIONS } from '../data/seo';
 import { useRandomProductImage } from '../hooks/useRandomProductImage';
+import { businessLocationPath } from '../utils/routes';
+import { generateBusinessLocationSchemas } from '../utils/localBusinessSchema';
 
 const Contact: React.FC = () => {
-  const branches = [
-    {
-      name: "Sucursal Ferrocarril",
-      address: "Avenida ferrocarril 805- D",
-      phone: "951-143-34-67",
-      phoneRaw: "9511433467",
-      mobile: "951-235-95-85",
-      mobileRaw: "9512359585",
-      hours: "Lunes a Viernes de 8:30 am a 6:30 pm, Sábados de 8:30 am a 4:30 pm.",
-      mapLink: "https://maps.app.goo.gl/o3jfpZWSohha3w2n8?g_st=afm",
-      color: "blue",
-      radius: "8 km de cobertura"
-    },
-    {
-      name: "Sucursal Las culturas xoxo",
-      address: "Carr. A.Arrazola 118, 21 de marzo, col. Las culturas.",
-      phone: "951-768-30-49",
-      phoneRaw: "9517683049",
-      mobile: "951-652-35-93",
-      mobileRaw: "9516523593",
-      hours: "Lunes a Viernes de 8:30 am a 6:00 pm, Sábados de 8:30 am a 4:30 pm.",
-      mapLink: "https://maps.app.goo.gl/kjmbXhMzDKT5hfax9?g_st=afm",
-      color: "indigo",
-      radius: "10 km de cobertura"
-    }
-  ];
+  const branches = BUSINESS_LOCATIONS.map(location => ({
+    ...location,
+    phoneRaw: location.phone.replace(/\D/g, '').replace(/^52/, ''),
+    mobileRaw: location.mobile.replace(/\D/g, '').replace(/^52/, ''),
+    color: location.id === 'ferrocarril' ? 'blue' : 'indigo',
+    radiusLabel: `${location.radius} de cobertura`
+  }));
 
   // Imagen aleatoria de /img/product para og:image
   const ogImage = useRandomProductImage();
 
   // Meta tags SEO (máximo 5 palabras clave)
   useMetaTags({
-    title: 'Nuestras Sucursales | Contacto | Diamante Oaxaca',
-    description: 'Sucursales en Oaxaca con 8-10 km de cobertura de servicio. Ferrocarril y Las Culturas. Consulta horarios y ubicaciones.',
-    ogTitle: 'Sucursales y Contacto | Diamante Oaxaca',
-    ogDescription: 'Dos ubicaciones estratégicas en Oaxaca para mejor atención al cliente',
+    title: 'Sucursales de Pinturas en Oaxaca y Xoxocotlán | Diamante',
+    description: 'Visita Pinturas Diamante en Avenida Ferrocarril o en Las Culturas, sobre la carretera a Arrazola en Xoxocotlán. Consulta direcciones, teléfonos y horarios.',
+    ogTitle: 'Sucursales de Pinturas Diamante en Oaxaca',
+    ogDescription: 'Direcciones, teléfonos, horarios y rutas a nuestras sucursales de Oaxaca y Xoxocotlán.',
     ogImage: ogImage,
-    ogType: 'website'
+    ogType: 'website',
+    canonicalUrl: `${BUSINESS_INFO.url}/contact/`
   });
 
-  // Schema BreadcrumbList
+  const sucursalesSchema = generateBusinessLocationSchemas();
+
   useJsonLd({
     '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    'itemListElement': [
-      {
-        '@type': 'ListItem',
-        'position': 1,
-        'name': 'Inicio',
-        'item': `${BUSINESS_INFO.url}/`
-      },
-      {
-        '@type': 'ListItem',
-        'position': 2,
-        'name': 'Contacto',
-        'item': `${BUSINESS_INFO.url}/contact`
-      }
-    ]
-  });
-
-  // Schema LocalBusiness para cada sucursal con área de servicio
-  const sucursalesSchema = branches.map(branch => ({
-    '@type': 'LocalBusiness',
-    'name': branch.name,
-    'address': {
-      '@type': 'PostalAddress',
-      'streetAddress': branch.address,
-      'addressCity': 'Oaxaca',
-      'addressCountry': 'MX'
-    },
-    'telephone': branch.phone,
-    'url': BUSINESS_INFO.url,
-    'areaServed': {
-      '@type': 'City',
-      'name': 'Oaxaca',
-      'areaServed': branch.radius
+    '@type': 'ContactPage',
+    '@id': `${BUSINESS_INFO.url}/contact/#webpage`,
+    'url': `${BUSINESS_INFO.url}/contact/`,
+    'name': 'Sucursales de Pinturas Diamante en Oaxaca',
+    'mainEntity': sucursalesSchema,
+    'breadcrumb': {
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': 'Inicio',
+          'item': `${BUSINESS_INFO.url}/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'Contacto',
+          'item': `${BUSINESS_INFO.url}/contact/`
+        }
+      ]
     }
-  }));
+  });
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-20">
@@ -92,19 +66,16 @@ const Contact: React.FC = () => {
         <p className="text-slate-500 text-lg max-w-2xl mx-auto">
           Visítanos en cualquiera de nuestras ubicaciones en Oaxaca. Estamos listos para asesorarte en tu próximo proyecto.
         </p>
-        <div className="mt-6 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-          Palabras clave: contacto, ubicación, Oaxaca, ferrocarril, culturas
-        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {branches.map((branch, idx) => (
-          <div key={idx} className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100 flex flex-col">
+      {branches.map(branch => (
+        <div key={branch.id} className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100 flex flex-col">
             <div className={`h-2 bg-${branch.color}-600`} />
             <div className="p-8 md:p-10 flex-grow">
               <div className="flex items-start justify-between mb-6">
                 <h3 className="text-2xl font-bold text-slate-900">{branch.name}</h3>
-                <span className="text-xs font-bold bg-blue-50 text-blue-600 px-3 py-1 rounded-full">{branch.radius}</span>
+                <span className="text-xs font-bold bg-blue-50 text-blue-600 px-3 py-1 rounded-full">{branch.radiusLabel}</span>
               </div>
 
               <div className="space-y-8">
@@ -118,7 +89,9 @@ const Contact: React.FC = () => {
                   </div>
                   <div className="flex-1">
                     <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-1">Dirección</h4>
-                    <p className="text-slate-600 leading-relaxed mb-2">{branch.address}</p>
+                    <p className="text-slate-600 leading-relaxed mb-2">
+                      {branch.address}, {branch.locality}, Oaxaca, C.P. {branch.postalCode}
+                    </p>
                     <a
                       href={branch.mapLink}
                       target="_blank"
@@ -201,6 +174,12 @@ const Contact: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </a>
+              <Link
+                to={businessLocationPath(branch.id)}
+                className="mt-4 flex min-h-11 items-center justify-center font-bold text-slate-700 hover:text-blue-700 hover:underline"
+              >
+                Información de esta sucursal
+              </Link>
             </div>
           </div>
         ))}

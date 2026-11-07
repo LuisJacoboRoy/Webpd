@@ -5,26 +5,38 @@ export const BUSINESS_LOCATIONS = [
     name: "Sucursal Ferrocarril",
     address: "Avenida ferrocarril 805- D",
     city: "Oaxaca",
+    locality: "Oaxaca",
     postalCode: "68000",
     latitude: 17.0627,
     longitude: -96.7236,
     phone: "+52 951-143-34-67",
     mobile: "+52 951-235-95-85",
     hours: "Lunes a Viernes de 8:30 am a 6:30 pm, Sábados de 8:30 am a 4:30 pm",
-    radius: "8km"
+    weekdayClosingTime: "18:30",
+    radius: "8km",
+    mapLink: "https://maps.app.goo.gl/o3jfpZWSohha3w2n8",
+    searchArea: "Avenida Ferrocarril, Oaxaca",
+    seoTitle: "Pinturas en Oaxaca | Sucursal Ferrocarril",
+    seoDescription: "Visita Pinturas Diamante en Av. Ferrocarril 805-D, Oaxaca. Consulta horarios, teléfonos y ruta para llegar."
   },
   {
     id: 'culturas-xoxo',
-    name: "Sucursal Las culturas xoxo",
-    address: "Carr. A.Arrazola 118, 21 de marzo, col. Las culturas",
+    name: "Sucursal Las Culturas, Xoxocotlán",
+    address: "Carr. A Arrazola 118, 21 de Marzo, Col. Las Culturas",
     city: "Oaxaca",
-    postalCode: "68010",
+    locality: "El Paraíso",
+    postalCode: "71233",
     latitude: 17.0430,
     longitude: -96.7100,
     phone: "+52 951-768-30-49",
     mobile: "+52 951-652-35-93",
     hours: "Lunes a Viernes de 8:30 am a 6:00 pm, Sábados de 8:30 am a 4:30 pm",
-    radius: "10km"
+    weekdayClosingTime: "18:00",
+    radius: "10km",
+    mapLink: "https://maps.app.goo.gl/kjmbXhMzDKT5hfax9",
+    searchArea: "Las Culturas, Santa Cruz Xoxocotlán",
+    seoTitle: "Pinturas en Xoxocotlán | Sucursal Las Culturas",
+    seoDescription: "Visita Pinturas Diamante en Las Culturas, Xoxocotlán. Consulta dirección, horario, teléfonos y ruta en Google Maps."
   }
 ];
 

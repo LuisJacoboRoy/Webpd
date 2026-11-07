@@ -68,6 +68,22 @@
     </image:image>
   </url>
   <url>
+    <loc>https://pinturasdiamante.com/sucursales/ferrocarril/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png</image:loc>
+      <image:title>Sucursal Ferrocarril</image:title>
+      <image:caption>Sucursal Ferrocarril. Imagen de Diamante Pinturas. Pinturas Diamante en Avenida Ferrocarril, Oaxaca.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://pinturasdiamante.com/sucursales/culturas-xoxo/</loc>
+    <image:image>
+      <image:loc>https://pinturasdiamante.com/img/catalog/LOGO-WEB-DIAMANTE-PNG.png</image:loc>
+      <image:title>Sucursal Las Culturas, Xoxocotlán</image:title>
+      <image:caption>Sucursal Las Culturas, Xoxocotlán. Imagen de Diamante Pinturas. Pinturas Diamante en Las Culturas, Santa Cruz Xoxocotlán.</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://pinturasdiamante.com/categoria/automotriz/</loc>
     <image:image>
       <image:loc>https://pinturasdiamante.com/img/catalog/sistema-de-poliuretano-300x300.png</image:loc>

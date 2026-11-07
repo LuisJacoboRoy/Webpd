@@ -43,7 +43,16 @@ jobs:
       - name: 📊 Check if sitemaps changed
         id: verify_changed
         run: |
-          if git diff --quiet public/sitemap*.xml public/sitemap-metadata.json; then
+          if git diff --quiet -- public/sitemap*.xml && node <<'NODE'
+          const { execFileSync } = require('node:child_process');
+          const fs = require('node:fs');
+          const previous = JSON.parse(execFileSync('git', ['show', 'HEAD:public/sitemap-metadata.json'], { encoding: 'utf8' }));
+          const current = JSON.parse(fs.readFileSync('public/sitemap-metadata.json', 'utf8'));
+          delete previous.generatedAt;
+          delete current.generatedAt;
+          process.exit(JSON.stringify(previous) === JSON.stringify(current) ? 0 : 1);
+          NODE
+          then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT

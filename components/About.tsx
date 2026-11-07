@@ -2,7 +2,8 @@ import React, { useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from '@dr.pogodin/react-helmet';
 import { useHelmetJsonLd } from '../hooks/useHelmet';
-import { BUSINESS_INFO, BUSINESS_LOCATIONS } from '../data/seo';
+import { BUSINESS_INFO } from '../data/seo';
+import { generateBusinessLocationSchemas } from '../utils/localBusinessSchema';
 import { useRandomProductImage } from '../hooks/useRandomProductImage';
 import SolutionsOverview from './SolutionsOverview';
 import ParallaxBanner from './ParallaxBanner';
@@ -46,7 +47,7 @@ const AboutComponent: React.FC = () => {
   // Schema LocalBusiness memoizado
   const localBusinessSchema = useMemo(() => ({
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+    '@type': 'Organization',
     'name': BUSINESS_INFO.name,
     'description': 'Empresa mexicana con 30 años de experiencia en soluciones de pintura y recubrimientos',
     'url': BUSINESS_INFO.url,
@@ -54,12 +55,7 @@ const AboutComponent: React.FC = () => {
     'foundingDate': '1996',
     'areaServed': regions,
     'sameAs': BUSINESS_INFO.sameAs,
-    'location': BUSINESS_LOCATIONS.map(loc => ({
-      '@type': 'PostalAddress',
-      'streetAddress': loc.address,
-      'addressCity': loc.city,
-      'addressCountry': 'MX'
-    }))
+    'location': generateBusinessLocationSchemas().map(({ '@id': id }) => ({ '@id': id }))
   }), []);
 
   // Schema BreadcrumbList

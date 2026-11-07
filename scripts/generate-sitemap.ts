@@ -144,6 +144,19 @@ async function generateSitemaps() {
       }
     ];
 
+    BUSINESS_LOCATIONS.forEach(location => {
+      allUrls.push({
+        loc: `${baseUrl}/sucursales/${location.id}/`,
+        schemaType: 'WebPage',
+        images: imageReferences(
+          baseUrl,
+          location.name,
+          `Pinturas Diamante en ${location.searchArea}.`,
+          ['/img/catalog/LOGO-WEB-DIAMANTE-PNG.png']
+        )
+      });
+    });
+
     // Agregar categorías
     if (Array.isArray(categories)) {
       categories.forEach(cat => {

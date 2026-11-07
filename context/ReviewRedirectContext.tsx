@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useMemo, useState } from 'react';
 
 const FACEBOOK_PAGE_URL = 'https://www.facebook.com/diamantepinturasoaxaca';
-const REDIRECT_DELAY_SECONDS = 5;
+const REDIRECT_DELAY_SECONDS = 4;
 
 interface ReviewRedirectContextValue {
   secondsRemaining: number | null;

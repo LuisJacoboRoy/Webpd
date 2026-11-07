@@ -12,8 +12,10 @@
  */
 
 import { PRODUCTS, CATEGORIES, SUB_CATEGORIES } from '../data/products';
+import { BUSINESS_LOCATIONS } from '../data/seo';
 import { Product, Category, SubCategory } from '../types';
 import { CATALOG_PATH, categoryPath, productPath, slugify } from './routes';
+import { generateBusinessLocationSchemas } from './localBusinessSchema';
 
 // Determinar el dominio base según el entorno
 const isGitHubPages = process.env.GITHUB_PAGES === 'true';
@@ -66,14 +68,9 @@ export const generateOrganizationSchema = () => ({
     areaServed: 'MX',
     availableLanguage: ['es', 'en']
   },
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Avenida ferrocarril 805-D',
-    addressLocality: 'Oaxaca',
-    addressRegion: 'Oaxaca',
-    postalCode: '68000',
-    addressCountry: 'MX'
-  }
+  location: BUSINESS_LOCATIONS.map(location => ({
+    '@id': `${DOMAIN}/#business-${location.id}`
+  }))
 });
 
 /**
@@ -245,7 +242,7 @@ export const generateProductSEOData = (productId: string): ProductSEOData | null
         generateBreadcrumbSchema(product, category, subCategory),
 
         // 4. LocalBusiness
-        generateLocalBusinessSchema()
+        ...generateBusinessLocationSchemas(DOMAIN)
       ]
     },
     openGraphTags: generateOpenGraphTags(product),
@@ -289,35 +286,7 @@ export const generateCategorySEOData = (categoryId: string) => {
  */
 export const generateLocalBusinessSchema = () => ({
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  '@id': `${DOMAIN}/#local-business`,
-  name: 'Pinturas Diamante',
-  brand: {
-    '@type': 'Brand',
-    '@id': `${DOMAIN}/#brand`,
-    name: 'Diamante Pinturas'
-  },
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Avenida ferrocarril 805-D',
-    addressLocality: 'Oaxaca',
-    addressRegion: 'Oaxaca',
-    postalCode: '68000',
-    addressCountry: 'MX'
-  },
-  telephone: '+52-951-143-3467',
-  image: `${DOMAIN}/img/catalog/LOGO-WEB-DIAMANTE-PNG.png`,
-  openingHoursSpecification: {
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    opens: '08:30',
-    closes: '18:30'
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 17.0627,
-    longitude: -96.7236
-  }
+  '@graph': generateBusinessLocationSchemas(DOMAIN)
 });
 
 /**
@@ -414,7 +383,12 @@ export const generateDynamicSitemap = (): string => {
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
   // URLs estáticas principales
-  const staticUrls = ['', 'contact', CATALOG_PATH.slice(1, -1)];
+  const staticUrls = [
+    '',
+    'contact',
+    CATALOG_PATH.slice(1, -1),
+    ...BUSINESS_LOCATIONS.map(location => `sucursales/${location.id}`)
+  ];
 
   staticUrls.forEach(url => {
     xml += `  <url>\n`;

@@ -10,6 +10,7 @@ import {
 import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from '../data/products.ts';
 import IMAGE_LICENSING from '../data/image-licensing.json';
 import { CATALOG_PATH, categoryPath, findProductBySlug, productPath } from '../utils/routes.ts';
+import { generateBusinessLocationSchemas } from '../utils/localBusinessSchema.ts';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const distDirectory = path.resolve(scriptDirectory, '../dist');
@@ -94,46 +95,9 @@ function getBusinessSchemas() {
     }))
   };
 
-  const localBusinesses = BUSINESS_LOCATIONS.map(location => ({
-    '@type': 'LocalBusiness',
-    '@id': `${domain}/#business-${location.id}`,
-    name: location.name,
-    description: `${BUSINESS_INFO.name} - ${location.name}`,
-    url: pageUrl('/'),
-    image: imageSchema(BUSINESS_INFO.logo, 'Logotipo de Diamante Pinturas', BUSINESS_INFO.description),
-    brand: { '@type': 'Brand', name: 'Diamante Pinturas' },
-    telephone: location.phone,
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: location.address,
-      addressLocality: location.city,
-      addressRegion: 'Oaxaca',
-      postalCode: location.postalCode,
-      addressCountry: 'MX'
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: location.latitude,
-      longitude: location.longitude
-    },
-    areaServed: {
-      '@type': 'City',
-      name: location.city
-    },
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '08:30',
-        closes: location.id === 'culturas-xoxo' ? '18:00' : '18:30'
-      },
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: 'Saturday',
-        opens: '08:30',
-        closes: '16:30'
-      }
-    ]
+  const localBusinesses = generateBusinessLocationSchemas(domain).map(location => ({
+    ...location,
+    image: imageSchema(BUSINESS_INFO.logo, 'Logotipo de Diamante Pinturas', BUSINESS_INFO.description)
   }));
 
   const website = {
@@ -167,6 +131,10 @@ function breadcrumbSchema(route, label, category, subCategory, product) {
   });
   if (product) items.push({ name: product.name, url: pageUrl(productPath(product)) });
   else if (route === '/contact') items.push({ name: label, url: pageUrl(route) });
+  else if (route.startsWith('/sucursales/')) {
+    items.push({ name: 'Sucursales', url: pageUrl('/contact') });
+    items.push({ name: label, url: pageUrl(route) });
+  }
 
   return {
     '@type': 'BreadcrumbList',
@@ -234,16 +202,50 @@ function pageData(route) {
 
   if (route === '/contact') {
     return {
-      title: 'Nuestras Sucursales | Contacto | Diamante Oaxaca',
-      description: 'Sucursales en Oaxaca con 8-10 km de cobertura de servicio. Ferrocarril y Las Culturas. Consulta horarios y ubicaciones.',
-      keywords: 'contacto, ubicación, Oaxaca, sucursales, pinturas',
+      title: 'Sucursales de Pinturas en Oaxaca y Xoxocotlán | Diamante',
+      description: 'Visita Pinturas Diamante en Avenida Ferrocarril o en Las Culturas, sobre la carretera a Arrazola en Xoxocotlán. Consulta direcciones, teléfonos y horarios.',
+      keywords: 'pinturas, Oaxaca, Xoxocotlán, Las Culturas, Ferrocarril',
       image: BUSINESS_INFO.logo,
       schemas: [{
         '@type': 'ContactPage',
         name: 'Nuestras Sucursales',
         url: pageUrl(route),
-        description: 'Visítanos en cualquiera de nuestras sucursales en Oaxaca.'
+        description: 'Visita nuestras sucursales en Oaxaca y Xoxocotlán, consulta sus direcciones, horarios y teléfonos.',
+        mainEntity: BUSINESS_LOCATIONS.map(location => ({
+          '@id': `${domain}/#business-${location.id}`
+        }))
       }, breadcrumbSchema(route, 'Contacto')]
+    };
+  }
+
+  const locationMatch = route.match(/^\/sucursales\/([^/]+)$/);
+  if (locationMatch) {
+    const location = BUSINESS_LOCATIONS.find(item => item.id === locationMatch[1]);
+    if (!location) return null;
+
+    const title = location.seoTitle;
+    const description = location.seoDescription;
+    const locationUrl = pageUrl(route);
+    const noscriptContent = `<main><h1>${escapeHtml(title)}</h1><p>${escapeHtml(description)}</p><h2>${escapeHtml(location.name)}</h2><address>${escapeHtml(location.address)}, ${escapeHtml(location.locality)}, Oaxaca, C.P. ${escapeHtml(location.postalCode)}</address><p>Horario: ${escapeHtml(location.hours)}</p><p>Teléfono: ${escapeHtml(location.phone)} | Celular: ${escapeHtml(location.mobile)}</p><p><a href="${escapeHtml(location.mapLink)}">Cómo llegar en Google Maps</a></p></main>`;
+
+    return {
+      title,
+      description,
+      keywords: `pinturas, ${location.searchArea}, ${location.locality}, Oaxaca`,
+      image: BUSINESS_INFO.logo,
+      noscriptContent,
+      schemas: [
+        {
+          '@type': 'WebPage',
+          '@id': `${locationUrl}#webpage`,
+          name: title,
+          description,
+          url: locationUrl,
+          mainEntity: { '@id': `${domain}/#business-${location.id}` },
+          inLanguage: 'es-MX'
+        },
+        breadcrumbSchema(route, location.name)
+      ]
     };
   }
 
@@ -490,6 +492,7 @@ const routes = [
   '/',
   CATALOG_PATH.slice(0, -1),
   '/contact',
+  ...BUSINESS_LOCATIONS.map(location => `/sucursales/${location.id}`),
   '/search',
   ...CATEGORIES.map(category => categoryPath(category.id).slice(0, -1)),
   ...SUB_CATEGORIES.map(item => categoryPath(item.categoryId, item.id).slice(0, -1)),

@@ -46,7 +46,7 @@ const Footer: React.FC = () => {
             <div key={location.id} className="flex flex-col gap-1">
               <p className="text-slate-700 text-sm font-semibold">{location.name}</p>
               <address className="text-slate-500 text-sm not-italic">
-                {location.address}, {location.city}, Oaxaca, C.P. {location.postalCode}
+                {location.address}, {location.locality}, Oaxaca, C.P. {location.postalCode}
               </address>
               {[location.phone, location.mobile].map((phone, index) => (
                 <a

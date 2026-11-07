@@ -1,5 +1,5 @@
 
-import React, { useEffect, Suspense, lazy } from 'react';
+import React, { useEffect, useRef, useState, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { HelmetProvider, Helmet } from '@dr.pogodin/react-helmet';
 import PaginaResena from './components/PaginaResena';
@@ -16,7 +16,8 @@ import { CartProvider } from './context/CartContext';
 import { useJsonLd } from './hooks/useJsonLd';
 import { useFavicon, useBeforeUnloadWarning } from './hooks/usePersistence';
 import { useScrollToTop } from './hooks/useScrollToTop';
-import { BUSINESS_INFO, BUSINESS_LOCATIONS } from './data/seo';
+import { BUSINESS_INFO } from './data/seo';
+import { generateBusinessLocationSchemas } from './utils/localBusinessSchema';
 import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from './data/products';
 import { categoryPath, findProductBySlug, productPath, productSlug as getProductSlug } from './utils/routes';
 import Admin from './components/admin/Admin';
@@ -32,6 +33,31 @@ const ProductList = lazy(() => import('./components/ProductList'));
 const ProductDetail = lazy(() => import('./components/ProductDetail'));
 const SearchResults = lazy(() => import('./components/SearchResults'));
 const AvisoPrivacidad = lazy(() => import('./components/AvisoPrivacidad'));
+const BusinessLocationPage = lazy(() => import('./components/BusinessLocationPage'));
+
+const REVIEW_EXIT_PROMPT_KEY = 'webpd-review-exit-prompt-shown';
+
+const getHistoryIndex = (state: unknown): number | null => {
+  if (typeof state !== 'object' || state === null || !('idx' in state)) return null;
+  return typeof state.idx === 'number' ? state.idx : null;
+};
+
+const hasShownReviewExitPrompt = (): boolean => {
+  try {
+    return window.localStorage.getItem(REVIEW_EXIT_PROMPT_KEY) === 'true';
+  } catch (error) {
+    console.error('No se pudo consultar si ya se mostró el aviso de reseña.', error);
+    return false;
+  }
+};
+
+const markReviewExitPromptShown = (): void => {
+  try {
+    window.localStorage.setItem(REVIEW_EXIT_PROMPT_KEY, 'true');
+  } catch (error) {
+    console.error('No se pudo guardar que ya se mostró el aviso de reseña.', error);
+  }
+};
 
 const LegacyProductRedirect: React.FC = () => {
   const { productId = '' } = useParams<{ productId: string }>();
@@ -99,40 +125,7 @@ const SiteContent: React.FC = () => {
         'name': 'Oaxaca'
       }
     ],
-    'location': BUSINESS_LOCATIONS.map(loc => ({
-      '@type': 'LocalBusiness',
-      'name': loc.name,
-      'brand': {
-        '@type': 'Brand',
-        '@id': `${BUSINESS_INFO.url}/#brand`,
-        'name': 'Diamante Pinturas'
-      },
-      'url': `${BUSINESS_INFO.url}/`,
-      'address': {
-        '@type': 'PostalAddress',
-        'streetAddress': loc.address,
-        'addressCity': loc.city,
-        'addressCountry': 'MX',
-        'postalCode': loc.postalCode
-      },
-      'telephone': loc.phone,
-      'openingHoursSpecification': {
-        '@type': 'OpeningHoursSpecification',
-        'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        'opens': '08:30',
-        'closes': '18:30'
-      },
-      'geo': {
-        '@type': 'GeoCoordinates',
-        'latitude': loc.latitude,
-        'longitude': loc.longitude
-      },
-      'areaServed': {
-        '@type': 'City',
-        'name': loc.city,
-        'areaServed': loc.radius
-      }
-    }))
+    'location': generateBusinessLocationSchemas().map(({ '@id': id }) => ({ '@id': id }))
   });
 
   useJsonLd({
@@ -161,6 +154,7 @@ const SiteContent: React.FC = () => {
           <Routes>
             <Route path="/" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/sucursales/:locationId" element={<BusinessLocationPage />} />
             <Route path="/aviso-de-privacidad" element={<AvisoPrivacidad />} />
             <Route path="/search" element={<SearchResults />} />
             <Route path="/catalogo" element={<CatalogCategories />} />
@@ -184,8 +178,112 @@ const SiteContent: React.FC = () => {
 
 const AppContent: React.FC = () => {
   const location = useLocation();
+  const [showReviewExitPrompt, setShowReviewExitPrompt] = useState(false);
+  const reviewDialogRef = useRef<HTMLDialogElement>(null);
+  const promptShownThisPage = useRef(false);
+  const currentHistoryEntry = useRef({
+    href: window.location.href,
+    state: window.history.state,
+    index: getHistoryIndex(window.history.state)
+  });
+
+  currentHistoryEntry.current = {
+    href: window.location.href,
+    state: window.history.state,
+    index: getHistoryIndex(window.history.state)
+  };
+
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      const previousIndex = currentHistoryEntry.current.index;
+      const targetIndex = getHistoryIndex(event.state);
+      const targetUrl = new URL(window.location.href);
+
+      if (
+        !window.matchMedia('(pointer: coarse)').matches ||
+        previousIndex === null ||
+        targetIndex === null ||
+        targetIndex >= previousIndex ||
+        targetUrl.origin !== window.location.origin ||
+        promptShownThisPage.current ||
+        hasShownReviewExitPrompt()
+      ) {
+        return;
+      }
+
+      event.stopImmediatePropagation();
+      window.history.pushState(
+        currentHistoryEntry.current.state,
+        '',
+        currentHistoryEntry.current.href
+      );
+      promptShownThisPage.current = true;
+      markReviewExitPromptShown();
+      setShowReviewExitPrompt(true);
+    };
+
+    window.addEventListener('popstate', handlePopState, true);
+    return () => window.removeEventListener('popstate', handlePopState, true);
+  }, []);
+
+  useEffect(() => {
+    if (showReviewExitPrompt && !reviewDialogRef.current?.open) {
+      reviewDialogRef.current?.showModal();
+    }
+  }, [showReviewExitPrompt]);
+
+  const handleReviewDialogClose = () => {
+    setShowReviewExitPrompt(false);
+    window.history.back();
+  };
+
   const isAdminRoute = location.pathname === '/admin' || location.pathname.startsWith('/admin/');
-  return isAdminRoute ? <Admin /> : <SiteContent />;
+  return (
+    <>
+      <style>{`
+        dialog.review-exit-dialog:modal {
+          overscroll-behavior: contain;
+        }
+        dialog.review-exit-dialog::backdrop {
+          overflow: hidden;
+          overscroll-behavior: contain;
+        }
+      `}</style>
+      {isAdminRoute ? <Admin /> : <SiteContent />}
+      {showReviewExitPrompt && (
+        <dialog
+          ref={reviewDialogRef}
+          aria-labelledby="review-exit-title"
+          className="review-exit-dialog fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-sm rounded-2xl bg-white p-6 text-center shadow-2xl backdrop:bg-slate-950/60"
+          onClose={handleReviewDialogClose}
+        >
+          <h2 id="review-exit-title" className="mb-2 text-xl font-bold text-slate-900">
+            Antes de irte
+          </h2>
+          <p className="mb-5 text-slate-600">
+            ¿Te gustaría compartir tu experiencia con Pinturas Diamante?
+          </p>
+          <button
+            type="button"
+            onClick={() => window.location.assign('/reseña')}
+            className="mb-3 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-emerald-700 px-5 py-3 font-bold text-white hover:bg-emerald-800 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
+          >
+            Dejar reseña en Google
+          </button>
+          <form method="dialog">
+            <button
+              type="submit"
+              value="continue"
+              autoFocus
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-slate-300 px-5 py-3 font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-slate-500"
+            >
+              Continuar navegación
+            </button>
+          </form>
+        </dialog>
+      )}
+    </>
+  );
 };
 
 const App: React.FC = () => {

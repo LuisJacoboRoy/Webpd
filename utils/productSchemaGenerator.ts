@@ -6,6 +6,7 @@
 import { Product, Category, SubCategory } from '../types';
 import { productPath } from './routes';
 import IMAGE_LICENSING from '../data/image-licensing.json';
+import { generateBusinessLocationSchemas } from './localBusinessSchema';
 
 const DOMAIN = process.env.GITHUB_PAGES === 'true' 
   ? 'https://luisjacoboroy.github.io/Webpd'
@@ -73,52 +74,7 @@ export const generateEnhancedProductSchema = (
  */
 export const generateLocalBusinessSchemaForProduct = () => ({
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  '@id': `${DOMAIN}/#local-business`,
-  name: 'Pinturas Diamante',
-  brand: {
-    '@type': 'Brand',
-    '@id': `${DOMAIN}/#brand`,
-    name: 'Diamante Pinturas'
-  },
-  description: 'Tienda de pinturas de alta gama en Oaxaca. Especializados en pintura automotriz, maderas y decorativa.',
-  url: DOMAIN,
-  image: `${DOMAIN}/img/catalog/LOGO-WEB-DIAMANTE-PNG.png`,
-  telephone: '+52-951-143-3467',
-  email: 'ventas@pinturasdiamantemx.com',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Avenida ferrocarril 805-D',
-    addressLocality: 'Oaxaca',
-    addressRegion: 'Oaxaca',
-    postalCode: '68000',
-    addressCountry: 'MX'
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 17.0627,
-    longitude: -96.7236
-  },
-  // Horario de apertura
-  openingHoursSpecification: {
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday'
-    ],
-    opens: '08:30',
-    closes: '18:30'
-  },
-  // Social media
-  sameAs: [
-    'https://www.facebook.com/pinturasdiamantemx',
-    'https://www.instagram.com/pinturasdiamantemx',
-    'https://www.linkedin.com/company/pinturas-diamante'
-  ]
+  '@graph': generateBusinessLocationSchemas(DOMAIN)
 });
 
 /**

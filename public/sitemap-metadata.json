@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-06T22:43:22.550Z",
+  "generatedAt": "2026-11-07T17:48:46.656Z",
   "baseUrl": "https://pinturasdiamante.com",
   "sitemaps": {
     "general": "sitemap.xml",
@@ -8,7 +8,7 @@
     "images": "sitemap-images.xml"
   },
   "statistics": {
-    "totalURLs": 130,
+    "totalURLs": 132,
     "bySchema": {
       "Organization": 1,
       "ProductPage": 103,
@@ -74,7 +74,7 @@
       "title": "Monitorear Cobertura",
       "location": "Menú izquierdo > Cobertura",
       "whatToLook": {
-        "valid": "Se enviaron 130 URLs; el envío no garantiza que Google las indexe",
+        "valid": "Se enviaron 132 URLs; el envío no garantiza que Google las indexe",
         "excluded": "Las URLs enviadas no garantizan indexación; revisa las exclusiones y sus motivos",
         "error": "Resuelve cualquier error de indexación"
       }
@@ -94,7 +94,7 @@
     },
     "images": {
       "sitemap": "sitemap-images.xml",
-      "count": 116,
+      "count": 118,
       "copyrightHolder": "Diamante Pinturas"
     },
     "categories": {
@@ -143,7 +143,7 @@
   },
   "imageIndexing": {
     "sitemap": "sitemap-images.xml",
-    "indexedImages": 116,
+    "indexedImages": 118,
     "copyrightHolder": "Diamante Pinturas"
   },
   "urls": {

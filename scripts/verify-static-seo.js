@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from '../data/products.ts';
+import { BUSINESS_LOCATIONS } from '../data/seo.ts';
 import IMAGE_LICENSING from '../data/image-licensing.json';
 import { CATALOG_PATH, categoryPath, findProductBySlug, productPath } from '../utils/routes.ts';
 
@@ -11,6 +12,7 @@ const routes = [
   '/',
   CATALOG_PATH.slice(0, -1),
   '/contact',
+  ...BUSINESS_LOCATIONS.map(location => `/sucursales/${location.id}`),
   '/search',
   ...CATEGORIES.map(category => categoryPath(category.id).slice(0, -1)),
   ...SUB_CATEGORIES.map(item => categoryPath(item.categoryId, item.id).slice(0, -1)),
@@ -132,6 +134,25 @@ for (const route of routes) {
     }
     if (route === '/contact' && !types.includes('ContactPage')) {
       fail(`${route}: falta el schema ContactPage`);
+    }
+    if (route.startsWith('/sucursales/')) {
+      const locationId = route.slice('/sucursales/'.length);
+      const location = BUSINESS_LOCATIONS.find(item => item.id === locationId);
+      const webPage = graph.find(item => item['@type'] === 'WebPage');
+      const business = graph.find(item =>
+        item['@type'] === 'LocalBusiness' && item['@id'] === `${domain}/#business-${locationId}`
+      );
+      if (!location || !webPage || webPage.mainEntity?.['@id'] !== business?.['@id']) {
+        fail(`${route}: falta una WebPage enlazada con su LocalBusiness`);
+      }
+      if (!business || business.address?.postalCode !== location?.postalCode ||
+          business.address?.addressLocality !== location?.locality ||
+          business.hasMap !== location?.mapLink) {
+        fail(`${route}: los datos de ubicación estructurados no coinciden con la sucursal`);
+      }
+      if (!html.includes(location?.name || '') || !html.includes(location?.address || '')) {
+        fail(`${route}: falta información visible de la sucursal en el HTML prerenderizado`);
+      }
     }
     if (route === '/' && !types.includes('WebPage')) {
       fail(`${route}: falta el schema WebPage`);

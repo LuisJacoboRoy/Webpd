@@ -11,6 +11,9 @@ export const slugify = (value: string): string =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 
+export const businessLocationPath = (locationId: string): string =>
+  `/sucursales/${slugify(locationId)}/`;
+
 export const categoryPath = (categoryId: string, subCategoryId?: string): string =>
   `/categoria/${slugify(categoryId)}${subCategoryId ? `/${slugify(subCategoryId)}` : ''}/`;
 

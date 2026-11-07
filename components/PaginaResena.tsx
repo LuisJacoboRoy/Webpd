@@ -55,7 +55,7 @@ const PaginaResena: React.FC = () => {
           </ol>
 
           <a
-            href="https://google.com"
+            href="https://g.page/r/CZOXOdHeN4EdEBM/review"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-h-14 w-full items-center justify-center rounded-xl bg-emerald-700 px-5 py-4 text-lg font-bold text-white shadow-lg shadow-emerald-700/20 transition-colors hover:bg-emerald-800 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
