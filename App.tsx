@@ -2,6 +2,8 @@
 import React, { useEffect, useRef, useState, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { HelmetProvider, Helmet } from '@dr.pogodin/react-helmet';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import PaginaResena from './components/PaginaResena';
 import { ReviewRedirectProvider } from './context/ReviewRedirectContext';
 
@@ -338,6 +340,8 @@ const App: React.FC = () => {
               <AppContent />
             </BrowserRouter>
           )}
+          <Analytics />
+          <SpeedInsights />
         </ReviewRedirectProvider>
       </CartProvider>
     </HelmetProvider>
