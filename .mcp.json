@@ -4,9 +4,5 @@
       "type": "http",
       "url": "https://mcp.facebook.com/whatsapp_business_tools",
       "tools": ["*"]
-    },
-    "meta_devtools": {
-      "url": "https://mcp.facebook.com/devtools"
-    }
+    },    }
   }
-}
