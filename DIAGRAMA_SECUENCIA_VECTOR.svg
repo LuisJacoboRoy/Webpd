@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1450" viewBox="0 0 1800 1450" role="img" aria-labelledby="title description">
+  <title id="title">Webpd — vista general del flujo editorial</title>
+  <desc id="description">Vista conceptual con cuadros y conectores que muestra cómo se redacta, aprueba y programa una publicación en Facebook.</desc>
+  <defs>
+    <marker id="arrow-ink" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#263842"/>
+    </marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#187c78"/>
+    </marker>
+    <marker id="arrow-violet" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#7560a8"/>
+    </marker>
+    <marker id="arrow-clay" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#bf654a"/>
+    </marker>
+    <pattern id="paper-grain" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="4" r=".7" fill="#d8d1c5" opacity=".3"/>
+      <circle cx="15" cy="14" r=".6" fill="#d8d1c5" opacity=".24"/>
+    </pattern>
+    <style>
+      text { fill: #263842; }
+      .display { font: 52px Georgia, "Times New Roman", serif; letter-spacing: -1.4px; }
+      .deck { font: 18px "Segoe UI", Arial, sans-serif; fill: #5d6b70; }
+      .eyebrow { font: 12px Consolas, "Courier New", monospace; letter-spacing: 2.2px; fill: #187c78; }
+      .section { font: 700 14px "Segoe UI", Arial, sans-serif; letter-spacing: 1.1px; }
+      .box-title { font: 700 18px "Segoe UI", Arial, sans-serif; }
+      .box-copy { font: 14px "Segoe UI", Arial, sans-serif; fill: #5d6b70; }
+      .route { font: 13px Consolas, "Courier New", monospace; fill: #35474f; }
+      .connector-label { font: 13px "Segoe UI", Arial, sans-serif; fill: #475b62; }
+      .tiny { font: 12px "Segoe UI", Arial, sans-serif; fill: #65747a; }
+      .box { fill: #fffdf8; stroke: #cfc8ba; stroke-width: 1.4; }
+      .box-teal { fill: #f0f7f3; stroke: #8db9aa; stroke-width: 1.4; }
+      .box-violet { fill: #f5f1f8; stroke: #b7a9c8; stroke-width: 1.4; }
+      .box-clay { fill: #fbf1eb; stroke: #d3a28e; stroke-width: 1.4; }
+      .icon { fill: none; stroke: #263842; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+      .line { fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+      .dashed { stroke-dasharray: 6 5; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1450" fill="#f2eee4"/>
+  <rect width="1800" height="1450" fill="url(#paper-grain)"/>
+
+  <text x="84" y="58" class="eyebrow">PINTURAS DIAMANTE · MAPA DE SERVICIOS</text>
+  <text x="80" y="124" class="display">Del borrador al feed</text>
+  <text x="84" y="161" class="deck">Quién participa, qué hace y hacia dónde viajan los datos</text>
+  <path d="M84 190H1716" stroke="#bdb6a9" stroke-width="1"/>
+  <path d="M84 190H300" stroke="#187c78" stroke-width="4"/>
+
+  <g transform="translate(1030 64)">
+    <line x1="0" y1="0" x2="46" y2="0" class="line" stroke="#263842" marker-end="url(#arrow-ink)"/>
+    <text x="58" y="5" class="tiny">acción / solicitud</text>
+    <line x1="206" y1="0" x2="252" y2="0" class="line dashed" stroke="#187c78" marker-end="url(#arrow-teal)"/>
+    <text x="264" y="5" class="tiny">datos / respuesta</text>
+    <line x1="430" y1="0" x2="476" y2="0" class="line" stroke="#7560a8" marker-end="url(#arrow-violet)"/>
+    <text x="488" y="5" class="tiny">IA</text>
+    <line x1="542" y1="0" x2="588" y2="0" class="line" stroke="#bf654a" marker-end="url(#arrow-clay)"/>
+    <text x="600" y="5" class="tiny">Meta</text>
+  </g>
+
+  <g>
+    <circle cx="96" cy="239" r="15" fill="#187c78"/>
+    <text x="96" y="244" text-anchor="middle" fill="#fff" style="font:700 12px 'Segoe UI',Arial,sans-serif">01</text>
+    <text x="124" y="244" class="section">GESTIÓN EDITORIAL · ACCESO, CONTENIDO Y APROBACIÓN</text>
+    <path d="M124 260H1716" stroke="#c7c0b4" stroke-width="1"/>
+  </g>
+
+  <g>
+    <rect x="85" y="355" width="235" height="170" rx="8" class="box"/>
+    <circle cx="119" cy="393" r="19" fill="#e9e3d8"/>
+    <circle cx="119" cy="388" r="5" class="icon"/>
+    <path d="M108 404c1-7 5-10 11-10s10 3 11 10" class="icon"/>
+    <text x="150" y="395" class="box-title">Administrador</text>
+    <text x="108" y="444" class="box-copy">Revisa, edita y aprueba</text>
+    <text x="108" y="466" class="box-copy">la propuesta de publicación.</text>
+    <text x="108" y="503" class="tiny">Decisión humana</text>
+
+    <rect x="405" y="335" width="300" height="210" rx="8" class="box"/>
+    <circle cx="441" cy="374" r="19" fill="#e9e3d8"/>
+    <rect x="431" y="367" width="20" height="14" rx="1" class="icon"/>
+    <path d="M431 371h20M435 368.5h.2M439 368.5h.2" class="icon"/>
+    <text x="472" y="379" class="box-title">Panel React</text>
+    <text x="428" y="425" class="route">/admin</text>
+    <text x="428" y="454" class="box-copy">Carga el lote, permite editar</text>
+    <text x="428" y="476" class="box-copy">copy e imagen, y enviar</text>
+    <text x="428" y="498" class="box-copy">cambios con token de sesión.</text>
+    <text x="428" y="526" class="tiny">Interfaz de administración</text>
+
+    <rect x="790" y="335" width="320" height="210" rx="8" class="box"/>
+    <circle cx="826" cy="374" r="19" fill="#e9e3d8"/>
+    <path d="m821 366-6 8 6 8m10-16 6 8-6 8m-3-18-4 20" class="icon"/>
+    <text x="857" y="379" class="box-title">Funciones Vercel</text>
+    <text x="813" y="425" class="box-copy">Verifican sesión, validan datos</text>
+    <text x="813" y="447" class="box-copy">y coordinan los servicios.</text>
+    <text x="813" y="481" class="route">/api/auth</text>
+    <text x="813" y="502" class="route">/api/publicaciones</text>
+    <text x="813" y="523" class="route">/api/generar-texto · generar-fondo</text>
+
+    <rect x="1270" y="280" width="425" height="180" rx="8" class="box-teal"/>
+    <circle cx="1307" cy="319" r="19" fill="#d8ebe2"/>
+    <ellipse cx="1307" cy="313" rx="10" ry="4" class="icon"/>
+    <path d="M1297 313v13c0 2 4 4 10 4s10-2 10-4v-13m-20 7c0 2 4 4 10 4s10-2 10-4" class="icon"/>
+    <text x="1338" y="324" class="box-title">Supabase</text>
+    <text x="1295" y="367" class="box-copy">Usuarios, publicaciones e instrucciones editoriales.</text>
+    <text x="1295" y="391" class="box-copy">Almacena imágenes en Storage.</text>
+    <text x="1295" y="431" class="route">Postgres · Storage · RPC validar_lote</text>
+
+    <rect x="1270" y="505" width="425" height="170" rx="8" class="box-violet"/>
+    <circle cx="1307" cy="544" r="19" fill="#e6deed"/>
+    <path d="m1307 531 3 9 9 4-9 3-3 10-3-10-9-3 9-4z" class="icon"/>
+    <text x="1338" y="549" class="box-title">Google Gemini</text>
+    <text x="1295" y="592" class="box-copy">Redacta el copy y genera la imagen</text>
+    <text x="1295" y="614" class="box-copy">cuando el administrador lo solicita.</text>
+    <text x="1295" y="650" class="route">Texto · Imagen</text>
+
+    <path d="M320 434H405" class="line" stroke="#263842" marker-end="url(#arrow-ink)"/>
+    <rect x="324" y="402" width="78" height="22" rx="4" fill="#f2eee4"/>
+    <text x="363" y="417" text-anchor="middle" class="connector-label">usa</text>
+
+    <path d="M705 434H790" class="line" stroke="#263842" marker-end="url(#arrow-ink)"/>
+    <rect x="709" y="393" width="78" height="34" rx="4" fill="#f2eee4"/>
+    <text x="748" y="407" text-anchor="middle" class="connector-label">fetch</text>
+    <text x="748" y="421" text-anchor="middle" class="tiny">/api/*</text>
+
+    <path d="M1110 382H1270" class="line" stroke="#187c78" marker-end="url(#arrow-teal)"/>
+    <rect x="1117" y="350" width="146" height="24" rx="4" fill="#f2eee4"/>
+    <text x="1190" y="367" text-anchor="middle" class="connector-label">lee / guarda</text>
+    <path d="M1270 419H1110" class="line dashed" stroke="#187c78" marker-end="url(#arrow-teal)"/>
+    <rect x="1117" y="423" width="146" height="22" rx="4" fill="#f2eee4"/>
+    <text x="1190" y="439" text-anchor="middle" class="tiny">datos / token</text>
+
+    <path d="M1110 554H1270" class="line" stroke="#7560a8" marker-end="url(#arrow-violet)"/>
+    <rect x="1117" y="523" width="146" height="23" rx="4" fill="#f2eee4"/>
+    <text x="1190" y="540" text-anchor="middle" class="connector-label">genera</text>
+    <path d="M1270 592H1110" class="line dashed" stroke="#7560a8" marker-end="url(#arrow-violet)"/>
+    <rect x="1117" y="598" width="146" height="22" rx="4" fill="#f2eee4"/>
+    <text x="1190" y="614" text-anchor="middle" class="tiny">copy / imagen</text>
+
+    <rect x="405" y="625" width="300" height="112" rx="8" class="box"/>
+    <text x="428" y="658" class="box-title">Guardar y aprobar</text>
+    <text x="428" y="687" class="box-copy">El administrador confirma</text>
+    <text x="428" y="709" class="box-copy">el lote de publicaciones.</text>
+    <path d="M555 545V625" class="line" stroke="#263842" marker-end="url(#arrow-ink)"/>
+    <text x="568" y="590" class="tiny">confirmación</text>
+
+    <rect x="790" y="625" width="320" height="112" rx="8" class="box"/>
+    <text x="813" y="658" class="box-title">POST /api/publicaciones</text>
+    <text x="813" y="688" class="box-copy">Valida el lote y solicita</text>
+    <text x="813" y="710" class="box-copy">asignar las fechas.</text>
+    <path d="M705 681H790" class="line" stroke="#263842" marker-end="url(#arrow-ink)"/>
+    <text x="747" y="668" text-anchor="middle" class="tiny">validar</text>
+
+    <rect x="1270" y="700" width="425" height="100" rx="8" class="box-teal"/>
+    <text x="1295" y="738" class="box-title">Lote aprobado</text>
+    <text x="1295" y="767" class="box-copy">Supabase guarda estado y fechas de publicación.</text>
+    <path d="M1110 681H1187V750H1270" class="line" stroke="#187c78" marker-end="url(#arrow-teal)"/>
+    <rect x="1120" y="651" width="139" height="23" rx="4" fill="#f2eee4"/>
+    <text x="1190" y="668" text-anchor="middle" class="tiny">RPC validar_lote</text>
+  </g>
+
+  <g>
+    <circle cx="96" cy="867" r="15" fill="#bf654a"/>
+    <text x="96" y="872" text-anchor="middle" fill="#fff" style="font:700 12px 'Segoe UI',Arial,sans-serif">02</text>
+    <text x="124" y="872" class="section">AUTOMATIZACIÓN · PROGRAMACIÓN EN FACEBOOK</text>
+    <path d="M124 888H1716" stroke="#c7c0b4" stroke-width="1"/>
+  </g>
+
+  <g>
+    <rect x="85" y="1010" width="250" height="175" rx="8" class="box-clay"/>
+    <circle cx="122" cy="1049" r="19" fill="#f0ddd2"/>
+    <circle cx="122" cy="1049" r="10" class="icon"/>
+    <path d="M122 1043v7l5 3m-5-17v3" class="icon"/>
+    <text x="153" y="1054" class="box-title">Vercel Cron</text>
+    <text x="108" y="1098" class="box-copy">Se ejecuta diariamente</text>
+    <text x="108" y="1120" class="box-copy">y dispara el programador.</text>
+    <text x="108" y="1158" class="route">CRON_SECRET</text>
+
+    <rect x="500" y="985" width="330" height="225" rx="8" class="box"/>
+    <circle cx="537" cy="1024" r="19" fill="#e9e3d8"/>
+    <path d="m531 1016-6 8 6 8m12-16 6 8-6 8" class="icon"/>
+    <text x="568" y="1029" class="box-title">Programador API</text>
+    <text x="523" y="1073" class="route">GET /api/meta-scheduler</text>
+    <text x="523" y="1105" class="box-copy">Busca aprobadas pendientes,</text>
+    <text x="523" y="1127" class="box-copy">prepara imagen y copy, envía</text>
+    <text x="523" y="1149" class="box-copy">a Meta y guarda el ID devuelto.</text>
+    <text x="523" y="1184" class="tiny">Las credenciales viven en el servidor</text>
+
+    <rect x="950" y="930" width="330" height="170" rx="8" class="box-teal"/>
+    <circle cx="987" cy="969" r="19" fill="#d8ebe2"/>
+    <ellipse cx="987" cy="963" rx="10" ry="4" class="icon"/>
+    <path d="M977 963v13c0 2 4 4 10 4s10-2 10-4v-13m-20 7c0 2 4 4 10 4s10-2 10-4" class="icon"/>
+    <text x="1018" y="974" class="box-title">Supabase</text>
+    <text x="973" y="1018" class="box-copy">Entrega publicaciones aprobadas.</text>
+    <text x="973" y="1040" class="box-copy">Después guarda el ID devuelto</text>
+    <text x="973" y="1062" class="box-copy">por Meta y la fecha programada.</text>
+
+    <rect x="950" y="1190" width="330" height="150" rx="8" class="box-clay"/>
+    <circle cx="987" cy="1229" r="19" fill="#f0ddd2"/>
+    <path d="M980 1219h12l7 7v17h-19zM992 1219v7h7m-13 6h9m-9 5h9" class="icon"/>
+    <text x="1018" y="1234" class="box-title">Meta Graph API</text>
+    <text x="973" y="1277" class="route">/{page-id}/photos</text>
+    <text x="973" y="1300" class="route">/{page-id}/feed</text>
+    <text x="973" y="1324" class="tiny">Sube imagen (opcional) y programa</text>
+
+    <rect x="1430" y="1190" width="265" height="150" rx="8" class="box-clay"/>
+    <circle cx="1467" cy="1229" r="19" fill="#f0ddd2"/>
+    <path d="M1460 1219h12l7 7v17h-19zM1472 1219v7h7m-13 6h9m-9 5h9" class="icon"/>
+    <text x="1498" y="1234" class="box-title">Página Facebook</text>
+    <text x="1453" y="1277" class="box-copy">Recibe la publicación</text>
+    <text x="1453" y="1299" class="box-copy">y la publica en la fecha</text>
+    <text x="1453" y="1321" class="box-copy">programada.</text>
+
+    <path d="M335 1096H500" class="line" stroke="#263842" marker-end="url(#arrow-ink)"/>
+    <rect x="354" y="1064" width="129" height="23" rx="4" fill="#f2eee4"/>
+    <text x="418" y="1081" text-anchor="middle" class="connector-label">GET + secreto</text>
+
+    <path d="M830 1040H950" class="line" stroke="#187c78" marker-end="url(#arrow-teal)"/>
+    <rect x="834" y="1008" width="112" height="23" rx="4" fill="#f2eee4"/>
+    <text x="890" y="1025" text-anchor="middle" class="connector-label">lee aprobadas</text>
+    <path d="M950 1078H830" class="line dashed" stroke="#187c78" marker-end="url(#arrow-teal)"/>
+    <rect x="834" y="1083" width="112" height="23" rx="4" fill="#f2eee4"/>
+    <text x="890" y="1100" text-anchor="middle" class="tiny">copy + fecha + ruta</text>
+
+    <path d="M830 1155H885V1265H950" class="line" stroke="#bf654a" marker-end="url(#arrow-clay)"/>
+    <rect x="838" y="1171" width="111" height="38" rx="4" fill="#f2eee4"/>
+    <text x="893" y="1187" text-anchor="middle" class="connector-label">publica</text>
+    <text x="893" y="1201" text-anchor="middle" class="tiny">imagen / copy</text>
+
+    <path d="M1280 1265H1430" class="line" stroke="#bf654a" marker-end="url(#arrow-clay)"/>
+    <rect x="1290" y="1233" width="130" height="23" rx="4" fill="#f2eee4"/>
+    <text x="1355" y="1250" text-anchor="middle" class="connector-label">programa post</text>
+  </g>
+
+  <g>
+    <path d="M84 1380H1716" stroke="#bdb6a9" stroke-width="1"/>
+    <text x="84" y="1415" class="eyebrow">WEBPD · CONTENIDO Y PUBLICACIÓN</text>
+    <text x="1716" y="1415" text-anchor="end" class="tiny">Conectores sólidos: acciones · discontinuos: datos de retorno</text>
+  </g>
+</svg>
