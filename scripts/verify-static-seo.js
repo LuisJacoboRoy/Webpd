@@ -46,6 +46,14 @@ function hasAvailableProductImage(product) {
   });
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
+
 for (const route of routes) {
   const relativePath = route === '/' ? 'index.html' : path.join(route.slice(1), 'index.html');
   const filePath = path.join(distDirectory, relativePath);
@@ -121,11 +129,16 @@ for (const route of routes) {
       if (!html.includes('og:image:alt') || !html.includes('twitter:image:alt')) {
         fail(`${route}: faltan metadatos alt para la imagen de compartir`);
       }
-      const noscript = html.match(/<noscript>([\s\S]*?)<\/noscript>/i)?.[1] || '';
-      if (!product || !noscript.includes('<h1>') || !noscript.includes(product.name) || !noscript.includes('<p>')) {
+      const noscriptBlocks = [...html.matchAll(/<noscript>([\s\S]*?)<\/noscript>/gi)]
+        .map(match => match[1]);
+      const productNoscript = product && noscriptBlocks.find(noscript =>
+        noscript.includes(`<h1>${escapeHtml(product.name)}</h1>`) &&
+        noscript.includes(`<p>${escapeHtml(product.description)}</p>`)
+      );
+      if (!productNoscript) {
         fail(`${route}: falta texto accesible en el HTML prerenderizado`);
       }
-      if (product && hasAvailableProductImage(product) && !noscript.includes('<img ')) {
+      if (product && hasAvailableProductImage(product) && !productNoscript?.includes('<img ')) {
         fail(`${route}: falta la imagen disponible en el HTML prerenderizado`);
       }
     }

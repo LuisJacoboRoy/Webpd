@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
-export function getSupabase() {
-  const url = process.env.STORAGE_SUPABASE_URL;
-  const serviceKey = process.env.STORAGE_SUPABASE_SERVICE_KEY;
+export function getSupabase(options = {}) {
+  const url = options.url || process.env.STORAGE_SUPABASE_URL;
+  const serviceKey = options.serviceRoleKey || process.env.STORAGE_SUPABASE_SERVICE_KEY;
 
   if (!url || !serviceKey) {
     throw new Error('Missing STORAGE_SUPABASE_URL or STORAGE_SUPABASE_SERVICE_KEY');
