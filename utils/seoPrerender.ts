@@ -429,7 +429,6 @@ export const generateRobotsTxt = (): string => {
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /admin/
 
 # Sitemaps con URLs públicas y canónicas
 Sitemap: https://pinturasdiamante.com/sitemap.xml

@@ -54,7 +54,6 @@ export const generateRobotsTxt = (): string => {
   return `User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /admin/
 
 Sitemap: ${baseUrl}/sitemap.xml
 Sitemap: ${baseUrl}/sitemap-products.xml

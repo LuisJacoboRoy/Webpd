@@ -11,7 +11,7 @@ La migración `supabase/migrations/20261123153000_whatsapp_webhook_events.sql` c
 ## Archivos creados y modificados
 
 - Nuevos: `api/webhooks/whatsapp.js`, pruebas `api/webhooks/whatsapp.test.js`, migración SQL y esta guía.
-- Modificados: `api/webhook.js` (alias compatible), `server/supabase.js` (acepta credenciales explícitas y conserva el `STORAGE_` actual para las demás funciones), `.env.example` y el script `test:webhooks` de `package.json`.
+- Modificados: `api/webhook.js` (alias compatible), `server/supabase.js` (acepta credenciales explícitas), `.env.example` y el script `test:webhooks` de `package.json`.
 - No se modificaron `vercel.json`, `vite.config.ts`, componentes, rutas SPA ni scripts SEO/build.
 
 ## Variables de entorno
@@ -23,7 +23,7 @@ Configura en Vercel, en los entornos que correspondan (Production y Preview). El
 - `SUPABASEW_SUPABASE_URL`: URL provisionada por el recurso Supabase conectado a Vercel.
 - `SUPABASEW_SUPABASE_SERVICE_ROLE_KEY`: agrega manualmente la clave `service_role`; el recurso no debe sustituirla por la clave publishable/anon. Es solo para servidor y necesaria para persistir la notificación con RLS habilitado.
 
-No uses prefijos `VITE_` para estas variables. Para desarrollo local, define valores locales en `.env.local` (ignorado por Git); no copies credenciales reales a `.env.example` ni las compartas. El webhook admite las variables prefijadas `SUPABASEW_` o, como alternativa, los nombres estándar sin prefijo. Las otras funciones continúan usando `STORAGE_SUPABASE_URL` y `STORAGE_SUPABASE_SERVICE_KEY`; conectar esta base nueva no las cambia.
+No uses prefijos `VITE_` para estas variables. Para desarrollo local, define valores locales en `.env.local` (ignorado por Git); no copies credenciales reales a `.env.example` ni las compartas. El webhook admite las variables prefijadas `SUPABASEW_` o, como alternativa, los nombres estándar sin prefijo. La función recibe las credenciales de Supabase explícitamente y no depende de variables heredadas de otros endpoints.
 
 ## Supabase
 

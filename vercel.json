@@ -4,9 +4,6 @@
   "installCommand": "npm install",
   "outputDirectory": "dist",
   "framework": "vite",
-  "env": {
-    "VITE_API_URL": "https://api.pinturasdiamante.com"
-  },
   "headers": [
     {
       "source": "/(.*)",
@@ -60,12 +57,6 @@
     {
       "source": "/(.*)",
       "destination": "/index.html"
-    }
-  ],
-  "crons": [
-    {
-      "path": "/api/meta-scheduler",
-      "schedule": "0 1 * * *"
     }
   ]
 }

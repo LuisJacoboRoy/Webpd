@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState, Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { HelmetProvider, Helmet } from '@dr.pogodin/react-helmet';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/react";
@@ -22,7 +22,6 @@ import { BUSINESS_INFO } from './data/seo';
 import { generateBusinessLocationSchemas } from './utils/localBusinessSchema';
 import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from './data/products';
 import { categoryPath, findProductBySlug, productPath, productSlug as getProductSlug } from './utils/routes';
-import Admin from './components/admin/Admin';
 
 declare const __BASE_URL__: string;
 
@@ -179,7 +178,6 @@ const SiteContent: React.FC = () => {
 };
 
 const AppContent: React.FC = () => {
-  const location = useLocation();
   const [showReviewExitPrompt, setShowReviewExitPrompt] = useState(false);
   const reviewDialogRef = useRef<HTMLDialogElement>(null);
   const promptShownThisPage = useRef(false);
@@ -239,7 +237,6 @@ const AppContent: React.FC = () => {
     window.history.back();
   };
 
-  const isAdminRoute = location.pathname === '/admin' || location.pathname.startsWith('/admin/');
   return (
     <>
       <style>{`
@@ -251,7 +248,7 @@ const AppContent: React.FC = () => {
           overscroll-behavior: contain;
         }
       `}</style>
-      {isAdminRoute ? <Admin /> : <SiteContent />}
+      <SiteContent />
       {showReviewExitPrompt && (
         <dialog
           ref={reviewDialogRef}

@@ -14,7 +14,7 @@ if (productionOrigin.protocol !== 'https:' || productionOrigin.pathname !== '/' 
   throw new Error('VERCEL_PRODUCTION_URL must be an HTTPS origin without a path or query');
 }
 
-for (const route of ['admin', 'reseña']) {
+for (const route of ['reseña']) {
   const routePath = `/${route}`;
   const destinationUrl = new URL(routePath, productionOrigin.origin);
   const redirectPage = `<!doctype html>
@@ -43,4 +43,4 @@ for (const route of ['admin', 'reseña']) {
   await writeFile(path.join(routeDirectory, 'index.html'), redirectPage, 'utf8');
 }
 
-console.log(`Created GitHub Pages redirects for /admin and /reseña to ${productionOrigin.origin}`);
+console.log(`Created GitHub Pages redirect for /reseña to ${productionOrigin.origin}`);

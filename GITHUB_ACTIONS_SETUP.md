@@ -43,7 +43,6 @@ VERCEL_PROJECT_ID
 
 ```env
 NODE_VERSION: '18'
-VITE_API_URL: 'https://api.pinturasdiamante.com'
 VITE_ENVIRONMENT: 'production'
 HTTPS: 'true'
 ```

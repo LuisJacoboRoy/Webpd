@@ -10,14 +10,14 @@ El workflow `.github/workflows/deploy-github-pages.yml` publica el sitio estáti
 
 Para publicar, haz push a `main` o ejecuta **Deploy to GitHub Pages** desde la pestaña Actions.
 
-El workflow instala dependencias, ejecuta `npm run build`, verifica que la meta de verificación esté en `dist/index.html`, agrega `CNAME` y `.nojekyll`, genera redirecciones para `/admin` y `/reseña` hacia la app de producción en Vercel (`https://pinturas-web.vercel.app`) y publica el artefacto. El resto del sitio, incluida la portada, sigue sirviéndose desde GitHub Pages. Las redirecciones conservan los parámetros de consulta y el fragmento de la URL; el navegador cambia al dominio de Vercel.
+El workflow instala dependencias, ejecuta `npm run build`, verifica que la meta de verificación esté en `dist/index.html`, agrega `CNAME` y `.nojekyll`, genera una redirección para `/reseña` hacia la app de producción en Vercel (`https://pinturas-web.vercel.app`) y publica el artefacto. El resto del sitio, incluida la portada, sigue sirviéndose desde GitHub Pages. La redirección conserva los parámetros de consulta y el fragmento de la URL; el navegador cambia al dominio de Vercel.
 
 En **Settings → Pages**, configura GitHub Actions como fuente de despliegue. El DNS de `pinturasdiamante.com` también debe apuntar a GitHub Pages; el archivo `CNAME` no cambia el DNS.
 
 El sitio estático estará en:
 **https://pinturasdiamante.com/**
 
-> Vercel conserva su workflow independiente para `www.pinturasdiamante.com`. GitHub Pages publica archivos estáticos y no ejecuta las funciones `/api` del proyecto; las funciones administrativas requieren que el backend siga disponible en un host que las soporte.
+> Vercel conserva su workflow independiente para `www.pinturasdiamante.com`. GitHub Pages publica archivos estáticos y no ejecuta las funciones `/api` del proyecto; el webhook de WhatsApp requiere un host que admita funciones serverless.
 
 ### Publicación manual
 

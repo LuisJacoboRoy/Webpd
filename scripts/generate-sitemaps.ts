@@ -125,7 +125,6 @@ function createSitemaps() {
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /admin/
 
 # Sitemaps con URLs públicas y canónicas
 Sitemap: ${BASE_URL}/sitemap.xml
