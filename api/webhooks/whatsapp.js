@@ -1,5 +1,6 @@
 import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import { getSupabase } from '../../server/supabase.js';
+import { processIncomingText } from '../../server/whatsapp-assistant.js';
 
 export const config = {
   api: {
@@ -181,8 +182,10 @@ function getQueryValue(req, key) {
 export function createWhatsAppWebhookHandler(options = {}) {
   const env = options.env || process.env;
   const getSupabaseClient = options.getSupabaseClient || (() => getSupabase({
-    url: env.SUPABASEW_SUPABASE_URL || env.SUPABASE_URL,
-    serviceRoleKey: env.SUPABASEW_SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_SERVICE_ROLE_KEY,
+    url: env.SUPABASEW_SUPABASE_URL || env.SUPABASE_URL || env.STORAGE_SUPABASE_URL,
+    serviceRoleKey: env.SUPABASEW_SUPABASE_SERVICE_ROLE_KEY ||
+      env.SUPABASE_SERVICE_ROLE_KEY ||
+      env.STORAGE_SUPABASE_SERVICE_KEY,
   }));
 
   return async function whatsappWebhookHandler(req, res) {
@@ -204,9 +207,12 @@ export function createWhatsAppWebhookHandler(options = {}) {
       return sendText(res, 405, 'Method Not Allowed');
     }
 
-    const hasSupabaseUrl = env.SUPABASEW_SUPABASE_URL || env.SUPABASE_URL;
+    const hasSupabaseUrl =
+      env.SUPABASEW_SUPABASE_URL || env.SUPABASE_URL || env.STORAGE_SUPABASE_URL;
     const hasSupabaseServiceRoleKey =
-      env.SUPABASEW_SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_SERVICE_ROLE_KEY;
+      env.SUPABASEW_SUPABASE_SERVICE_ROLE_KEY ||
+      env.SUPABASE_SERVICE_ROLE_KEY ||
+      env.STORAGE_SUPABASE_SERVICE_KEY;
     if (!env.META_APP_SECRET || !hasSupabaseUrl || !hasSupabaseServiceRoleKey) {
       return sendText(res, 503, 'Webhook is not configured');
     }
@@ -249,15 +255,49 @@ export function createWhatsAppWebhookHandler(options = {}) {
     }
 
     try {
-      const { error } = await getSupabaseClient()
+      const supabase = getSupabaseClient();
+      const { error } = await supabase
         .from('whatsapp_webhook_events')
         .upsert(records, { onConflict: 'event_key', ignoreDuplicates: true });
       if (error) throw error;
+
+      for (const record of records) {
+        if (record.event_type === 'status' && record.message_id && record.message_state) {
+          await supabase
+            .from('whatsapp_messages')
+            .update({ delivery_state: record.message_state, updated_at: new Date().toISOString() })
+            .eq('meta_message_id', record.message_id);
+        }
+      }
     } catch (error) {
       console.error('WhatsApp webhook persistence failed', {
         code: error?.code || 'unknown',
       });
       return sendText(res, 503, 'Event could not be stored');
+    }
+
+    for (const record of records) {
+      if (record.event_type !== 'message' || record.message_type !== 'text') continue;
+      try {
+        await processIncomingText({
+          env,
+          getSupabaseClient,
+          message: {
+            id: record.message_id,
+            from: record.sender_number,
+            timestamp: record.meta_timestamp
+              ? String(Math.floor(new Date(record.meta_timestamp).getTime() / 1000))
+              : null,
+            type: 'text',
+            text: record.content?.text,
+          },
+        });
+      } catch (error) {
+        console.error('WhatsApp assistant processing failed', {
+          code: error?.code || 'unknown',
+        });
+        return sendText(res, 503, 'Event could not be processed');
+      }
     }
 
     return sendText(res, 200, 'EVENT_RECEIVED');

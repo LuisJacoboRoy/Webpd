@@ -62,7 +62,7 @@ function createHarness({ persistError, env: handlerEnv = env } = {}) {
     getSupabaseClient() {
       return {
         from(table) {
-          assert.equal(table, 'whatsapp_webhook_events');
+          if (table === 'whatsapp_webhook_events') {
           return {
             async upsert(rows, options) {
               calls.push({ rows, options });
@@ -71,6 +71,21 @@ function createHarness({ persistError, env: handlerEnv = env } = {}) {
               return { error: null };
             },
           };
+          }
+          if (table === 'whatsapp_messages') {
+            return {
+              update(values) {
+                calls.push({ table, values });
+                return {
+                  eq(column, value) {
+                    calls.push({ table, column, value });
+                    return Promise.resolve({ error: null });
+                  },
+                };
+              },
+            };
+          }
+          throw new Error(`Unexpected table: ${table}`);
         },
       };
     },
@@ -249,6 +264,41 @@ test('POST accepts the SUPABASEW-prefixed Vercel environment variables', async (
   await handler(createPostRequest(payload), res);
 
   assert.equal(res.statusCode, 200);
+});
+
+test('POST accepts only the STORAGE_SUPABASE environment variables', async () => {
+  const serviceKey = 'test-storage-service-key';
+  const handler = createWhatsAppWebhookHandler({
+    env: {
+      WHATSAPP_VERIFY_TOKEN: env.WHATSAPP_VERIFY_TOKEN,
+      META_APP_SECRET: env.META_APP_SECRET,
+      STORAGE_SUPABASE_URL: 'https://example.supabase.co',
+      STORAGE_SUPABASE_SERVICE_KEY: serviceKey,
+    },
+  });
+  const res = createResponse();
+  const originalFetch = globalThis.fetch;
+  const requests = [];
+  globalThis.fetch = async (input, init) => {
+    requests.push({
+      url: String(input),
+      headers: new Headers(init?.headers),
+    });
+    return new Response(null, { status: 201 });
+  };
+
+  try {
+    await handler(createPostRequest({ object: 'whatsapp_business_account', entry: [] }), res);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body, 'EVENT_RECEIVED');
+  assert.equal(requests.length, 1);
+  assert.match(requests[0].url, /\/rest\/v1\/whatsapp_webhook_events/);
+  assert.equal(requests[0].headers.get('apikey'), serviceKey);
+  assert.equal(requests[0].headers.get('authorization'), `Bearer ${serviceKey}`);
 });
 
 test('POST reports persistence failures instead of acknowledging the event', async () => {

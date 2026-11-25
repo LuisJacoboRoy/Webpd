@@ -8,6 +8,8 @@ La función verifica el callback GET de Meta y valida `X-Hub-Signature-256` con 
 
 La migración `supabase/migrations/20261123153000_whatsapp_webhook_events.sql` crea una tabla separada, habilita RLS y concede acceso solo a `service_role`; no cambia políticas ni tablas existentes. La clave de servicio es necesaria para que la función escriba aun cuando RLS esté habilitado y nunca se envía al navegador.
 
+La integración del asistente combina el documento `docs/DIAMANTE_PINTURAS_LLM.md` con el historial individual almacenado en Supabase. El webhook registra mensajes entrantes, genera una respuesta mediante el proveedor configurado, envía texto por WhatsApp Cloud API y actualiza los estados de entrega.
+
 ## Archivos creados y modificados
 
 - Nuevos: `api/webhooks/whatsapp.js`, pruebas `api/webhooks/whatsapp.test.js`, migración SQL y esta guía.
@@ -20,14 +22,23 @@ Configura en Vercel, en los entornos que correspondan (Production y Preview). El
 
 - `WHATSAPP_VERIFY_TOKEN`: valor aleatorio privado que también ingresarás en la configuración del webhook de Meta.
 - `META_APP_SECRET`: App Secret de la aplicación de Meta que firma los eventos.
+- `WHATSAPP_ACCESS_TOKEN`: token privado de WhatsApp Cloud API usado exclusivamente por Vercel Functions.
+- `WHATSAPP_PHONE_NUMBER_ID`: identificador del número de teléfono remitente configurado en Meta.
+- `AI_API_KEY`: clave privada del proveedor compatible con la API de chat.
+- `AI_MODEL`: modelo usado por el proveedor; por ejemplo, `gpt-4o-mini`.
+- `AI_API_URL`: opcional. URL compatible con `POST /chat/completions`.
 - `SUPABASEW_SUPABASE_URL`: URL provisionada por el recurso Supabase conectado a Vercel.
 - `SUPABASEW_SUPABASE_SERVICE_ROLE_KEY`: agrega manualmente la clave `service_role`; el recurso no debe sustituirla por la clave publishable/anon. Es solo para servidor y necesaria para persistir la notificación con RLS habilitado.
+- `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY`: nombres estándar alternativos.
+- `STORAGE_SUPABASE_URL` y `STORAGE_SUPABASE_SERVICE_KEY`: nombres alternativos admitidos para el recurso de almacenamiento.
 
-No uses prefijos `VITE_` para estas variables. Para desarrollo local, define valores locales en `.env.local` (ignorado por Git); no copies credenciales reales a `.env.example` ni las compartas. El webhook admite las variables prefijadas `SUPABASEW_` o, como alternativa, los nombres estándar sin prefijo. La función recibe las credenciales de Supabase explícitamente y no depende de variables heredadas de otros endpoints.
+No uses prefijos `VITE_` para estas variables. Para desarrollo local, define valores locales en `.env.local` (ignorado por Git); no copies credenciales reales a `.env.example` ni las compartas. Si hay más de un nombre configurado, el webhook conserva esta prioridad: `SUPABASEW_*`, luego los nombres estándar `SUPABASE_*` y finalmente `STORAGE_SUPABASE_*`. La función recibe las credenciales de Supabase explícitamente y no depende de variables heredadas de otros endpoints.
 
 ## Supabase
 
 Aplica la migración desde Supabase CLI o ejecuta el SQL de la migración en el SQL Editor. La tabla guarda el ID del mensaje, número del remitente y de WhatsApp, ID del número de teléfono de Meta, tipo y contenido disponible, fecha de Meta, estado, payload y fecha de recepción. Para mensajes multimedia se conserva la información disponible en el webhook (por ejemplo, ID del medio, tipo MIME y caption), no el archivo multimedia en sí. Los estados de mensaje tienen filas separadas del mismo ID de mensaje.
+
+Aplica también `supabase/migrations/20261124190000_whatsapp_assistant.sql`. Crea `whatsapp_conversations` y `whatsapp_messages`, con RLS activado y acceso administrativo solo para `service_role`. La automatización puede pausarse cambiando `automated_status` a `human` para el número correspondiente y reactivarse con `automated`.
 
 Ejemplo para consultar el historial de un remitente:
 
