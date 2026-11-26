@@ -8,7 +8,7 @@ La función verifica el callback GET de Meta y valida `X-Hub-Signature-256` con 
 
 La migración `supabase/migrations/20261123153000_whatsapp_webhook_events.sql` crea una tabla separada, habilita RLS y concede acceso solo a `service_role`; no cambia políticas ni tablas existentes. La clave de servicio es necesaria para que la función escriba aun cuando RLS esté habilitado y nunca se envía al navegador.
 
-La integración del asistente combina el documento `docs/DIAMANTE_PINTURAS_LLM.md` con el historial individual almacenado en Supabase. El webhook registra mensajes entrantes, genera una respuesta mediante el proveedor configurado, envía texto por WhatsApp Cloud API y actualiza los estados de entrega.
+La integración del asistente combina el documento `docs/DIAMANTE_PINTURAS_LLM.md` con el historial individual almacenado en Supabase. El webhook registra mensajes entrantes, genera una respuesta con Gemini usando su API nativa, envía texto por WhatsApp Cloud API y actualiza los estados de entrega. Gemini se invoca solo desde la función backend; no se carga en React ni afecta el índice del sitio.
 
 ## Archivos creados y modificados
 
@@ -24,15 +24,15 @@ Configura en Vercel, en los entornos que correspondan (Production y Preview). El
 - `META_APP_SECRET`: App Secret de la aplicación de Meta que firma los eventos.
 - `WHATSAPP_ACCESS_TOKEN`: token privado de WhatsApp Cloud API usado exclusivamente por Vercel Functions.
 - `WHATSAPP_PHONE_NUMBER_ID`: identificador del número de teléfono remitente configurado en Meta.
-- `AI_API_KEY`: clave privada del proveedor compatible con la API de chat.
-- `AI_MODEL`: modelo usado por el proveedor; por ejemplo, `gpt-4o-mini`.
-- `AI_API_URL`: opcional. URL compatible con `POST /chat/completions`.
+- `Gemini_API_Key`: clave privada de Google AI Studio para Gemini. También se reconoce `GEMINI_API_KEY`; configura la misma clave en Vercel Production.
+- `GEMINI_MODEL`: opcional. Modelo de Gemini; por defecto `gemini-2.5-flash`.
+- `AI_API_KEY`, `AI_MODEL` y `AI_API_URL`: compatibilidad opcional con el proveedor anterior. Solo se usa cuando no hay una clave Gemini configurada.
 - `SUPABASEW_SUPABASE_URL`: URL provisionada por el recurso Supabase conectado a Vercel.
 - `SUPABASEW_SUPABASE_SERVICE_ROLE_KEY`: agrega manualmente la clave `service_role`; el recurso no debe sustituirla por la clave publishable/anon. Es solo para servidor y necesaria para persistir la notificación con RLS habilitado.
 - `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY`: nombres estándar alternativos.
 - `STORAGE_SUPABASE_URL` y `STORAGE_SUPABASE_SERVICE_KEY`: nombres alternativos admitidos para el recurso de almacenamiento.
 
-No uses prefijos `VITE_` para estas variables. Para desarrollo local, define valores locales en `.env.local` (ignorado por Git); no copies credenciales reales a `.env.example` ni las compartas. Si hay más de un nombre configurado, el webhook conserva esta prioridad: `SUPABASEW_*`, luego los nombres estándar `SUPABASE_*` y finalmente `STORAGE_SUPABASE_*`. La función recibe las credenciales de Supabase explícitamente y no depende de variables heredadas de otros endpoints.
+No uses prefijos `VITE_` para estas variables. Para desarrollo local, define valores locales en `.env.local` (ignorado por Git); no copies credenciales reales a `.env.example` ni las compartas. En Vercel, los nombres de variables distinguen mayúsculas y minúsculas: usa exactamente `Gemini_API_Key` o `GEMINI_API_KEY`. Si ambas claves de proveedor están configuradas, Gemini tiene prioridad. Si hay más de un nombre de Supabase configurado, el webhook conserva esta prioridad: `SUPABASEW_*`, luego los nombres estándar `SUPABASE_*` y finalmente `STORAGE_SUPABASE_*`. La función recibe las credenciales de Supabase explícitamente y no depende de variables heredadas de otros endpoints.
 
 ## Supabase
 
@@ -54,8 +54,8 @@ Los duplicados exactos se ignoran por `event_key`; un mensaje y sus cambios de e
 
 ## Pruebas locales
 
-1. Define las cuatro variables privadas indicadas arriba en `.env.local`.
-2. Ejecuta las pruebas unitarias: `npm run test:webhooks`.
+1. Define las variables privadas de WhatsApp, Gemini y Supabase indicadas arriba en `.env.local`.
+2. Ejecuta las pruebas unitarias del webhook y del asistente: `npm run test:webhooks` y `npm run test:whatsapp-assistant`.
 3. Para ejercitar la ruta real de Vercel localmente, usa Vercel CLI y ejecuta `vercel dev` desde la raíz. El endpoint de desarrollo es `http://localhost:3000/api/webhooks/whatsapp`; `vite` por sí solo no ejecuta Vercel Functions.
 4. Verifica GET con token válido (debe devolver el challenge), GET inválido (403) y POST firmado. Las pruebas automáticas cubren además mensajes de texto y multimedia, los estados `sent`, `delivered`, `read` y `failed`, firma inválida, duplicados y fallo de persistencia.
 
@@ -80,7 +80,8 @@ Si el dominio de producción configurado en Vercel es distinto, usa el dominio c
 
 - **403 en GET:** verifica `hub.mode=subscribe` y que el valor ingresado en Meta coincida con `WHATSAPP_VERIFY_TOKEN`.
 - **401 en POST:** comprueba que `META_APP_SECRET` corresponda a esa app; no uses un payload re-serializado para comparar firmas.
-- **503 en POST:** revisa las cuatro variables privadas, la migración, permisos de `service_role` y conectividad de Supabase.
+- **503 en POST:** revisa las variables privadas de Meta/WhatsApp y Supabase, la migración, permisos de `service_role` y conectividad de Supabase.
+- **No contesta:** confirma que `Gemini_API_Key` (o `GEMINI_API_KEY`) está configurada en Vercel Production, que la conversación tiene `automated_status = 'automated'` y revisa los logs de la función.
 - **400 en POST:** el cuerpo firmado no es JSON válido o no cumple la estructura esperada.
 - Revisa los logs de la Vercel Function en **Project → Deployments → Functions/Logs**. La función no imprime el token, firma ni payload recibido.
 - Ejecuta `npm run test:webhooks` y `npm run build` para reproducir la validación disponible en el repositorio.

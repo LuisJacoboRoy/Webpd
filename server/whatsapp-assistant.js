@@ -6,14 +6,18 @@ const KNOWLEDGE_FILE = path.resolve(process.cwd(), 'docs', 'DIAMANTE_PINTURAS_LL
 const HISTORY_LIMIT = 20;
 
 export function getAssistantEnvironment(env = process.env) {
+  const geminiApiKey = env.Gemini_API_Key || env.GEMINI_API_KEY;
   return {
     supabaseUrl: env.SUPABASEW_SUPABASE_URL || env.SUPABASE_URL,
     supabaseServiceRoleKey:
       env.SUPABASEW_SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_SERVICE_ROLE_KEY,
     whatsappAccessToken: env.WHATSAPP_ACCESS_TOKEN,
     whatsappPhoneNumberId: env.WHATSAPP_PHONE_NUMBER_ID,
-    aiApiKey: env.AI_API_KEY,
-    aiModel: env.AI_MODEL || 'gpt-4o-mini',
+    aiProvider: geminiApiKey ? 'gemini' : 'openai-compatible',
+    aiApiKey: geminiApiKey || env.AI_API_KEY,
+    aiModel: geminiApiKey
+      ? env.GEMINI_MODEL || env.AI_MODEL || 'gemini-2.5-flash'
+      : env.AI_MODEL || 'gpt-4o-mini',
     aiApiUrl:
       env.AI_API_URL ||
       'https://api.openai.com/v1/chat/completions',
@@ -111,11 +115,57 @@ async function showTyping(accessToken, phoneNumberId, messageId) {
   });
 }
 
-async function generateReply({ apiKey, apiUrl, model, knowledge, history, incoming }) {
+async function generateReply({
+  provider,
+  apiKey,
+  apiUrl,
+  model,
+  knowledge,
+  history,
+  incoming,
+}) {
   const systemPrompt =
     `Actúa según el siguiente documento como única fuente comercial autorizada. ` +
     `Si el documento no contiene la respuesta, di que no tienes ese dato y deriva a atención humana.\n\n` +
     knowledge;
+
+  if (provider === 'gemini') {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+      {
+        method: 'POST',
+        headers: {
+          'x-goog-api-key': apiKey,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          contents: [
+            ...history.map(item => ({
+              role: item.role === 'assistant' ? 'model' : 'user',
+              parts: [{ text: item.content }],
+            })),
+            { role: 'user', parts: [{ text: incoming }] },
+          ],
+          generationConfig: { temperature: 0.25 },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Gemini returned ${response.status}`);
+    }
+
+    const result = await response.json();
+    const parts = result?.candidates?.[0]?.content?.parts;
+    const content = Array.isArray(parts)
+      ? parts.map(part => part?.text).filter(text => typeof text === 'string').join('')
+      : '';
+    if (!content.trim()) {
+      throw new Error('Gemini returned empty content');
+    }
+    return content.trim();
+  }
 
   const response = await fetch(apiUrl, {
     method: 'POST',
@@ -229,6 +279,7 @@ export async function processIncomingText({
   await delay(naturalDelay);
 
   const reply = await generateReply({
+    provider: config.aiProvider,
     apiKey: config.aiApiKey,
     apiUrl: config.aiApiUrl,
     model: config.aiModel,

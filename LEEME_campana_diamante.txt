@@ -1,0 +1,44 @@
+CAMPAÑA DE 50 PUBLICACIONES — PINTURAS DIAMANTE
+
+Página: Diamante Pinturas Oaxaca
+Page ID: 1308114345718870
+Frecuencia: cada 3 días (72 horas)
+Primera fecha: 28/11/2026 16:20, hora de Ciudad de México
+Última fecha del calendario: 24/04/2027 16:20
+Teléfono en cada texto: +52 951 143 3467
+
+ARCHIVOS
+- campana_productos_diamante_50.md: lectura de las 50 publicaciones, con fecha, enlace y texto.
+- campana_productos_diamante_50.csv: tabla que puede abrirse con Excel.
+- campana_productos_diamante_50.json: datos que consume el ejecutor.
+- programar_campana_facebook.mjs: ejecutor local para Graph API v27.0.
+
+IMÁGENES
+42 productos tienen una imagen de producto asignada en el catálogo. Se incluyen 42 en el calendario con su URL de imagen OG (la misma lógica de ProductDetail: ogImage || image).
+8 productos están retenidos por imagen propia pendiente. No se envían con una imagen genérica.
+
+LÍMITE DE META
+Meta permite programar con máximo 75 días de anticipación. Por eso el calendario completo de 50 entradas no puede enviarse de una sola vez.
+La vista previa del 25/11/2026 muestra 24 publicaciones elegibles actualmente. Otras 18 con imagen propia entrarán en la ventana conforme pase el tiempo; 8 requieren actualizar su imagen.
+El ejecutor vuelve a calcular la ventana en cada uso.
+
+CÓMO EJECUTAR SIN BUILD NI DEPLOY
+1. Copia los archivos .mjs y .json a la raíz de tu repositorio Webpd, junto a .env.local.
+2. Abre la terminal de VS Code en esa carpeta y ejecuta:
+   vercel env pull .env.local --environment=production
+   (Solo descarga variables al archivo local; no hace build ni deploy.)
+3. Comprueba que .env.local no vaya a Git. No compartas el archivo, porque contiene secretos.
+4. Vista previa, sin crear publicaciones:
+   node programar_campana_facebook.mjs
+5. Después de revisar las 24 entradas, para crear las publicaciones elegibles:
+   node programar_campana_facebook.mjs --confirm
+
+RESULTADOS Y DUPLICADOS
+- Después de cada aceptación de Meta, el script guarda el ID de Facebook en facebook-publicaciones-programadas-resultados.json.
+- Si se vuelve a ejecutar, omite IDs ya guardados para evitar duplicados.
+- Si Meta rechaza una solicitud, el lote se detiene y guarda los éxitos previos.
+- Si ocurre un timeout o error de red, revisa primero las publicaciones programadas en Meta antes de volver a ejecutar, porque la respuesta podría haberse perdido después de que Meta aceptara la publicación.
+
+IMPORTANTE
+El script usa el Page Access Token leído localmente de META_PAGE_ACCESS_TOKEN y el ID de META_PAGE_ID. Nunca muestra el token en consola ni lo requiere en el chat.
+No publica ahora mismo al generar la vista previa. Solo la ejecución con --confirm crea publicaciones.
