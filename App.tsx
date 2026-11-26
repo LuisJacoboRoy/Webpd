@@ -14,6 +14,7 @@ import Footer from './components/Footer';
 import ImageSlider from './components/ImageSlider';
 import CartDrawer from './components/CartDrawer';
 import HeroHeader from './components/HeroHeader';
+import WhatsAppFloatingContact from './components/WhatsAppFloatingContact';
 import { CartProvider } from './context/CartContext';
 import { useJsonLd } from './hooks/useJsonLd';
 import { useFavicon, useBeforeUnloadWarning } from './hooks/usePersistence';
@@ -337,6 +338,7 @@ const App: React.FC = () => {
               <AppContent />
             </BrowserRouter>
           )}
+          <WhatsAppFloatingContact />
           <Analytics />
           <SpeedInsights />
         </ReviewRedirectProvider>
