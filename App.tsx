@@ -24,8 +24,6 @@ import { generateBusinessLocationSchemas } from './utils/localBusinessSchema';
 import { CATEGORIES, PRODUCTS, SUB_CATEGORIES } from './data/products';
 import { categoryPath, findProductBySlug, productPath, productSlug as getProductSlug } from './utils/routes';
 
-declare const __BASE_URL__: string;
-
 // Lazy-loaded route components (code splitting)
 const About = lazy(() => import('./components/About'));
 const Contact = lazy(() => import('./components/Contact'));
@@ -334,7 +332,7 @@ const App: React.FC = () => {
           {isReviewPage ? (
             <PaginaResena />
           ) : (
-            <BrowserRouter basename={__BASE_URL__}>
+            <BrowserRouter basename={import.meta.env.BASE_URL}>
               <AppContent />
             </BrowserRouter>
           )}
